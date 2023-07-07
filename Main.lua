@@ -1,5 +1,5 @@
 -- Project PList By Colastee
-
+-- Made possible by using Roblox Corescripts
 
 --Setup
 local p = {}
@@ -386,7 +386,7 @@ for _,v in pairs(game:GetDescendants()) do
         end)]]
         if v.BackgroundTransparency < 1 then
         v.MouseEnter:Connect(function()
-            wait(0.02)
+            wait()
             mouseh.Image = "rbxassetid://7028337377"
             --mh.Icon = "rbxassetid://7028337377"
         end)
@@ -421,7 +421,7 @@ game.DescendantAdded:Connect(function(v)
         end)]]
         if v.BackgroundTransparency < 1 then
         v.MouseEnter:Connect(function()
-            wait(0.02)
+            wait()
             mouseh.Image = "rbxassetid://7028337377"
             --mh.Icon = "rbxassetid://7028337377"
         end)
