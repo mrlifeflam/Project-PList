@@ -21,10 +21,10 @@ TopBarContainer.Size = UDim2.new(1, 0, 0, 36)
 TopBarContainer.ZIndex = 0
 TopBarContainer.Text = ""
 TopBarContainer.MouseButton1Up:Connect(function()
-	if 	RobloxGuii.PlayerListContainer.Visible == true then
-		RobloxGuii.PlayerListContainer.Visible = false
+	if 	RobloxGuii.PlayerListContainer.ScrollList.Visible == true then
+		RobloxGuii.PlayerListContainer.ScrollList.Visible = false
 	else
-		RobloxGuii.PlayerListContainer.Visible = true
+		RobloxGuii.PlayerListContainer.ScrollList.Visible = true
 	end
 end)
 
@@ -1522,7 +1522,6 @@ end
 local targetContainerYOffset = Container.Position.Y.Offset
 
 Container.BackgroundTransparency = 1
-Container.Visible = false
 Container.Parent = RobloxGui
 
 function AdjustContainerPosition()
@@ -2843,7 +2842,7 @@ local closeListFunc = function(name, state, input)
 	if state ~= Enum.UserInputState.Begin then return end
 
 	isOpen = false
-	Container.Visible = false
+	Container.ScrollList.Visible = false
 	ContextActionService:UnbindAction("CloseList")
 	ContextActionService:UnbindAction("StopAction")
 	GuiService:RemoveSelectionGroup("PlayerlistGuiSelection")
@@ -2852,7 +2851,7 @@ local closeListFunc = function(name, state, input)
 end
 
 local setVisible = function(state, fromTemp)
-	Container.Visible = state
+	Container.ScrollList.Visible = state
 
 	if state then
 		local children = ScrollList:GetChildren()
