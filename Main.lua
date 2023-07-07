@@ -334,14 +334,15 @@ game.RunService.Heartbeat:Connect(function()
     end
 end)
 if badmouse == true then
---local efgbht = Instance.new("ScreenGui")
+local efgbht = Instance.new("ScreenGui")
 local mouseh = Instance.new("ImageLabel")
 local uis = game:GetService("UserInputService")
 local mh = game.Players.LocalPlayer:GetMouse()
-game.CoreGui.RobloxGui.IgnoreGuiInset = true
-
+efgbht.DisplayOrder = 99
+efgbht.IgnoreGuiInset = true
+efgbht.Parent = game.CoreGui.TopBarApp
 mouseh.Name = "MouseH"
-mouseh.Parent = game.CoreGui.TopBarApp
+mouseh.Parent = efgbht
 mouseh.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 mouseh.BackgroundTransparency = 1.000
 mouseh.Position = UDim2.new(0, 0, 1, 0)
