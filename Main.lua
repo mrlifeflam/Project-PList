@@ -7,6 +7,7 @@ local p = {}
 local RobloxGuii = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
 RobloxGuii.Name = "RobloxGui"
 RobloxGuii.ResetOnSpawn = false
+RobloxGuii.DisplayOrder = 99
 
 local TopBarContainer = Instance.new("TextButton")
 TopBarContainer.Name = "TopBarContainer"
