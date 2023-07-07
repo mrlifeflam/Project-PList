@@ -801,10 +801,8 @@ function createPlayerDropDown()
 				local cachedLastSelectedPlayer = playerDropDown.Player
 				spawn(function()
 					-- check for max friends before letting them send the request
-					if canSendFriendRequestAsync(cachedLastSelectedPlayer) then 	-- Yields
-						if cachedLastSelectedPlayer and cachedLastSelectedPlayer.Parent == PlayersService then
-							LocalPlayer:RequestFriendship(cachedLastSelectedPlayer)
-						end
+					if cachedLastSelectedPlayer and cachedLastSelectedPlayer.Parent == PlayersService then
+						LocalPlayer:RequestFriendship(cachedLastSelectedPlayer)
 					end
 				end)
 			elseif status == Enum.FriendStatus.FriendRequestSent then
