@@ -3,11 +3,12 @@
 
 --Setup
 local p = {}
+local typing = false
 
 local RobloxGuii = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
 RobloxGuii.Name = "RobloxGui"
 RobloxGuii.ResetOnSpawn = false
-RobloxGuii.DisplayOrder = 99
+RobloxGuii.DisplayOrder = 9999
 
 local TopBarContainer = Instance.new("TextButton")
 TopBarContainer.Name = "TopBarContainer"
@@ -112,7 +113,7 @@ TextLabel.Text = "Loading."
 TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 TextLabel.TextSize = 14.000
 spawn(function()
-	game.RunService.Heartbeat:Connect(function()
+	game.RunService.RenderStepped:Connect(function()
 		ImageLabel_2.Rotation = ImageLabel_2.Rotation + 6
 	end)
 end)
@@ -145,7 +146,7 @@ Gui:Destroy()
 end
 wait(0.5)
 local runserv = game.RunService
-local heartbeat = runserv.Heartbeat
+local RenderStepped = runserv.RenderStepped
 local playerlist = Instance.new("ScreenGui")
 local PlayerListContainer = Instance.new("Frame")
 local ScrollList = Instance.new("ScrollingFrame")
@@ -213,7 +214,7 @@ local function VWPK_fake_script()
 	local gui = script.Parent
 	local frame = gui.HealthContainer
 	local bar = frame.HealthFill
-	heartbeat:Connect(function()
+	RenderStepped:Connect(function()
 		bar.Size = UDim2.new(0,(game.Players.LocalPlayer.Character:WaitForChild("Humanoid").Health / game.Players.LocalPlayer.Character:WaitForChild("Humanoid").MaxHealth * 160),1,0)
 		spawn(function() 
 			if game.Players.LocalPlayer.Character.Humanoid.Health < game.Players.LocalPlayer.Character.Humanoid.MaxHealth and game.Players.LocalPlayer.Character.Humanoid.Health > game.Players.LocalPlayer.Character.Humanoid.MaxHealth/2 then
@@ -239,7 +240,7 @@ if tbar.RightFrame:FindFirstChild("HealthBar") then
 tbar.RightFrame.HealthBar:Destroy()
 end
 if game.Players.LocalPlayer.PlayerGui:FindFirstChild("Chat") then
-game.RunService.Heartbeat:Connect(function()
+game.RunService.RenderStepped:Connect(function()
 if game.Players.LocalPlayer.PlayerGui.Chat.Frame.ChatBarParentFrame.Frame.BoxFrame.Frame.ChatBar:IsFocused() then
 game.Players.LocalPlayer.PlayerGui.Chat.Frame.ChatBarParentFrame.Frame.BoxFrame.BackgroundTransparency = 0.1
 else
@@ -247,7 +248,7 @@ game.Players.LocalPlayer.PlayerGui.Chat.Frame.ChatBarParentFrame.Frame.BoxFrame.
 end
 end)
 end
-game.RunService.Heartbeat:Connect(function()
+game.RunService.RenderStepped:Connect(function()
 --tbar.Transparency = 0.5
 tbar.BorderSizePixel = 0
 tbar.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
@@ -292,7 +293,7 @@ local function changechatico()
         chatico.Image = "rbxasset://textures/ui/Chat/ChatDown@2x.png"
     end		
 end
-game.RunService.Heartbeat:Connect(function()
+game.RunService.RenderStepped:Connect(function()
 changechatico()
 end)
 
@@ -309,7 +310,7 @@ for _,v in pairs(game:GetDescendants()) do
         v.Text = "Please chat '/?' for a list of commands"
     end
 end
-game.RunService.Heartbeat:Connect(function()
+game.RunService.RenderStepped:Connect(function()
     game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
     tbar.LeftFrame.MenuIcon.Background.StateOverlay.Image = ""
     game.CoreGui:WaitForChild("TopBarApp").LegacyCloseMenu.CloseMenuButton.Image = "rbxasset://textures/ui/Menu/HamburgerDown.png"
@@ -339,7 +340,7 @@ local efgbht = Instance.new("ScreenGui")
 local mouseh = Instance.new("ImageLabel")
 local uis = game:GetService("UserInputService")
 local mh = game.Players.LocalPlayer:GetMouse()
-efgbht.DisplayOrder = 99
+efgbht.DisplayOrder = 9999
 efgbht.IgnoreGuiInset = true
 efgbht.Parent = game.CoreGui.TopBarApp
 mouseh.Name = "MouseH"
@@ -355,12 +356,20 @@ mouseh.Image = 'rbxasset://textures/ArrowFarCursor.png'
 uis.MouseIconEnabled = true
 uis.OverrideMouseIconBehavior = Enum.OverrideMouseIconBehavior.ForceShow
 mh.Icon = 'rbxasset://textures/ArrowFarCursor.png'
-game.RunService.Heartbeat:Connect(function()
+game.RunService.RenderStepped:Connect(function()
+    if uis:GetFocusedTextBox() == true then
+        typing = true
+    else
+        typing = false
+    end
+end)
+game.RunService.RenderStepped:Connect(function()
 mouseh.Position = UDim2.new(0, mh.X - 32, 0, mh.Y + 1)
 uis.MouseIconEnabled = false
 uis.OverrideMouseIconBehavior = Enum.OverrideMouseIconBehavior.ForceHide
 mh.Icon = "rbxassetid://000001"
 end)
+
 for _,v in pairs(game:GetDescendants()) do
     if v:IsA("TextLabel") and v.Text == "Chat '/?' or '/help' for a list of chat commands." then
         v.Text = "Please chat '/?' for a list of commands"
@@ -369,20 +378,19 @@ for _,v in pairs(game:GetDescendants()) do
         v.Font = Enum.Font.Legacy
         v.TextSize = 13
     end
+
     if v:IsA("GuiObject") then
-        --[[game.RunService.Heartbeat:Connect(function()
+        --[[game.RunService.RenderStepped:Connect(function()
         if v.ZIndex > 1 then
         v.ZIndex = 0
         end
         end)]]
-        if v.BackgroundTransparency < 1 and v.Active == true and v.Name ~= "MouseH" then
+        if v.Active == true and v.Name ~= "MouseH" then
         v.MouseEnter:Connect(function()
-            wait()
             mouseh.Image = "rbxassetid://7028337377"
             --mh.Icon = "rbxassetid://7028337377"
         end)
         v.MouseLeave:Connect(function()
-            wait()
             mouseh.Image = 'rbxasset://textures/ArrowFarCursor.png'
             --mh.Icon = 'rbxasset://textures/ArrowFarCursor.png'
         end)
@@ -405,24 +413,17 @@ game.DescendantAdded:Connect(function(v)
         mouseh.Visible = true
         mouseh.ZIndex = 99
         mouseh.Image = "rbxassetid://7028337278"
-        --[[game.RunService.Heartbeat:Connect(function()
+        --[[game.RunService.RenderStepped:Connect(function()
         if v.ZIndex > 1 then
         v.ZIndex = 0
         end
         end)]]
-        if v.BackgroundTransparency < 1 and v.Active == true and v.Name ~= "MouseH" then
+        if v.Active == true and v.Name ~= "MouseH" then
         v.MouseEnter:Connect(function()
-            wait()
             mouseh.Image = "rbxassetid://7028337377"
             --mh.Icon = "rbxassetid://7028337377"
         end)
-        if v:IsA("TextButton") then
-            v.MouseButton1Up:Connect(function()
-                mh.Icon = "rbxassetid://7028337377"
-            end)
-        end
         v.MouseLeave:Connect(function()
-            wait()
             mouseh.Image = 'rbxasset://textures/ArrowFarCursor.png'
             --mh.Icon = 'rbxasset://textures/ArrowFarCursor.png'
         end)
@@ -442,7 +443,7 @@ backpackicon.Size = UDim2.new(0, 25, 0, 36)
 backpackicon.Background.ImageTransparency = 1
 backpackicon.Background.Icon.Size = UDim2.new(0, 23, 0, 27)
 backpackicon.Background.Icon.Image = "rbxasset://textures/ui/Backpack/Backpack@2x.png"
-game.RunService.Heartbeat:Connect(function()
+game.RunService.RenderStepped:Connect(function()
     if game.CoreGui.RobloxGui.Backpack.Inventory.Visible == true then
         backpackicon.Background.Icon.Image = "rbxasset://textures/ui/Backpack/Backpack_Down@2x.png"
         else
@@ -866,6 +867,10 @@ function createPlayerDropDown()
 	local function onReportButtonPressed()
 		if playerDropDown.Player then
 			playerDropDown:Hide()
+            keypress("0x1B")
+            wait()
+            keypress("0x09")
+            keypress("0x09")
 		end
 	end
 
@@ -1662,7 +1667,7 @@ function createStatText(parent, text, isTopStat, isTeamStat)
 	if tostring(parent.Parent.Name) == game.Players.LocalPlayer.Name then
 	local statTexttop = statText:Clone()
 	statTexttop.Name = parent.Parent.Name.." TEXT"
-	game.RunService.Heartbeat:Connect(function()
+	game.RunService.RenderStepped:Connect(function()
 		statTexttop.Text = statText.Text
 	end)
 	statTexttop.Parent = RobloxGuii.PlayerListContainer
