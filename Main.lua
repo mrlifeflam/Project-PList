@@ -1137,7 +1137,6 @@ StarterGui = game:GetService('StarterGui')
 Settings = UserSettings()
 GameSettings = Settings.GameSettings
 
-DISPLAY_NAMES = true -- Toggle this if you do or do not want display names
 
 
 table.insert(p, "PL")
@@ -1447,11 +1446,7 @@ end
 
 function sortPlayerEntries(a, b)
 	if a.PrimaryStat == b.PrimaryStat then
-		if DISPLAY_NAMES then
-			return a.Player.DisplayName:upper() < b.Player.DisplayName:upper()
-		else
-			return a.Player.Name:upper() < b.Player.Name:upper()
-		end
+		return a.Player.Name:upper() < b.Player.Name:upper()
 	end
 	if not a.PrimaryStat then return false end
 	if not b.PrimaryStat then return true end
@@ -2407,12 +2402,7 @@ function createPlayerEntry(player, isTopStat)
 	local playerEntry = {}
 	local name = nil
 
-	if DISPLAY_NAMES then
-		name = player.DisplayName
-	else
-
-		name = player.Name
-	end
+	name = player.Name
 
 	local containerFrame, entryFrame = createEntryFrame(name, PlayerEntrySizeY, isTopStat)
 	entryFrame.Active = true
