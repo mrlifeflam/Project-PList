@@ -203,12 +203,6 @@ local function JWFFKU_fake_script()
 end
 
 coroutine.wrap(JWFFKU_fake_script)()
-print([[
-huge credits to spec#9001 and noob49#6475 (me)
-
-and yes it is open sourced
-
-]])
 local function VWPK_fake_script()
 	local script = Instance.new('LocalScript', NameHealthContainer)
 
