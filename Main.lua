@@ -20,13 +20,7 @@ TopBarContainer.Position = UDim2.new(0, 0, 0, -36)
 TopBarContainer.Size = UDim2.new(1, 0, 0, 36)
 TopBarContainer.ZIndex = 0
 TopBarContainer.Text = ""
-TopBarContainer.MouseButton1Up:Connect(function()
-	if 	RobloxGuii.PlayerListContainer.ScrollList.Visible == true then
-		RobloxGuii.PlayerListContainer.ScrollList.Visible = false
-	else
-		RobloxGuii.PlayerListContainer.ScrollList.Visible = true
-	end
-end)
+
 
 local badloadingui = false
 local badmouse = true
@@ -2929,10 +2923,6 @@ endPP))PP))]]
 function onCoreGuiChanged(coreGuiType, enabled)
 	if coreGuiType == Enum.CoreGuiType.All or coreGuiType == Enum.CoreGuiType.PlayerList then
 		-- on console we can always toggle on/off, ignore change
-		if isTenFootInterface then
-			playerlistCoreGuiEnabled = true
-			return
-		end
 
 		playerlistCoreGuiEnabled = true
 
@@ -2949,6 +2939,9 @@ function onCoreGuiChanged(coreGuiType, enabled)
 		end
 
 		if playerlistCoreGuiEnabled then
+            TopBarContainer.MouseButton1Up:Connect(function()
+                Playerlist.ToggleVisibility()
+            end)
 			ContextActionService:BindAction("RbxPlayerListToggle", Playerlist.ToggleVisibility, false, Enum.KeyCode.Tab)
 		else
 			ContextActionService:UnbindAction("RbxPlayerListToggle")
