@@ -784,20 +784,17 @@ function createPlayerDropDown()
 		if playerDropDown.Player then
 			local status = getFriendStatus(playerDropDown.Player)
 			if status == Enum.FriendStatus.Friend then
-				LocalPlayer:RevokeFriendship(playerDropDown.Player)
+				game.Players.LocalPlayer:RevokeFriendship(playerDropDown.Player)
 			elseif status == Enum.FriendStatus.Unknown or status == Enum.FriendStatus.NotFriend then
 				-- cache and spawn
 				local cachedLastSelectedPlayer = playerDropDown.Player
-				spawn(function()
-					-- check for max friends before letting them send the request
 					if cachedLastSelectedPlayer and cachedLastSelectedPlayer.Parent == PlayersService then
-						LocalPlayer:RequestFriendship(cachedLastSelectedPlayer)
+						game.Players.LocalPlayer:RequestFriendship(cachedLastSelectedPlayer)
 					end
-				end)
 			elseif status == Enum.FriendStatus.FriendRequestSent then
-				LocalPlayer:RevokeFriendship(playerDropDown.Player)
+				game.Players.LocalPlayer:RevokeFriendship(playerDropDown.Player)
 			elseif status == Enum.FriendStatus.FriendRequestReceived then
-				LocalPlayer:RequestFriendship(playerDropDown.Player)
+				game.Players.LocalPlayer:RequestFriendship(playerDropDown.Player)
 			end
 
 			playerDropDown:Hide()
@@ -840,9 +837,12 @@ function createPlayerDropDown()
 
 	local function onBlockButtonPressed()
 		if playerDropDown.Player then
-			local cachedPlayer = playerDropDown.Player
+            local cachedPlayer = playerDropDown.Player
+            game.StarterGui:SetCore("PromptBlockPlayer", cachedPlayer)
 			spawn(function()
-				BlockPlayerAsync(cachedPlayer)
+                game.CoreGui.RobloxGui.PromptDialog.ContainerFrame.ConfirmButton.MouseButton1Down:Connect(function()
+				    BlockPlayerAsync(cachedPlayer)
+                end)
 			end)
 			playerDropDown:Hide()
 		end
@@ -851,8 +851,11 @@ function createPlayerDropDown()
 	local function onUnblockButtonPressed()
 		if playerDropDown.Player then
 			local cachedPlayer = playerDropDown.Player
+            game.StarterGui:SetCore("PromptUnblockPlayer", cachedPlayer)
 			spawn(function()
-				UnblockPlayerAsync(cachedPlayer)
+                game.CoreGui.RobloxGui.PromptDialog.ContainerFrame.ConfirmButton.MouseButton1Down:Connect(function()
+				    UnblockPlayerAsync(cachedPlayer)
+                end)
 			end)
 			playerDropDown:Hide()
 		end
