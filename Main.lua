@@ -1657,7 +1657,7 @@ function createStatText(parent, text, isTopStat, isTeamStat)
 	if isTenFootInterface then
 		statText.ZIndex = 2
 	end
-	if tostring(parent.Parent.Name) == game.Players.LocalPlayer.DisplayName then
+	if tostring(parent.Parent.Name) == game.Players.LocalPlayer.Name then
 	local statTexttop = statText:Clone()
 	statTexttop.Name = parent.Parent.Name.." TEXT"
 	game.RunService.Heartbeat:Connect(function()
@@ -2486,7 +2486,7 @@ function createPlayerEntry(player, isTopStat)
 			PlatformLogo.ZIndex = 2
 			PlatformLogo.Parent = entryFrame
 
-			playerPlatformName = createEntryNameText("PlayerPlatformName", player.DisplayName,
+			playerPlatformName = createEntryNameText("PlayerPlatformName", player.Name,
 				UDim2.new(0.01, currentXOffset + PlatformLogo.Size.X.Offset + 6, 0.12, 0),
 				UDim2.new(-0.01, playerNameXSize, 1, 0),
 				Enum.FontSize.Size24)
