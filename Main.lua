@@ -348,6 +348,7 @@ mouseh.Position = UDim2.new(0, 0, 1, 0)
 mouseh.Size = UDim2.new(0, 64, 0, 64)
 mouseh.Visible = true
 mouseh.ZIndex = 99
+mouseh.Active = false
 mouseh.Image = 'rbxasset://textures/ArrowFarCursor.png'
 uis.MouseIconEnabled = true
 uis.OverrideMouseIconBehavior = Enum.OverrideMouseIconBehavior.ForceShow
@@ -372,7 +373,7 @@ for _,v in pairs(game:GetDescendants()) do
         v.ZIndex = 0
         end
         end)]]
-        if v.BackgroundTransparency < 1 then
+        if v.BackgroundTransparency < 1 and v.Active == true and v.Name ~= "MouseH" then
         v.MouseEnter:Connect(function()
             wait()
             mouseh.Image = "rbxassetid://7028337377"
@@ -407,7 +408,7 @@ game.DescendantAdded:Connect(function(v)
         v.ZIndex = 0
         end
         end)]]
-        if v.BackgroundTransparency < 1 then
+        if v.BackgroundTransparency < 1 and v.Active == true and v.Name ~= "MouseH" then
         v.MouseEnter:Connect(function()
             wait()
             mouseh.Image = "rbxassetid://7028337377"
