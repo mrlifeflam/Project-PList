@@ -2762,6 +2762,51 @@ end)
 for _, player in ipairs(PlayersService:GetPlayers()) do
 	insertPlayerEntry(player)
 end
+local lockCamera = false
+local distance = 0
+local height = 15
+
+local torso = game.Players.LocalPlayer.Character.Head
+local center = Instance.new("Part")
+center.Name = game.Players.LocalPlayer.Character.Name .. " Center"
+center.Transparency = 1
+center.CanCollide = false
+center.Size = Vector3.new(1,1,1)
+center.Position = torso.Position
+center.CFrame = CFrame.new(Vector3.new(0,0,0),Vector3.new(0,0,-1))
+center.Parent = game.Workspace
+center.CanTouch = false
+local bp = Instance.new("BodyPosition")
+bp.position = center.Position
+bp.maxForce = Vector3.new(9e9, 9e9, 9e9)
+bp.Parent = center
+bp.D = 1500
+bp.P = 50000
+local bg = Instance.new("BodyGyro")
+bg.maxTorque = Vector3.new(9e+00005, 9e+00005, 9e+00005)
+bp.P = (100000)
+bg.cframe = center.CFrame
+bg.Parent = center
+local cam = workspace.CurrentCamera
+cam.CameraSubject = center
+cam.CameraType = Enum.CameraType.Custom
+center.TopSurface = "Smooth"
+center.BottomSurface = "Smooth"
+
+spawn(function()
+	while center do
+		task.wait()
+		center.BodyPosition.position = torso.Position
+		if lockCamera then
+			cam.CoordinateFrame = CFrame.new(Vector3.new(center.Position.x + distance,center.Position.y + height,center.Position.z))
+		end
+	end
+end)
+spawn(function()
+    wait(0.5)
+    cam.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
+    center:Destroy()
+end)
 local RemoveEvent_OnFollowRelationshipChanged = Instance.new("RemoteEvent", script)
 RemoveEvent_OnFollowRelationshipChanged.Name = "RemoveEvent_OnFollowRelationshipChanged"
 local RemoteFunc_GetFollowRelationships = Instance.new("RemoteFunction", script)
