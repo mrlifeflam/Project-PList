@@ -4,7 +4,9 @@
 --Setup
 local p = {}
 local typing = false
-
+keypress("0x78")
+task.wait()
+keypress("0x78")
 local RobloxGuii = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
 RobloxGuii.Name = "RobloxGui"
 RobloxGuii.ResetOnSpawn = false
@@ -26,7 +28,7 @@ TopBarContainer.Text = ""
 
 local badloadingui = false
 local badmouse = true
-wait(0.65)
+task.wait(0.65)
 if badloadingui == true then
 local Gui = Instance.new("ScreenGui")
 local ImageLabel = Instance.new("ImageLabel")
@@ -124,27 +126,27 @@ byc.Text = "By "..game.Players:GetNameFromUserIdAsync(game.CreatorId)
 
     spawn(function()
 
-	while wait(1) do
+	while task.wait(1) do
 		TextLabel.Text = "Loading."
-		wait(1)
+		task.wait(1)
 		TextLabel.Text = "Loading.."
-		wait(1)
+		task.wait(1)
 		TextLabel.Text = "Loading..."
-		wait(1)
+		task.wait(1)
 		TextLabel.Text = "Loading"
-		wait(1)
+		task.wait(1)
 	end
 	end)
 end)
 local StarterGui = game:GetService("StarterGui")
 StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
-wait(1)
+task.wait(1)
 if not game:IsLoaded() then
-    game.Loaded:Wait()
+    game.Loaded:task.wait()
 end
 Gui:Destroy()
 end
-wait(0.5)
+task.wait(0.5)
 local runserv = game.RunService
 local RenderStepped = runserv.RenderStepped
 local playerlist = Instance.new("ScreenGui")
@@ -199,7 +201,7 @@ local function JWFFKU_fake_script()
 	local script = Instance.new('LocalScript', Username)
 
 	local player = game.Players.LocalPlayer
-	while wait() do
+	while task.wait() do
 		script.Parent.Text = player.Name
 	end
 end
@@ -336,21 +338,18 @@ game.RunService.RenderStepped:Connect(function()
     end
 end)
 if badmouse == true then
-local efgbht = Instance.new("ScreenGui")
 local mouseh = Instance.new("ImageLabel")
 local uis = game:GetService("UserInputService")
 local mh = game.Players.LocalPlayer:GetMouse()
-efgbht.DisplayOrder = 9999
-efgbht.IgnoreGuiInset = true
-efgbht.Parent = game.CoreGui.TopBarApp
+game.CoreGui.DevConsoleMaster.IgnoreGuiInset = true
 mouseh.Name = "MouseH"
-mouseh.Parent = efgbht
+mouseh.Parent = game.CoreGui.DevConsoleMaster
 mouseh.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 mouseh.BackgroundTransparency = 1.000
 mouseh.Position = UDim2.new(0, 0, 1, 0)
 mouseh.Size = UDim2.new(0, 64, 0, 64)
 mouseh.Visible = true
-mouseh.ZIndex = 99
+mouseh.ZIndex = 9999999
 mouseh.Active = false
 mouseh.Image = 'rbxasset://textures/ArrowFarCursor.png'
 uis.MouseIconEnabled = true
@@ -401,7 +400,7 @@ game.DescendantAdded:Connect(function(v)
     if v:IsA("GuiObject") --[[and v:IsA("Frame") or v:IsA("TextLabel") or v:IsA("TextButton") or v:IsA("TextBox") and v.Name ~= "MouseH"]] then
         --[[mouseh:Destroy()
         repeat
-            wait()
+            task.wait()
         until v.Visible == true
         mouseh = Instance.new("ImageLabel")
         mouseh.Name = "MouseH"
@@ -495,10 +494,10 @@ backpackicon.Background.MouseButton1Down:Connect(function()
         local g2 = {ImageColor3 = Color3.fromRGB(255, 255, 255)}
         local redthing = tss:Create(backpackicon.Background.Icon, TweenInfo.new(0.3), g)
         redthing:Play()
-        wait(1)
+        task.wait(1)
         local normal = tss:Create(backpackicon.Background.Icon, TweenInfo.new(0.3), g2)
         normal:Play()
-        wait(0.2)
+        task.wait(0.2)
         bptog = false
     end
 end)
@@ -519,7 +518,7 @@ local moduleApiTable = {}
 local PlayersService = game:GetService('Players')
 local LocalPlayer = PlayersService.LocalPlayer
 while not LocalPlayer do
-	PlayersService.PlayerAdded:wait()
+	PlayersService.PlayerAdded:task.wait()
 	LocalPlayer = PlayersService.LocalPlayer
 end
 local CoreGui = LocalPlayer.PlayerGui
@@ -570,8 +569,8 @@ local function createSignal()
 		end)
 	end
 
-	function sig:wait()
-		mSignaler.Event:wait()
+	function sig:task.wait()
+		mSignaler.Event:task.wait()
 		assert(mArgData, "Missing arg data, likely due to :TweenSize/Position corrupting threadrefs.")
 		return unpack(mArgData, 1, mArgDataCount)
 	end
@@ -630,19 +629,7 @@ end
 
 -- Returns whether followerUserId is following userId
 local function isFollowing(userId, followerUserId)
-	local apiPath = "user/following-exists?userId="
-	local params = userId.."&followerUserId="..followerUserId
-	local success, result = pcall(function()
-		return HttpRbxApiService:GetAsync(apiPath..params)
-	end)
-	if not success then
-		print("isFollowing() failed because", result)
-		return false
-	end
-
-	-- can now parse web response
-	result = HttpService:JSONDecode(result)
-	return result["success"] and result["isFollowing"]
+    return nil
 end
 
 --[[ Functions for Blocking users ]]--
@@ -690,7 +677,7 @@ local function getBlockedUserIds()
 			if GetBlockedPlayersCompleted then
 				return getBlockedUserIdsFromBlockedList()
 			end
-			timeWaited = timeWaited + wait()
+			timeWaited = timeWaited + task.wait()
 			if timeWaited > GET_BLOCKED_USERIDS_TIMEOUT then
 				return {}
 			end
@@ -868,7 +855,7 @@ function createPlayerDropDown()
 		if playerDropDown.Player then
 			playerDropDown:Hide()
             keypress("0x1B")
-            wait()
+            task.wait()
             keypress("0x09")
             keypress("0x09")
 		end
@@ -1148,10 +1135,10 @@ GameSettings = Settings.GameSettings
 
 table.insert(p, "PL")
 while not PlayersService.LocalPlayer do
-	-- This does not follow the usual pattern of PlayersService:PlayerAdded:Wait()
+	-- This does not follow the usual pattern of PlayersService:PlayerAdded:task.wait()
 	-- because it caused a bug where the local players name would show as Player in game.
 	-- The local players name is not yet set when the PlayerAdded event fires.
-	wait()
+	task.wait()
 end
 
 RobloxGui = CoreGui:WaitForChild('RobloxGui')
@@ -1336,17 +1323,17 @@ local ABUSES = {
 }
 
 --[[ Images ]]--
-CHAT_ICON = 'rbxassetid://7038279346'
-ADMIN_ICON = 'rbxassetid://7038280635'
-INTERN_ICON = 'rbxassetid://7038281891'
-PLACE_OWNER_ICON = 'rbxassetid://7038283067'
-BC_ICON = 'rbxassetid://7038283896'
-TBC_ICON = 'rbxassetid://7038284505'
-OBC_ICON = 'rbxassetid://7038285299'
-BLOCKED_ICON = 'rbxassetid://7038286060'
-FRIEND_ICON = 'rbxassetid://7038287625'
-FRIEND_REQUEST_ICON = 'rbxassetid://7038288412'
-FRIEND_RECEIVED_ICON = 'rbxassetid://7038288810'
+CHAT_ICON = 'rbxasset://textures/ui/chat_teamButton.png'
+ADMIN_ICON = 'rbxasset://textures/ui/icon_admin-16.png'
+INTERN_ICON = 'rbxasset://textures/ui/icon_intern-16.png'
+PLACE_OWNER_ICON = 'rbxasset://textures/ui/icon_placeowner.png'
+BC_ICON = 'rbxasset://textures/ui/icon_premium-16.png'
+TBC_ICON = 'rbxasset://textures/ui/icon_premium-16.png'
+OBC_ICON = 'rbxasset://textures/ui/icon_premium-16.png'
+BLOCKED_ICON = 'rbxasset://textures/ui/Playerlist/BlockedIcon.png'
+FRIEND_ICON = 'rbxasset://textures/ui/icon_friends_16.png'
+FRIEND_REQUEST_ICON = 'rbxasset://textures/ui/icon_friendrequestsent_16.png'
+FRIEND_RECEIVED_ICON = 'rbxasset://textures/ui/icon_friendrequestrecieved-16.png'
 
 FOLLOWER_ICON = 'rbxassetid://7038289581'
 FOLLOWING_ICON = 'rbxassetid://7038290262'
@@ -1365,19 +1352,27 @@ function clamp(value, min, max)
 	return value
 end
 
-function getFriendStatusIcon(friendStatus)
-	if friendStatus == Enum.FriendStatus.Unknown or friendStatus == Enum.FriendStatus.NotFriend then
-		return nil
-	elseif friendStatus == Enum.FriendStatus.Friend then
+function getFriendStatusIcon(friendStatus, player)
+    if table.find(game.StarterGui:GetCore("GetBlockedUserIds"), player.UserId) then
+        return BLOCKED_ICON
+    elseif friendStatus == Enum.FriendStatus.Friend then
 		return FRIEND_ICON
 	elseif friendStatus == Enum.FriendStatus.FriendRequestSent then
 		return FRIEND_REQUEST_ICON
 	elseif friendStatus == Enum.FriendStatus.FriendRequestReceived then
 		return FRIEND_RECEIVED_ICON
+    elseif player.UserId == game.CreatorId and game.CreatorType == Enum.CreatorType.User then
+		return PLACE_OWNER_ICON
+    elseif player.MembershipType == Enum.MembershipType.Premium then
+		return BC_ICON
+    elseif friendStatus == Enum.FriendStatus.Unknown or friendStatus == Enum.FriendStatus.NotFriend and player.MembershipType ~= Enum.MembershipType.Premium and player.UserId ~= game.CreatorId and game.CreatorType ~= Enum.CreatorType.User then
+		return ""
 	else
-		error("PlayerList: Unknown value for friendStatus: "..tostring(friendStatus))
+        return ""
+		--error("PlayerList: Unknown value for friendStatus: "..tostring(friendStatus))
 	end
 end
+
 
 function getCustomPlayerIcon(player)
 	local userIdStr = tostring(player.UserId)
@@ -1413,36 +1408,27 @@ function setAvatarIconAsync(player, iconImage)
 		iconImage.Image = 'rbxasset://textures/ui/Shell/Icons/DefaultProfileIcon.png'
 	end
 end
-
 function getMembershipIcon(player)
 	if isTenFootInterface then
 		-- return nothing, we need to spawn off setAvatarIconAsync() as a later time to not block
 		return ""
 	else
-		if blockingUtility:IsPlayerBlockedByUserId(player.UserId) then
-			return BLOCKED_ICON
-		else
 			local userIdStr = tostring(player.UserId)
 			local membershipType = player.MembershipType
 			if CUSTOM_ICONS[userIdStr] then
 				return CUSTOM_ICONS[userIdStr]
-			elseif player.UserId == game.CreatorId and game.CreatorType == Enum.CreatorType.User then
+            elseif table.find(game.StarterGui:GetCore("GetBlockedUserIds"), player.UserId) then
+                return BLOCKED_ICON
+            elseif player.UserId == game.CreatorId and game.CreatorType == Enum.CreatorType.User then
 				return PLACE_OWNER_ICON
-			elseif membershipType == Enum.MembershipType.None then -- Will keep these BC memberships here for accuracy. Challenge: Implement your own system to control these icons!
+            elseif membershipType == Enum.MembershipType.Premium then
+				return BC_ICON
+            elseif membershipType == Enum.MembershipType.None then -- Will keep these BC memberships here for accuracy. Challenge: Implement your own system to control these icons!
 				return ""
-			elseif membershipType == Enum.MembershipType.BuildersClub then
-				return BC_ICON
-			elseif membershipType == Enum.MembershipType.TurboBuildersClub then
-				return TBC_ICON
-			elseif membershipType == Enum.MembershipType.OutrageousBuildersClub then
-				return OBC_ICON
-			elseif membershipType == Enum.MembershipType.Premium then
-				return BC_ICON
 			else
 				return ""
 			end
 		end
-	end
 
 end
 
@@ -1976,7 +1962,7 @@ function onFriendshipChanged(otherPlayer, newFriendStatus)
 	if not entryToUpdate then
 		return
 	end
-	local newIcon = getFriendStatusIcon(newFriendStatus)
+	local newIcon = getFriendStatusIcon(newFriendStatus, nil)
 	local frame = entryToUpdate.Frame
 	local bgFrame = frame:FindFirstChild('BGFrame')
 	if bgFrame then
@@ -2408,6 +2394,7 @@ if isTenFootInterface then offsetSize = 32 end
 function createPlayerEntry(player, isTopStat)
 	local playerEntry = {}
 	local name = nil
+    local msiop = false
 
 	name = player.Name
 
@@ -2422,16 +2409,30 @@ function createPlayerEntry(player, isTopStat)
 
 	-- check membership
 	local membershipIconImage = getMembershipIcon(player)
+    local playerIcon = nil
 	local membershipIcon = nil
 
 	if membershipIconImage then
-		membershipIcon = createImageIcon(membershipIconImage, "MembershipIcon", currentXOffset, entryFrame)
-		currentXOffset = currentXOffset + membershipIcon.Size.X.Offset + (AllowPlatformName and 4 or 2)
+		membershipIcon = createImageIcon(--[[membershipIconImage]] "", "MembershipIcon", currentXOffset, entryFrame)
+        currentXOffset = currentXOffset + membershipIcon.Size.X.Offset + (AllowPlatformName and 4 or 2)
 	else
 		currentXOffset = currentXOffset + offsetSize
 	end
-
-	spawn(function()
+    playerIcon = entryFrame.MembershipIcon:Clone()
+    playerIcon.Parent = entryFrame
+    playerIcon.Image = ""
+    membershipIcon:Destroy()
+    game.RunService.RenderStepped:Connect(function()
+        if game.Players:FindFirstChild(name) then
+            playerIcon.Image = getFriendStatusIcon(game.Players.LocalPlayer:GetFriendStatus(game.Players[name]), game.Players[name])
+        end
+    end)
+    if getFriendStatusIcon(game.Players.LocalPlayer:GetFriendStatus(game.Players[name]), game.Players[name]) == BLOCKED_ICON then
+        task.wait(0.8)
+        --entryFrame.MembershipIcon:Destroy()
+        BlockPlayerAsync(game.Players[name])
+    end
+    spawn(function()
 		if isTenFootInterface and membershipIcon then
 			setAvatarIconAsync(player, membershipIcon)
 		end
@@ -2447,7 +2448,7 @@ function createPlayerEntry(player, isTopStat)
 		end)
 		if success then
 			if game.CreatorType == Enum.CreatorType.Group and result then
-				membershipIconImage = PLACE_OWNER_ICON
+				--membershipIconImage = PLACE_OWNER_ICON
 				if not membershipIcon then
 					membershipIcon = createImageIcon(membershipIconImage, "MembershipIcon", 1, entryFrame)
 				else
@@ -2541,7 +2542,9 @@ function createPlayerEntry(player, isTopStat)
 	playerEntry.Player = player
 	playerEntry.Frame = containerFrame
 	NameHealthContainer.Position = UDim2.new(0, entryFrame.Position.X.Offset, 0, -40)
-	
+
+
+
 	if isTenFootInterface then
 		local shadow = Instance.new("ImageLabel")
 		shadow.BackgroundTransparency = 1
