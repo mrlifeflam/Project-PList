@@ -1525,7 +1525,7 @@ ScrollList.BackgroundTransparency = 1
 ScrollList.BackgroundColor3 = Color3.new()
 ScrollList.BorderSizePixel = 0
 ScrollList.CanvasSize = UDim2.new(0, 0, 0, 0)	-- NOTE: Look into if x needs to be set to anything
-ScrollList.ScrollBarThickness = 6
+ScrollList.ScrollBarThickness = 0
 ScrollList.BottomImage = 'rbxasset://textures/ui/scroll-bottom.png'
 ScrollList.MidImage = 'rbxasset://textures/ui/scroll-middle.png'
 ScrollList.TopImage = 'rbxasset://textures/ui/scroll-top.png'
@@ -2762,9 +2762,9 @@ end)
 for _, player in ipairs(PlayersService:GetPlayers()) do
 	insertPlayerEntry(player)
 end
-local lockCamera = false
+local lockCamera = true
 local distance = 0
-local height = 15
+local height = 0
 
 local torso = game.Players.LocalPlayer.Character.Head
 local center = Instance.new("Part")
@@ -2773,7 +2773,7 @@ center.Transparency = 1
 center.CanCollide = false
 center.Size = Vector3.new(1,1,1)
 center.Position = torso.Position
-center.CFrame = CFrame.new(Vector3.new(0,0,0),Vector3.new(0,0,-1))
+center.CFrame = CFrame.new(Vector3.new(0,0,0),Vector3.new(0,0,-2))
 center.Parent = game.Workspace
 center.CanTouch = false
 local bp = Instance.new("BodyPosition")
@@ -2792,21 +2792,10 @@ cam.CameraSubject = center
 cam.CameraType = Enum.CameraType.Custom
 center.TopSurface = "Smooth"
 center.BottomSurface = "Smooth"
-
-spawn(function()
-	while center do
-		task.wait()
-		center.BodyPosition.position = torso.Position
-		if lockCamera then
-			cam.CoordinateFrame = CFrame.new(Vector3.new(center.Position.x + distance,center.Position.y + height,center.Position.z))
-		end
-	end
-end)
-spawn(function()
-    wait(0.5)
-    cam.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
-    center:Destroy()
-end)
+center.BodyPosition.position = torso.Position + Vector3.new(0, 0, 0)
+wait(0.3)
+cam.CameraSubject = game.Players.LocalPlayer.Character.Head
+center:Destroy()
 local RemoveEvent_OnFollowRelationshipChanged = Instance.new("RemoteEvent", script)
 RemoveEvent_OnFollowRelationshipChanged.Name = "RemoveEvent_OnFollowRelationshipChanged"
 local RemoteFunc_GetFollowRelationships = Instance.new("RemoteFunction", script)
