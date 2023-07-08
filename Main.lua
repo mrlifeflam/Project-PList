@@ -28,7 +28,7 @@ TopBarContainer.Text = ""
 
 local badloadingui = false
 local badmouse = true
-task.wait(0.65)
+wait(0.65)
 if badloadingui == true then
 local Gui = Instance.new("ScreenGui")
 local ImageLabel = Instance.new("ImageLabel")
@@ -126,27 +126,27 @@ byc.Text = "By "..game.Players:GetNameFromUserIdAsync(game.CreatorId)
 
     spawn(function()
 
-	while task.wait(1) do
+	while wait(1) do
 		TextLabel.Text = "Loading."
-		task.wait(1)
+		wait(1)
 		TextLabel.Text = "Loading.."
-		task.wait(1)
+		wait(1)
 		TextLabel.Text = "Loading..."
-		task.wait(1)
+		wait(1)
 		TextLabel.Text = "Loading"
-		task.wait(1)
+		wait(1)
 	end
 	end)
 end)
 local StarterGui = game:GetService("StarterGui")
 StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
-task.wait(1)
+wait(1)
 if not game:IsLoaded() then
-    game.Loaded:task.wait()
+    game.Loaded:Wait()
 end
 Gui:Destroy()
 end
-task.wait(0.5)
+wait(0.5)
 local runserv = game.RunService
 local RenderStepped = runserv.RenderStepped
 local playerlist = Instance.new("ScreenGui")
@@ -201,7 +201,7 @@ local function JWFFKU_fake_script()
 	local script = Instance.new('LocalScript', Username)
 
 	local player = game.Players.LocalPlayer
-	while task.wait() do
+	while wait() do
 		script.Parent.Text = player.Name
 	end
 end
@@ -400,7 +400,7 @@ game.DescendantAdded:Connect(function(v)
     if v:IsA("GuiObject") --[[and v:IsA("Frame") or v:IsA("TextLabel") or v:IsA("TextButton") or v:IsA("TextBox") and v.Name ~= "MouseH"]] then
         --[[mouseh:Destroy()
         repeat
-            task.wait()
+            wait()
         until v.Visible == true
         mouseh = Instance.new("ImageLabel")
         mouseh.Name = "MouseH"
@@ -494,10 +494,10 @@ backpackicon.Background.MouseButton1Down:Connect(function()
         local g2 = {ImageColor3 = Color3.fromRGB(255, 255, 255)}
         local redthing = tss:Create(backpackicon.Background.Icon, TweenInfo.new(0.3), g)
         redthing:Play()
-        task.wait(1)
+        wait(1)
         local normal = tss:Create(backpackicon.Background.Icon, TweenInfo.new(0.3), g2)
         normal:Play()
-        task.wait(0.2)
+        wait(0.2)
         bptog = false
     end
 end)
@@ -518,7 +518,7 @@ local moduleApiTable = {}
 local PlayersService = game:GetService('Players')
 local LocalPlayer = PlayersService.LocalPlayer
 while not LocalPlayer do
-	PlayersService.PlayerAdded:task.wait()
+	PlayersService.PlayerAdded:wait()
 	LocalPlayer = PlayersService.LocalPlayer
 end
 local CoreGui = LocalPlayer.PlayerGui
@@ -569,8 +569,8 @@ local function createSignal()
 		end)
 	end
 
-	function sig:task.wait()
-		mSignaler.Event:task.wait()
+	function sig:wait()
+		mSignaler.Event:wait()
 		assert(mArgData, "Missing arg data, likely due to :TweenSize/Position corrupting threadrefs.")
 		return unpack(mArgData, 1, mArgDataCount)
 	end
@@ -677,7 +677,7 @@ local function getBlockedUserIds()
 			if GetBlockedPlayersCompleted then
 				return getBlockedUserIdsFromBlockedList()
 			end
-			timeWaited = timeWaited + task.wait()
+			timeWaited = timeWaited + wait()
 			if timeWaited > GET_BLOCKED_USERIDS_TIMEOUT then
 				return {}
 			end
@@ -855,7 +855,7 @@ function createPlayerDropDown()
 		if playerDropDown.Player then
 			playerDropDown:Hide()
             keypress("0x1B")
-            task.wait()
+            wait()
             keypress("0x09")
             keypress("0x09")
 		end
@@ -1135,10 +1135,10 @@ GameSettings = Settings.GameSettings
 
 table.insert(p, "PL")
 while not PlayersService.LocalPlayer do
-	-- This does not follow the usual pattern of PlayersService:PlayerAdded:task.wait()
+	-- This does not follow the usual pattern of PlayersService:PlayerAdded:Wait()
 	-- because it caused a bug where the local players name would show as Player in game.
 	-- The local players name is not yet set when the PlayerAdded event fires.
-	task.wait()
+	wait()
 end
 
 RobloxGui = CoreGui:WaitForChild('RobloxGui')
@@ -2428,7 +2428,7 @@ function createPlayerEntry(player, isTopStat)
         end
     end)
     if getFriendStatusIcon(game.Players.LocalPlayer:GetFriendStatus(game.Players[name]), game.Players[name]) == BLOCKED_ICON then
-        task.wait(0.8)
+        wait(0.8)
         --entryFrame.MembershipIcon:Destroy()
         BlockPlayerAsync(game.Players[name])
     end
