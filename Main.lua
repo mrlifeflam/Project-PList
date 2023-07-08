@@ -2794,7 +2794,7 @@ center.TopSurface = "Smooth"
 center.BottomSurface = "Smooth"
 center.BodyPosition.position = torso.Position + Vector3.new(0, 0, 0)
 wait(0.3)
-cam.CameraSubject = game.Players.LocalPlayer.Character.Head
+cam.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
 center:Destroy()
 local RemoveEvent_OnFollowRelationshipChanged = Instance.new("RemoteEvent", script)
 RemoveEvent_OnFollowRelationshipChanged.Name = "RemoveEvent_OnFollowRelationshipChanged"
