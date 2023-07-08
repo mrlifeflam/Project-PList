@@ -4,9 +4,9 @@
 --Setup
 local p = {}
 local typing = false
-keypress("0x78")
+keypress(0x78)
 task.wait()
-keypress("0x78")
+keypress(0x78)
 local RobloxGuii = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
 RobloxGuii.Name = "RobloxGui"
 RobloxGuii.ResetOnSpawn = false
@@ -854,10 +854,10 @@ function createPlayerDropDown()
 	local function onReportButtonPressed()
 		if playerDropDown.Player then
 			playerDropDown:Hide()
-            keypress("0x1B")
+            keypress(0x1B)
             wait()
-            keypress("0x09")
-            keypress("0x09")
+            keypress(0x09)
+            keypress(0x09)
 		end
 	end
 
