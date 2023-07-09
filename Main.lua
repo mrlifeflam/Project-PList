@@ -5,7 +5,7 @@
 local p = {}
 local typing = false
 keypress(0x78)
-task.wait()
+task.wait(0.00001)
 keypress(0x78)
 local RobloxGuii = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
 RobloxGuii.Name = "RobloxGui"
