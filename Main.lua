@@ -4451,7 +4451,7 @@ function switch(name, path, default)
         Selection1.Visible = false
         Selection1.TextTransparency = 1
     end
-    local one1 = false
+    local one1 = default
     RightButton1.MouseButton1Down:Connect(function()
     if one1 == false then
         Selection2:TweenPosition(UDim2.new(0.25, 0, 0, 0), "Out", "Sine", 0.2)
