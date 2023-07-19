@@ -1,6 +1,9 @@
 -- Project PList By Colastee
 -- Made possible by using Roblox Corescripts
-
+if isfolder("PLIST_Assets") == true then
+    delfolder("PLIST_Assets")
+end
+task.wait(0.0001)
 --Setup
 function releasefocus()
     for _,v in pairs(game:GetDescendants()) do
@@ -9,6 +12,7 @@ function releasefocus()
         end
     end
 end
+
 -- LEAVEGAMEPAGE START
 keypress(0x1B);releasefocus()
 wait()
@@ -16,29 +20,27 @@ keypress(0x4C);releasefocus()
 keypress(0x1B);releasefocus()
 keypress(0x1B);releasefocus()
 -- LEAVEGAMEPAGE END
-releasefocus()
-wait()
+task.wait(0.0001)
 --START MENU
 keypress(0x1B);releasefocus() -- ESC
 wait()
 keypress(0x09) -- TAB
 keypress(0x09)
 keypress(0x09)
-wait()
+task.wait(0.0001)
 keypress(0x1B);releasefocus() -- ESC
-releasefocus()
+--releasefocus()
 --END MENU
-wait()
+task.wait(0.0001)
 --START CURSOR SUPPORT
 keypress(0x78);releasefocus() -- F9
-wait()
+task.wait(0.0001)
 keypress(0x78);releasefocus() -- F9
-releasefocus()
 --END CURSOR SUPPORT
 local menucontainer = game.CoreGui.RobloxGui.SettingsShield.SettingsShield.MenuContainer
 local pageviewinnerframe = menucontainer.PageViewClipper.PageView.PageViewInnerFrame
 local settingstab = pageviewinnerframe.Page
-game.RunService.Heartbeat:Connect(function()
+game.RunService.RenderStepped:Connect(function()
     if settingstab.Visible == true then
         menucontainer.PageViewClipper.PageView.CanvasPosition = Vector2.new(0, 0)
         menucontainer.PageViewClipper.PageView.CanvasSize = UDim2.new(0, 0, 0, 0)
@@ -121,129 +123,17 @@ TopBarContainer.Position = UDim2.new(0, 0, 0, -36)
 TopBarContainer.Size = UDim2.new(1, 0, 0, 36)
 TopBarContainer.ZIndex = 0
 TopBarContainer.Text = ""
-
-
-local badloadingui = false
+local nameFORLOGO = "LOGOOO"..math.random(1, 5)
+print(nameFORLOGO)
+makefolder("PLIST_Assets")
+writefile("PLIST_Assets\\Loaded.mp3", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/Loaded.mp3"))
+writefile("PLIST_Assets\\uuhhh.mp3", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/uuhhh.mp3"))
+writefile("PLIST_Assets\\"..nameFORLOGO..".png", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/PLIST.png"))
 local badmouse = true
-wait(0.65)
-if badloadingui == true then
-local Gui = Instance.new("ScreenGui")
-local ImageLabel = Instance.new("ImageLabel")
-local ImageLabel_2 = Instance.new("ImageLabel")
-local title = Instance.new("TextLabel")
-local byc = Instance.new("TextLabel")
-local server = Instance.new("TextLabel")
-local TextLabel = Instance.new("TextLabel")
-if game.CoreGui:FindFirstChild("RobloxLoadingGui") ~= nil then
-local LoadingGui = game.CoreGui:FindFirstChild("RobloxLoadingGui")
-LoadingGui.Enabled = false
-LoadingGui:Destroy()
-end
-Gui.Name = "Africking2016UIREPLICA"
-Gui.Parent = game:WaitForChild("CoreGui")
-Gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-Gui.Enabled = true
-
-ImageLabel.Parent = Gui
-ImageLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-ImageLabel.Position = UDim2.new(0, 0, -0.0965189859, 0)
-ImageLabel.Size = UDim2.new(1, 0, 1, 90)
-ImageLabel.Image = "rbxasset://textures/loading/darkLoadingTexture.png"
-ImageLabel.ScaleType = Enum.ScaleType.Tile
-ImageLabel.SliceScale = 0.000
-ImageLabel.TileSize = UDim2.new(0.300000012, 0, 0.300000012, 0)
-
-ImageLabel_2.Parent = ImageLabel
-ImageLabel_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-ImageLabel_2.BackgroundTransparency = 1.000
-ImageLabel_2.BorderSizePixel = 0
-ImageLabel_2.Position = UDim2.new(0.861751139, 0, 0.787970304, 0)
-ImageLabel_2.Size = UDim2.new(0, 100, 0, 100)
-ImageLabel_2.Image = "rbxasset://textures/loading/loadingCircle.png"
-ImageLabel_2.ScaleType = Enum.ScaleType.Tile
-ImageLabel_2.SliceScale = 100.000
-
-title.Name = "title"
-title.Parent = ImageLabel
-title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-title.BackgroundTransparency = 1.000
-title.Position = UDim2.new(0.0129032256, 0, 0.787803769, 0)
-title.Size = UDim2.new(0, 334, 0, 50)
-title.Font = Enum.Font.SourceSans
-title.Text = "Grabbing Game Name"
-title.TextColor3 = Color3.fromRGB(255, 255, 255)
-title.TextScaled = true
-title.TextSize = 20.000
-title.TextWrapped = true
-title.TextXAlignment = Enum.TextXAlignment.Left
-
-byc.Name = "byc"
-byc.Parent = ImageLabel
-byc.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-byc.BackgroundTransparency = 1.000
-byc.Position = UDim2.new(0.0129032256, 0, 0.86691767, 0)
-byc.Size = UDim2.new(0, 90, 0, 39)
-byc.Font = Enum.Font.SourceSans
-byc.Text = "Getting username..."
-byc.TextColor3 = Color3.fromRGB(255, 255, 255)
-byc.TextSize = 20.000
-byc.TextWrapped = false
-byc.TextXAlignment = Enum.TextXAlignment.Left
-
-server.Name = "server"
-server.Parent = ImageLabel
-server.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-server.BackgroundTransparency = 1.000
-server.Position = UDim2.new(0.44389534, 0, 0.867244601, 0)
-server.Size = UDim2.new(0, 150, 0, 39)
-server.Font = Enum.Font.SourceSansBold
-server.Text = "Loading server"
-server.TextColor3 = Color3.fromRGB(255, 255, 255)
-server.TextSize = 14.000
-server.TextWrapped = true
-
-TextLabel.Parent = ImageLabel
-TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TextLabel.BackgroundTransparency = 1.000
-TextLabel.Position = UDim2.new(0.876301765, 0, 0.834405065, 0)
-TextLabel.Size = UDim2.new(0, 60, 0, 26)
-TextLabel.Font = Enum.Font.SourceSansSemibold
-TextLabel.Text = "Loading."
-TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-TextLabel.TextSize = 14.000
-spawn(function()
-	game.RunService.RenderStepped:Connect(function()
-		ImageLabel_2.Rotation = ImageLabel_2.Rotation + 6
-	end)
-end)
-spawn(function()
-title.Text = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
-byc.TextScaled = false
-byc.Text = "By "..game.Players:GetNameFromUserIdAsync(game.CreatorId)
-
-    spawn(function()
-
-	while wait(1) do
-		TextLabel.Text = "Loading."
-		wait(1)
-		TextLabel.Text = "Loading.."
-		wait(1)
-		TextLabel.Text = "Loading..."
-		wait(1)
-		TextLabel.Text = "Loading"
-		wait(1)
-	end
-	end)
-end)
-local StarterGui = game:GetService("StarterGui")
-StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
-wait(1)
+game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
 if not game:IsLoaded() then
     game.Loaded:Wait()
 end
-Gui:Destroy()
-end
-wait(0.5)
 local runserv = game.RunService
 local RenderStepped = runserv.RenderStepped
 local playerlist = Instance.new("ScreenGui")
@@ -3151,17 +3041,6 @@ game.RunService.RenderStepped:Connect(function()
     end
 end)
 _G.Name = "PLIST Config"
-if isfolder("PLIST_Assets") == true then
-    delfolder("PLIST_Assets")
-end
-if isfolder("rbxasset://PLIST_Assets") == true then
-    delfolder("rbxasset://PLIST_Assets")
-end
-makefolder("PLIST_Assets")
-writefile("PLIST_Assets\\Loaded.mp3", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/Loaded.mp3"))
-writefile("PLIST_Assets\\uuhhh.mp3", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/uuhhh.mp3"))
-writefile("PLIST_Assets\\Logo.png", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/PLIST.png"))
-wait(1)
 local export = getcustomasset
 local itemholder = game.CoreGui.RobloxGui.SettingsShield.SettingsShield.MenuContainer.HubBar.HubBarContainer
 local pageview = game.CoreGui.RobloxGui.SettingsShield.SettingsShield.MenuContainer.PageViewClipper.PageView.PageViewInnerFrame
@@ -3183,13 +3062,21 @@ Layout.VerticalAlignment = "Top"
 Layout.HorizontalAlignment = "Center"
 Layout.FillDirection = "Vertical"
 newtabText.Text = _G.Name
-newtabIcon.Image = export("PLIST_Assets\\Logo.png")
-game.RunService.Heartbeat:Connect(function()
-        for _,v in pairs(game:GetDescendants()) do
-            if v:IsA("Sound") and v.SoundId == "rbxasset://sounds/uuhhh.mp3" then
-                v.SoundId = export("PLIST_Assets\\uuhhh.mp3")
-            end
-        end
+newtabIcon.Image = export("PLIST_Assets\\"..nameFORLOGO..".png")
+function replaceuuhhhspecific(s)
+    s.SoundId = export("PLIST_Assets\\uuhhh.mp3")
+end
+game.DescendantAdded:Connect(function(sound)
+    if sound:IsA("Sound") and sound.SoundId == "rbxasset://sounds/uuhhh.mp3" then
+        replaceuuhhhspecific(sound)
+    end
+end)
+for _,v in pairs(game:GetDescendants()) do
+    if v:IsA("Sound") and v.SoundId == "rbxasset://sounds/uuhhh.mp3" then
+        replaceuuhhhspecific(v)
+    end
+end
+game.RunService.RenderStepped:Connect(function()
         if pageview:FindFirstChild("Help") then
             for _, v in pairs(pageview.Help:GetChildren()) do
                 if v.Name ~= "CustomTab" and v:IsA("Frame") or v:IsA("ScrollingFrame") then
@@ -4546,7 +4433,7 @@ print(i)
 end
 ]]--) --name, code
 --slider("Speed", "game.Players.LocalPlayer.Character.Humanoid.WalkSpeed", 2, 8) --name, path, default, multiplier
-switch("Shift to Lock", "game.Players.LocalPlayer.PLIST_Config.shiftreplicaENABLED.Value", true, false) --name, path, default
+switch("Shift Lock Switch", "game.Players.LocalPlayer.PLIST_Config.shiftreplicaENABLED.Value", true, false) --name, path, default
 local s = Instance.new("Sound", workspace)
 s.SoundId = export("PLIST_Assets\\Loaded.mp3")
 s:Play()
