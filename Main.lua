@@ -98,7 +98,11 @@ pageviewinnerframe.Players.ImageButton:Destroy()
 pageviewinnerframe.LeaveGamePage.LeaveGameText.Text = "Are you sure you want to leave the game?"
 local p = {}
 local typing = false
-local shiftreplicaENABLED = true
+local config = Instance.new("Folder", game.Players.LocalPlayer)
+config.Name = "PLIST_Config"
+local shiftreplicaENABLED = Instance.new("BoolValue", config)
+shiftreplicaENABLED.Value = true
+shiftreplicaENABLED.Name = "shiftreplicaENABLED"
 local RobloxGuii = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
 RobloxGuii.Name = "RobloxGui"
 RobloxGuii.ResetOnSpawn = false
@@ -2896,12 +2900,12 @@ function disablerightmouse(bool)
 end
 local shiftreplica = false
 uis.InputBegan:Connect(function(key, chat)
-    if key.KeyCode == Enum.KeyCode.LeftShift and not chat and not shiftreplica and shiftreplicaENABLED then
+    if key.KeyCode == Enum.KeyCode.LeftShift and not chat and not shiftreplica and shiftreplicaENABLED.Value then
         disablerightmouse(true)
         game.Players.LocalPlayer.Character.Humanoid.AutoRotate = false
         shiftreplica = true
         game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(2.8, 0.6, 0)
-        elseif key.KeyCode == Enum.KeyCode.LeftShift and not chat and shiftreplica and shiftreplicaENABLED then
+        elseif key.KeyCode == Enum.KeyCode.LeftShift and not chat and shiftreplica and shiftreplicaENABLED.Value then
         disablerightmouse(false)
         game.Players.LocalPlayer.Character.Humanoid.AutoRotate = true
         shiftreplica = false
@@ -3149,7 +3153,7 @@ end
 makefolder("Assets")
 writefile("Assets\\Loaded.mp3", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/Loaded.mp3"))
 writefile("Assets\\uuhhh.mp3", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/uuhhh.mp3"))
-writefile("Assets\\PLIST.png", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/PL_LOGO.png"))
+writefile("Assets\\PLIST.png", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/PLIST.png"))
 Frame.Visible = false
 Frame.Name = "CustomTab"
 Frame.Parent = pageview
@@ -4283,7 +4287,7 @@ end)
 end
 
 
-function switch(name, path, default, instancee)
+function switch(name, path, default)
     local SwitchFrame = Instance.new("ImageButton")
     local SwitchLabel = Instance.new("TextLabel")
     local Selector = Instance.new("ImageButton")
@@ -4375,7 +4379,7 @@ function switch(name, path, default, instancee)
     RightButton1.Selectable = false
     RightButton1.Size = UDim2.new(0, 50, 0, 50)
     RightButton1.ZIndex = 3
-
+    print(path)
     RightButton_3.Name = "RightButton"
     RightButton_3.Parent = RightButton1
     RightButton_3.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -4442,21 +4446,10 @@ function switch(name, path, default, instancee)
         Selection2.TextTransparency = 0.5
     end)
     
-    if default == true and instancee then
+    if default == true then
         loadstring(path.." = true")()
-    elseif default == false and instancee then
+    elseif default == false then
         loadstring(path.." = false")()
-        Selection2.Visible = true
-        Selection2.Position = UDim2.new(0.1, 0, 0, 0)
-        Selection2.TextTransparency = 0.5
-        Selection1.Position = UDim2.new(0.5, 0, 0, 0)
-        Selection1.Visible = false
-        Selection1.TextTransparency = 1
-    end
-    if default == true and not instancee then
-        path = true
-    elseif default == false and not instancee then
-        path = false
         Selection2.Visible = true
         Selection2.Position = UDim2.new(0.1, 0, 0, 0)
         Selection2.TextTransparency = 0.5
@@ -4480,7 +4473,6 @@ function switch(name, path, default, instancee)
     wait(0.1)
     Selection1.Visible = true
     one1 = true
-
     else
     Selection1:TweenPosition(UDim2.new(0.5, 0, 0, 0), "Out", "Sine", 0.2)
     local Tween = game:GetService("TweenService"):Create(Selection1,TweenInfo.new(0.1),{TextTransparency=1})
@@ -4498,36 +4490,33 @@ function switch(name, path, default, instancee)
     end
     end)
     
-    local one2 = false
     LeftButton1.MouseButton1Down:Connect(function()
-    if one2 == false then
+    if one1 == true then
     Selection1:TweenPosition(UDim2.new(-0.5, 0, 0, 0), "Out", "Sine", 0.2)
     local Tween = game:GetService("TweenService"):Create(Selection1,TweenInfo.new(0.1),{TextTransparency=1})
     Tween:Play()
     wait(0.1)
     Selection1.Visible = false
     Selection2.Position = UDim2.new(0.5, 0, 0, 0)
-    loadstring(path.." = false")()
     local Tween = game:GetService("TweenService"):Create(Selection2,TweenInfo.new(0.1),{TextTransparency=0})
     Tween:Play()
     Selection2:TweenPosition(UDim2.new(0.1, 0, 0, 0), "Out", "Sine", 0.2)
     wait(0.1)
     Selection2.Visible = true
-    one2 = true
+    one1 = false
     else
             Selection2:TweenPosition(UDim2.new(-0.25, 0, 0, 0), "Out", "Sine", 0.2)
     local Tween = game:GetService("TweenService"):Create(Selection2,TweenInfo.new(0.1),{TextTransparency=1})
     Tween:Play()
     wait(0.1)
     Selection2.Visible = false
-        Selection1.Position = UDim2.new(-0.5, 0, 0, 0)
-    loadstring(path.." = true")()
+    Selection1.Position = UDim2.new(-0.5, 0, 0, 0)
     local Tween = game:GetService("TweenService"):Create(Selection1,TweenInfo.new(0.1),{TextTransparency=0})
     Tween:Play()
     Selection1:TweenPosition(UDim2.new(0.1, 0, 0, 0), "Out", "Sine", 0.2)
     wait(0.1)
     Selection1.Visible = true
-    one2 = false
+    one1 = true
     end
     end)
 end
@@ -4539,11 +4528,11 @@ print(i)
 end
 ]]--) --name, code
 --slider("Speed", "game.Players.LocalPlayer.Character.Humanoid.WalkSpeed", 2, 8) --name, path, default, multiplier
-switch("Shift to Lock", shiftreplicaENABLED, true, false) --name, path, default, instance
+switch("Shift to Lock", "game.Players.LocalPlayer.PLIST_Config.shiftreplicaENABLED.Value", true, false) --name, path, default
 local s = Instance.new("Sound", workspace)
 s.SoundId = export("Assets\\Loaded.mp3")
 s:Play()
-game.CoreGui:SetCore("SendNotification", {
+game.StarterGui:SetCore("SendNotification", {
 	Title = "PLIST";
 	Text = "Loaded PLIST";
 	Duration = 5;
