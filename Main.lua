@@ -21,9 +21,9 @@ wait()
 --START MENU
 keypress(0x1B);releasefocus() -- ESC
 wait()
-keypress(0x09);releasefocus() -- TAB
-keypress(0x09);releasefocus()
-keypress(0x09);releasefocus()
+keypress(0x09) -- TAB
+keypress(0x09)
+keypress(0x09)
 wait()
 keypress(0x1B);releasefocus() -- ESC
 releasefocus()
@@ -38,7 +38,7 @@ releasefocus()
 local menucontainer = game.CoreGui.RobloxGui.SettingsShield.SettingsShield.MenuContainer
 local pageviewinnerframe = menucontainer.PageViewClipper.PageView.PageViewInnerFrame
 local settingstab = pageviewinnerframe.Page
-game.RunService.RenderStepped:Connect(function()
+game.RunService.Heartbeat:Connect(function()
     if settingstab.Visible == true then
         menucontainer.PageViewClipper.PageView.CanvasPosition = Vector2.new(0, 0)
         menucontainer.PageViewClipper.PageView.CanvasSize = UDim2.new(0, 0, 0, 0)
@@ -2899,6 +2899,13 @@ uis.InputBegan:Connect(function(key, chat)
         shiftreplica = true
         game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(2.8, 0.6, 0)
         elseif key.KeyCode == Enum.KeyCode.LeftShift and not chat and shiftreplica and shiftreplicaENABLED.Value then
+        disablerightmouse(false)
+        game.Players.LocalPlayer.Character.Humanoid.AutoRotate = true
+        shiftreplica = false
+        uis.MouseBehavior = Enum.MouseBehavior.Default
+        game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(0, 0, 0)
+    end
+    if shiftreplicaENABLED.Value == false then
         disablerightmouse(false)
         game.Players.LocalPlayer.Character.Humanoid.AutoRotate = true
         shiftreplica = false
