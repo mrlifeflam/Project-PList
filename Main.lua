@@ -9,13 +9,6 @@ function releasefocus()
         end
     end
 end
-function releasefocus()
-    for _,v in pairs(game:GetDescendants()) do
-        if v:IsA("TextBox") then
-            v:ReleaseFocus()
-        end
-    end
-end
 -- LEAVEGAMEPAGE START
 keypress(0x1B);releasefocus()
 wait()
@@ -3135,7 +3128,18 @@ game.RunService.RenderStepped:Connect(function()
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.p) * CFrame.Angles(0, y, 0)
     end
 end)
-_G.Name = "PLIST CONFIG"
+_G.Name = "PLIST Config"
+if isfolder("PLIST_Assets") == true then
+    delfolder("PLIST_Assets")
+end
+if isfolder("rbxasset://PLIST_Assets") == true then
+    delfolder("rbxasset://PLIST_Assets")
+end
+makefolder("PLIST_Assets")
+writefile("PLIST_Assets\\Loaded.mp3", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/Loaded.mp3"))
+writefile("PLIST_Assets\\uuhhh.mp3", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/uuhhh.mp3"))
+writefile("PLIST_Assets\\Logo.png", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/PLIST.png"))
+wait(1)
 local export = getcustomasset
 local itemholder = game.CoreGui.RobloxGui.SettingsShield.SettingsShield.MenuContainer.HubBar.HubBarContainer
 local pageview = game.CoreGui.RobloxGui.SettingsShield.SettingsShield.MenuContainer.PageViewClipper.PageView.PageViewInnerFrame
@@ -3144,16 +3148,6 @@ local newtabText = newTab.Icon.Title
 local newtabIcon = newTab.Icon
 local Frame = Instance.new("Frame")
 local Layout = Instance.new("UIListLayout")
-if isfolder("Assets") == true then
-    delfolder("Assets")
-end
-if isfolder("rbxasset://Assets") == true then
-    delfolder("rbxasset://Assets")
-end
-makefolder("Assets")
-writefile("Assets\\Loaded.mp3", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/Loaded.mp3"))
-writefile("Assets\\uuhhh.mp3", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/uuhhh.mp3"))
-writefile("Assets\\PLIST.png", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/PLIST.png"))
 Frame.Visible = false
 Frame.Name = "CustomTab"
 Frame.Parent = pageview
@@ -3167,11 +3161,11 @@ Layout.VerticalAlignment = "Top"
 Layout.HorizontalAlignment = "Center"
 Layout.FillDirection = "Vertical"
 newtabText.Text = _G.Name
-newtabIcon.Image = export("Assets\\PLIST.png")
+newtabIcon.Image = export("PLIST_Assets\\Logo.png")
 game.RunService.Heartbeat:Connect(function()
         for _,v in pairs(game:GetDescendants()) do
             if v:IsA("Sound") and v.SoundId == "rbxasset://sounds/uuhhh.mp3" then
-                v.SoundId = export("Assets\\uuhhh.mp3")
+                v.SoundId = export("PLIST_Assets\\uuhhh.mp3")
             end
         end
         if pageview:FindFirstChild("Help") then
@@ -4379,7 +4373,7 @@ function switch(name, path, default)
     RightButton1.Selectable = false
     RightButton1.Size = UDim2.new(0, 50, 0, 50)
     RightButton1.ZIndex = 3
-    print(path)
+
     RightButton_3.Name = "RightButton"
     RightButton_3.Parent = RightButton1
     RightButton_3.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -4532,7 +4526,7 @@ end
 --slider("Speed", "game.Players.LocalPlayer.Character.Humanoid.WalkSpeed", 2, 8) --name, path, default, multiplier
 switch("Shift to Lock", "game.Players.LocalPlayer.PLIST_Config.shiftreplicaENABLED.Value", true, false) --name, path, default
 local s = Instance.new("Sound", workspace)
-s.SoundId = export("Assets\\Loaded.mp3")
+s.SoundId = export("PLIST_Assets\\Loaded.mp3")
 s:Play()
 game.StarterGui:SetCore("SendNotification", {
 	Title = "PLIST";
