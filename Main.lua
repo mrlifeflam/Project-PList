@@ -834,7 +834,7 @@ function createPlayerDropDown()
 				-- cache and spawn
 				local cachedLastSelectedPlayer = playerDropDown.Player
 					if cachedLastSelectedPlayer and cachedLastSelectedPlayer.Parent == PlayersService then
-				        game.StarterGui:SetCore("PromptSendFriendRequest", cachedPlayer)
+				        game.StarterGui:SetCore("PromptSendFriendRequest", cachedLastSelectedPlayer)
                         spawn(function()
                             game.CoreGui.RobloxGui.PromptDialog.ContainerFrame.ConfirmButton.MouseButton1Down:Connect(function()
                                 game.Players.LocalPlayer:RequestFriendship(cachedLastSelectedPlayer)
