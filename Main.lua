@@ -868,7 +868,12 @@ function createPlayerDropDown()
 
 	local function onDeclineFriendButonPressed()
 		if playerDropDown.Player then
-			LocalPlayer:RevokeFriendship(playerDropDown.Player)
+			game.StarterGui:SetCore("PromptUnfriend", playerDropDown.Player)
+            spawn(function()
+                game.CoreGui.RobloxGui.PromptDialog.ContainerFrame.ConfirmButton.MouseButton1Down:Connect(function()
+				    game.Players.LocalPlayer:RevokeFriendship(playerDropDown.Player)
+                end)
+            end)
 			playerDropDown:Hide()
 		end
 	end
