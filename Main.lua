@@ -829,8 +829,13 @@ function createPlayerDropDown()
 		if playerDropDown.Player then
 			local status = getFriendStatus(playerDropDown.Player)
 			if status == Enum.FriendStatus.Friend then
-				game.Players.LocalPlayer:RevokeFriendship(playerDropDown.Player)
-			elseif status == Enum.FriendStatus.Unknown or status == Enum.FriendStatus.NotFriend then
+                game.StarterGui:SetCore("PromptUnfriend", playerDropDown.Player)
+                spawn(function()
+                    game.CoreGui.RobloxGui.PromptDialog.ContainerFrame.ConfirmButton.MouseButton1Down:Connect(function()
+				        game.Players.LocalPlayer:RevokeFriendship(playerDropDown.Player)
+                    end)
+                end)
+            elseif status == Enum.FriendStatus.Unknown or status == Enum.FriendStatus.NotFriend then
 				-- cache and spawn
 				local cachedLastSelectedPlayer = playerDropDown.Player
 					if cachedLastSelectedPlayer and cachedLastSelectedPlayer.Parent == PlayersService then
