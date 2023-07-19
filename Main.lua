@@ -9,28 +9,39 @@ function releasefocus()
         end
     end
 end
-
+function releasefocus()
+    for _,v in pairs(game:GetDescendants()) do
+        if v:IsA("TextBox") then
+            v:ReleaseFocus()
+        end
+    end
+end
+-- LEAVEGAMEPAGE START
+keypress(0x1B);releasefocus()
+wait()
+keypress(0x4C);releasefocus()
+keypress(0x1B);releasefocus()
+keypress(0x1B);releasefocus()
+-- LEAVEGAMEPAGE END
 releasefocus()
 wait()
-releasefocus()
-keypress(0x1B)
+--START MENU
+keypress(0x1B);releasefocus() -- ESC
 wait()
-releasefocus()
-keypress(0x09)
-releasefocus()
-keypress(0x09)
-releasefocus()
-keypress(0x09)
-releasefocus()
+keypress(0x09);releasefocus() -- TAB
+keypress(0x09);releasefocus()
+keypress(0x09);releasefocus()
 wait()
-keypress(0x1B)
+keypress(0x1B);releasefocus() -- ESC
 releasefocus()
+--END MENU
 wait()
-keypress(0x78)
-releasefocus()
+--START CURSOR SUPPORT
+keypress(0x78);releasefocus() -- F9
 wait()
-keypress(0x78)
+keypress(0x78);releasefocus() -- F9
 releasefocus()
+--END CURSOR SUPPORT
 local menucontainer = game.CoreGui.RobloxGui.SettingsShield.SettingsShield.MenuContainer
 local pageviewinnerframe = menucontainer.PageViewClipper.PageView.PageViewInnerFrame
 local settingstab = pageviewinnerframe.Page
@@ -38,6 +49,17 @@ game.RunService.RenderStepped:Connect(function()
     if settingstab.Visible == true then
         menucontainer.PageViewClipper.PageView.CanvasPosition = Vector2.new(0, 0)
         menucontainer.PageViewClipper.PageView.CanvasSize = UDim2.new(0, 0, 0, 0)
+    end
+    for _,v in pageviewinnerframe.Players:GetChildren() do
+        if v.Name:find("PlayerLabel") and v.RightSideButtons:FindFirstChild("Inspect") and v.RightSideButtons:FindFirstChild("BlockButton") and v.RightSideButtons:FindFirstChild("ReportPlayer")  and v.RightSideButtons:FindFirstChild("FriendStatus") then
+            v.RightSideButtons.Inspect:Destroy()
+            v.RightSideButtons.BlockButton:Destroy()
+            v.RightSideButtons.ReportPlayer:Destroy()
+            v.RightSideButtons.FriendStatus.Size = UDim2.new(0, 200, 0, 46)
+        end
+        if v.Name:find(game.Players.LocalPlayer.Name) and v.RightSideButtons:FindFirstChild("Inspect") then
+            v.RightSideButtons.Inspect:Destroy()
+        end
     end
 end)
 settingstab["Graphics QualityFrame"].Slider.RightButton.Size = UDim2.new(0, 50, 0, 50)
@@ -73,6 +95,7 @@ settingstab["Micro ProfilerFrame"]:Destroy()
 settingstab["Camera InvertedFrame"]:Destroy()
 settingstab["Experience LanguageFrame"]:Destroy()
 pageviewinnerframe.Players.ImageButton:Destroy()
+pageviewinnerframe.LeaveGamePage.LeaveGameText.Text = "Are you sure you want to leave the game?"
 local p = {}
 local typing = false
 local RobloxGuii = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
