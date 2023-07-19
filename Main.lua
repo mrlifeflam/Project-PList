@@ -4283,7 +4283,7 @@ end)
 end
 
 
-function switch(name, path, default, instance)
+function switch(name, path, default, instancee)
     local SwitchFrame = Instance.new("ImageButton")
     local SwitchLabel = Instance.new("TextLabel")
     local Selector = Instance.new("ImageButton")
@@ -4442,9 +4442,9 @@ function switch(name, path, default, instance)
         Selection2.TextTransparency = 0.5
     end)
     
-    if default == true and instance then
+    if default == true and instancee then
         loadstring(path.." = true")()
-    elseif default == false and instance then
+    elseif default == false and instancee then
         loadstring(path.." = false")()
         Selection2.Visible = true
         Selection2.Position = UDim2.new(0.1, 0, 0, 0)
@@ -4453,9 +4453,9 @@ function switch(name, path, default, instance)
         Selection1.Visible = false
         Selection1.TextTransparency = 1
     end
-     if default == true and not instance then
+    if default == true and not instancee then
         path = true
-    elseif default == false and not instance then
+    elseif default == false and not instancee then
         path = false
         Selection2.Visible = true
         Selection2.Position = UDim2.new(0.1, 0, 0, 0)
