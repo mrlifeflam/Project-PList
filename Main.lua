@@ -2,11 +2,66 @@
 -- Made possible by using Roblox Corescripts
 
 --Setup
+for _,v in pairs(game:GetDescendants()) do
+    if v:IsA("TextBox") then
+        v:ReleaseFocus()
+    end
+end
+wait()
+keypress(0x1B)
+wait()
+keypress(0x09)
+keypress(0x09)
+keypress(0x09)
+wait()
+keypress(0x1B)
+wait()
+keypress(0x78)
+wait()
+keypress(0x78)
+local menucontainer = game.CoreGui.RobloxGui.SettingsShield.SettingsShield.MenuContainer
+local pageviewinnerframe = menucontainer.PageViewClipper.PageView.PageViewInnerFrame
+local settingstab = pageviewinnerframe.Page
+game.RunService.RenderStepped:Connect(function()
+    if settingstab.Visible == true then
+        menucontainer.PageViewClipper.PageView.CanvasPosition = Vector2.new(0, 0)
+        menucontainer.PageViewClipper.PageView.CanvasSize = UDim2.new(0, 0, 0, 0)
+    end
+end)
+settingstab["Graphics QualityFrame"].Slider.RightButton.Size = UDim2.new(0, 50, 0, 50)
+settingstab["Graphics QualityFrame"].Slider.LeftButton.Size = UDim2.new(0, 50, 0, 50)
+settingstab["Graphics QualityFrame"].Slider.RightButton.RightButton.Size = UDim2.new(0, 18, 0, 30)
+settingstab["Graphics QualityFrame"].Slider.LeftButton.LeftButton.Size = UDim2.new(0, 18, 0, 30)
+settingstab["Graphics QualityFrame"].Slider.RightButton.RightButton.Image = "rbxasset://textures/ui/Settings/Slider/Right.png"
+settingstab["Graphics QualityFrame"].Slider.LeftButton.LeftButton.Image = "rbxasset://textures/ui/Settings/Slider/Left.png"
+settingstab["VolumeFrame"].Slider.RightButton.Size = UDim2.new(0, 50, 0, 50)
+settingstab["VolumeFrame"].Slider.LeftButton.Size = UDim2.new(0, 50, 0, 50)
+settingstab["VolumeFrame"].Slider.RightButton.RightButton.Size = UDim2.new(0, 18, 0, 30)
+settingstab["VolumeFrame"].Slider.LeftButton.LeftButton.Size = UDim2.new(0, 18, 0, 30)
+settingstab["VolumeFrame"].Slider.RightButton.RightButton.Image = "rbxasset://textures/ui/Settings/Slider/Right.png"
+settingstab["VolumeFrame"].Slider.LeftButton.LeftButton.Image = "rbxasset://textures/ui/Settings/Slider/Left.png"
+settingstab["Camera SensitivityFrame"].Slider.RightButton.Size = UDim2.new(0, 50, 0, 50)
+settingstab["Camera SensitivityFrame"].Slider.LeftButton.Size = UDim2.new(0, 50, 0, 50)
+settingstab["Camera SensitivityFrame"].Slider.RightButton.RightButton.Size = UDim2.new(0, 18, 0, 30)
+settingstab["Camera SensitivityFrame"].Slider.LeftButton.LeftButton.Size = UDim2.new(0, 18, 0, 30)
+settingstab["Camera SensitivityFrame"].Slider.RightButton.RightButton.Image = "rbxasset://textures/ui/Settings/Slider/Right.png"
+settingstab["Camera SensitivityFrame"].Slider.LeftButton.LeftButton.Image = "rbxasset://textures/ui/Settings/Slider/Left.png"
+settingstab["Camera SensitivityFrame"].Slider.CameraSensitivityTextBox:Destroy()
+settingstab["Camera SensitivityFrame"].Slider.Size = UDim2.new(0.6, 0, 0, 50)
+settingstab["Camera SensitivityFrame"].Slider.Position = UDim2.new(1, 0, 0.5, 0)
+menucontainer.BottomButtonFrame.LeaveGameButtonButton.LeaveGameButtonTextLabel.Text = "Leave Game"
+menucontainer.BottomButtonFrame.ResumeButtonButton.ResumeButtonTextLabel.Text = "Resume Game"
+menucontainer.HubBar.Position = UDim2.new(0, 0, 0, 0)
+menucontainer.HubBar.Size = UDim2.new(0, 800, 0, 60)
+menucontainer.HubBar.HubBarHomeButton:Destroy()
+menucontainer.HubBar.HubBarContainer.PlayersTab.Icon.Title.Text = "Players"
+menucontainer.HubBar.HubBarContainer.Size = UDim2.new(1, 0, 1, 0)
+menucontainer.HubBar.HubBarContainer.Position = UDim2.new(0, 0, 0, 0)
+settingstab["Micro ProfilerFrame"]:Destroy()
+settingstab["Camera InvertedFrame"]:Destroy()
+settingstab["Experience LanguageFrame"]:Destroy()
 local p = {}
 local typing = false
-keypress(0x78)
-task.wait(0.00001)
-keypress(0x78)
 local RobloxGuii = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
 RobloxGuii.Name = "RobloxGui"
 RobloxGuii.ResetOnSpawn = false
