@@ -4283,7 +4283,7 @@ end)
 end
 
 
-function switch(name, path, default)
+function switch(name, path, default, instance)
     local SwitchFrame = Instance.new("ImageButton")
     local SwitchLabel = Instance.new("TextLabel")
     local Selector = Instance.new("ImageButton")
@@ -4442,10 +4442,21 @@ function switch(name, path, default)
         Selection2.TextTransparency = 0.5
     end)
     
-    if default == true then
+    if default == true and instance then
         loadstring(path.." = true")()
-    elseif default == false then
+    elseif default == false and instance then
         loadstring(path.." = false")()
+        Selection2.Visible = true
+        Selection2.Position = UDim2.new(0.1, 0, 0, 0)
+        Selection2.TextTransparency = 0.5
+        Selection1.Position = UDim2.new(0.5, 0, 0, 0)
+        Selection1.Visible = false
+        Selection1.TextTransparency = 1
+    end
+     if default == true and not instance then
+        path = true
+    elseif default == false and not instance then
+        path = false
         Selection2.Visible = true
         Selection2.Position = UDim2.new(0.1, 0, 0, 0)
         Selection2.TextTransparency = 0.5
@@ -4528,7 +4539,7 @@ print(i)
 end
 ]]--) --name, code
 --slider("Speed", "game.Players.LocalPlayer.Character.Humanoid.WalkSpeed", 2, 8) --name, path, default, multiplier
-switch("Shift to Lock", shiftreplicaENABLED, true) --name, path, default
+switch("Shift to Lock", shiftreplicaENABLED, true, false) --name, path, default, instance
 local s = Instance.new("Sound", workspace)
 s.SoundId = export("Assets\\Loaded.mp3")
 s:Play()
