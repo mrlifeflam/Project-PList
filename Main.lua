@@ -2897,16 +2897,15 @@ local shiftreplica = false
 uis.InputBegan:Connect(function(key, chat)
     if key.KeyCode == Enum.KeyCode.LeftShift and not chat and not shiftreplica then
         disablerightmouse(true)
-        
-        char.Humanoid.AutoRotate = false
+        game.Players.LocalPlayer.Character.Humanoid.AutoRotate = false
         shiftreplica = true
-        char.Humanoid.CameraOffset = Vector3.new(2.8, 0.6, 0)
+        game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(2.8, 0.6, 0)
         elseif key.KeyCode == Enum.KeyCode.LeftShift and not chat and shiftreplica then
         disablerightmouse(false)
-        char.Humanoid.AutoRotate = true
+        game.Players.LocalPlayer.Character.Humanoid.AutoRotate = true
         shiftreplica = false
         uis.MouseBehavior = Enum.MouseBehavior.Default
-        char.Humanoid.CameraOffset = Vector3.new(0, 0, 0)
+        game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(0, 0, 0)
     end
 end)
 local RemoveEvent_OnFollowRelationshipChanged = Instance.new("RemoteEvent", script)
@@ -3128,6 +3127,6 @@ game.RunService.RenderStepped:Connect(function()
     if shiftreplica then
         local x, y, z = camera.CFrame:ToOrientation()
         uis.MouseBehavior = Enum.MouseBehavior.LockCenter
-        char.HumanoidRootPart.CFrame = CFrame.new(char.HumanoidRootPart.CFrame.p) * CFrame.Angles(0, y, 0)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.p) * CFrame.Angles(0, y, 0)
     end
 end)
