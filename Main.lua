@@ -2,23 +2,35 @@
 -- Made possible by using Roblox Corescripts
 
 --Setup
-for _,v in pairs(game:GetDescendants()) do
-    if v:IsA("TextBox") then
-        v:ReleaseFocus()
+function releasefocus()
+    for _,v in pairs(game:GetDescendants()) do
+        if v:IsA("TextBox") then
+            v:ReleaseFocus()
+        end
     end
 end
+
+releasefocus()
 wait()
+releasefocus()
 keypress(0x1B)
 wait()
+releasefocus()
 keypress(0x09)
+releasefocus()
 keypress(0x09)
+releasefocus()
 keypress(0x09)
+releasefocus()
 wait()
 keypress(0x1B)
+releasefocus()
 wait()
 keypress(0x78)
+releasefocus()
 wait()
 keypress(0x78)
+releasefocus()
 local menucontainer = game.CoreGui.RobloxGui.SettingsShield.SettingsShield.MenuContainer
 local pageviewinnerframe = menucontainer.PageViewClipper.PageView.PageViewInnerFrame
 local settingstab = pageviewinnerframe.Page
@@ -60,6 +72,7 @@ menucontainer.HubBar.HubBarContainer.Position = UDim2.new(0, 0, 0, 0)
 settingstab["Micro ProfilerFrame"]:Destroy()
 settingstab["Camera InvertedFrame"]:Destroy()
 settingstab["Experience LanguageFrame"]:Destroy()
+pageviewinnerframe.Players.ImageButton:Destroy()
 local p = {}
 local typing = false
 local RobloxGuii = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
