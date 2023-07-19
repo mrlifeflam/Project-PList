@@ -89,6 +89,14 @@ settingstab["Camera InvertedFrame"]:Destroy()
 settingstab["Experience LanguageFrame"]:Destroy()
 pageviewinnerframe.Players.ImageButton:Destroy()
 pageviewinnerframe.LeaveGamePage.LeaveGameText.Text = "Are you sure you want to leave the game?"
+function firstperson()
+    game.Players.LocalPlayer.Character.Head.LocalTransparencyModifier = math.floor(game.Players.LocalPlayer.Character.Head.LocalTransparencyModifier)
+    if game.Players.LocalPlayer.Character.Head.LocalTransparencyModifier > 0.0000001 then
+        return true
+    elseif game.Players.LocalPlayer.Character.Head.LocalTransparencyModifier < 0.0000001 then
+        return false
+    end
+end
 local p = {}
 local typing = false
 local config = Instance.new("Folder", game.Players.LocalPlayer)
@@ -2911,6 +2919,13 @@ uis.InputBegan:Connect(function(key, chat)
         shiftreplica = false
         uis.MouseBehavior = Enum.MouseBehavior.Default
         game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(0, 0, 0)
+    end
+end)
+game.RunService.RenderStepped:Connect(function()
+    if firstperson() and shiftreplica == true then
+        game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(0, 0, 0)
+    elseif not firstperson() and shiftreplica == true then
+        game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(2.8, 0.6, 0)
     end
 end)
 local RemoveEvent_OnFollowRelationshipChanged = Instance.new("RemoteEvent", script)
