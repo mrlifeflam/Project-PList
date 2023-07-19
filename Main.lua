@@ -834,13 +834,28 @@ function createPlayerDropDown()
 				-- cache and spawn
 				local cachedLastSelectedPlayer = playerDropDown.Player
 					if cachedLastSelectedPlayer and cachedLastSelectedPlayer.Parent == PlayersService then
-						game.Players.LocalPlayer:RequestFriendship(cachedLastSelectedPlayer)
-					end
+				        game.StarterGui:SetCore("PromptSendFriendRequest", cachedPlayer)
+                        spawn(function()
+                            game.CoreGui.RobloxGui.PromptDialog.ContainerFrame.ConfirmButton.MouseButton1Down:Connect(function()
+                                game.Players.LocalPlayer:RequestFriendship(cachedLastSelectedPlayer)
+                            end)
+                        end)
+                    end
 			elseif status == Enum.FriendStatus.FriendRequestSent then
-				game.Players.LocalPlayer:RevokeFriendship(playerDropDown.Player)
+                game.StarterGui:SetCore("PromptUnfriend", cachedPlayer)
+                spawn(function()
+                    game.CoreGui.RobloxGui.PromptDialog.ContainerFrame.ConfirmButton.MouseButton1Down:Connect(function()
+				        game.Players.LocalPlayer:RevokeFriendship(playerDropDown.Player)
+                    end)
+                end)
 			elseif status == Enum.FriendStatus.FriendRequestReceived then
-				game.Players.LocalPlayer:RequestFriendship(playerDropDown.Player)
-			end
+				game.StarterGui:SetCore("PromptSendFriendRequest", cachedPlayer)
+                spawn(function()
+                    game.CoreGui.RobloxGui.PromptDialog.ContainerFrame.ConfirmButton.MouseButton1Down:Connect(function()
+                        game.Players.LocalPlayer:RequestFriendship(playerDropDown.Player)
+                    end)
+                end)
+    		end
 
 			playerDropDown:Hide()
 		end
