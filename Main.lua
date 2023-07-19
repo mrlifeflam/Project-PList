@@ -2817,40 +2817,37 @@ end)
 for _, player in ipairs(PlayersService:GetPlayers()) do
 	insertPlayerEntry(player)
 end
-local lockCamera = true
-local distance = 0
-local height = 0
-
-local torso = game.Players.LocalPlayer.Character.Head
-local center = Instance.new("Part")
-center.Name = game.Players.LocalPlayer.Character.Name .. " Center"
-center.Transparency = 1
-center.CanCollide = false
-center.Size = Vector3.new(1,1,1)
-center.Position = torso.Position
-center.CFrame = CFrame.new(Vector3.new(0,0,0),Vector3.new(0,0,-2))
-center.Parent = game.Workspace
-center.CanTouch = false
-local bp = Instance.new("BodyPosition")
-bp.position = center.Position
-bp.maxForce = Vector3.new(9e9, 9e9, 9e9)
-bp.Parent = center
-bp.D = 1500
-bp.P = 50000
-local bg = Instance.new("BodyGyro")
-bg.maxTorque = Vector3.new(9e+00005, 9e+00005, 9e+00005)
-bp.P = (100000)
-bg.cframe = center.CFrame
-bg.Parent = center
-local cam = workspace.CurrentCamera
-cam.CameraSubject = center
-cam.CameraType = Enum.CameraType.Custom
-center.TopSurface = "Smooth"
-center.BottomSurface = "Smooth"
-center.BodyPosition.position = torso.Position + Vector3.new(0, 0, 0)
-wait(0.3)
-cam.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
-center:Destroy()
+local uis = game:GetService("UserInputService")
+local camera = workspace.CurrentCamera
+local player = game.Players.LocalPlayer
+local char = player.Character
+local cas = game:GetService("ContextActionService")
+player.DevEnableMouseLock = false
+function disablerightmouse(bool)
+    if bool == true then
+    cas:BindActionAtPriority("RightMouseDisable", function()
+	return Enum.ContextActionResult.Sink
+    end, false, Enum.ContextActionPriority.Medium.Value, Enum.UserInputType.MouseButton2)
+    elseif bool == false then
+    cas:UnbindAction("RightMouseDisable")
+    end
+end
+local shiftreplica = false
+uis.InputBegan:Connect(function(key, chat)
+    if key.KeyCode == Enum.KeyCode.LeftShift and not chat and not shiftreplica then
+        disablerightmouse(true)
+        
+        char.Humanoid.AutoRotate = false
+        shiftreplica = true
+        char.Humanoid.CameraOffset = Vector3.new(2.8, 0.6, 0)
+        elseif key.KeyCode == Enum.KeyCode.LeftShift and not chat and shiftreplica then
+        disablerightmouse(false)
+        char.Humanoid.AutoRotate = true
+        shiftreplica = false
+        uis.MouseBehavior = Enum.MouseBehavior.Default
+        char.Humanoid.CameraOffset = Vector3.new(0, 0, 0)
+    end
+end)
 local RemoveEvent_OnFollowRelationshipChanged = Instance.new("RemoteEvent", script)
 RemoveEvent_OnFollowRelationshipChanged.Name = "RemoveEvent_OnFollowRelationshipChanged"
 local RemoteFunc_GetFollowRelationships = Instance.new("RemoteFunction", script)
@@ -3065,3 +3062,11 @@ blockingUtility:GetBlockedStatusChangedEvent():connect(blockStatusChanged)
 --print(p[1]..p[2], p[3]..p[4], p[5]..p[6], p[7]..p[8]..p[9])
 game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
 NameHealthContainer.Parent = RobloxGuii.PlayerListContainer
+
+game.RunService.RenderStepped:Connect(function()
+    if shiftreplica then
+        local x, y, z = camera.CFrame:ToOrientation()
+        uis.MouseBehavior = Enum.MouseBehavior.LockCenter
+        char.HumanoidRootPart.CFrame = CFrame.new(char.HumanoidRootPart.CFrame.p) * CFrame.Angles(0, y, 0)
+    end
+end)
