@@ -842,14 +842,14 @@ function createPlayerDropDown()
                         end)
                     end
 			elseif status == Enum.FriendStatus.FriendRequestSent then
-                game.StarterGui:SetCore("PromptUnfriend", cachedPlayer)
+                game.StarterGui:SetCore("PromptUnfriend", playerDropDown.Player)
                 spawn(function()
                     game.CoreGui.RobloxGui.PromptDialog.ContainerFrame.ConfirmButton.MouseButton1Down:Connect(function()
 				        game.Players.LocalPlayer:RevokeFriendship(playerDropDown.Player)
                     end)
                 end)
 			elseif status == Enum.FriendStatus.FriendRequestReceived then
-				game.StarterGui:SetCore("PromptSendFriendRequest", cachedPlayer)
+				game.StarterGui:SetCore("PromptSendFriendRequest", playerDropDown.Player)
                 spawn(function()
                     game.CoreGui.RobloxGui.PromptDialog.ContainerFrame.ConfirmButton.MouseButton1Down:Connect(function()
                         game.Players.LocalPlayer:RequestFriendship(playerDropDown.Player)
