@@ -4488,7 +4488,7 @@ switch("View display names", "game.Players.LocalPlayer.PLIST_Config.DisplayNames
 local s = Instance.new("Sound", workspace)
 s.SoundId = getcustomasset("PLIST_Assets\\Loaded.mp3")
 s:Play()
-s.Volume = 5
+s.Volume = 2
 game.StarterGui:SetCore("SendNotification", {
 	Title = "PLIST";
 	Text = "Loaded PLIST";
