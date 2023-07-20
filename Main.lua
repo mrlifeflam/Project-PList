@@ -63,7 +63,7 @@ game.RunService.RenderStepped:Connect(function()
                 v.DisplayNameLabel.Text = nameig.Name
             end
             v.DisplayNameLabel.Position = UDim2.new(0, 60, 0.5, -4)
-            v.DisplayNameLabel.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+            v.DisplayNameLabel.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Light, Enum.FontStyle.Normal)
             v.RightSideButtons.FriendStatus.Size = UDim2.new(0, 200, 0, 46)
         end
         if v.Name:find(game.Players.LocalPlayer.Name) and v.RightSideButtons:FindFirstChild("Inspect") and v:FindFirstChild("NameLabel") then
