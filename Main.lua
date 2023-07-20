@@ -56,10 +56,10 @@ end)
 game.RunService.RenderStepped:Connect(function()
     for _,v in pairs(pageviewinnerframe.Players:GetChildren()) do
         local target = game.Players:FindFirstChild(v.Name:gsub("PlayerLabel", ""))
-        if DisplayNames.Value and v.Name:find("PlayerLabel") and v:FindFirstChild("DisplayNameLabel") then
+        if DisplayNames.Value and v.Name:find("PlayerLabel") and v:FindFirstChild("DisplayNameLabel") and target then
             v.DisplayNameLabel.Text = target.DisplayName
         end
-        if not DisplayNames.Value and v.Name:find("PlayerLabel") and v:FindFirstChild("DisplayNameLabel") then
+        if not DisplayNames.Value and v.Name:find("PlayerLabel") and v:FindFirstChild("DisplayNameLabel") and target then
             v.DisplayNameLabel.Text = target.Name
         end
     end
