@@ -161,10 +161,10 @@ TopBarContainer.ZIndex = 0
 local nameFORLOGO = "LOGOOO"..math.random(1, 5)
 local nameFORPLAYERTAB = "PLRTABB"..math.random(1, 5)
 makefolder("PLIST_Assets")
-writefile("PLIST_Assets\\"..nameFORPLAYERTAB..".png", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/PlayersTabIcon.png"))
-writefile("PLIST_Assets\\Loaded.mp3", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/Loaded.mp3"))
-writefile("PLIST_Assets\\uuhhh.mp3", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/uuhhh.mp3"))
-writefile("PLIST_Assets\\"..nameFORLOGO..".png", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/PLIST.png"))
+writefile("PLIST_Assets\\"..nameFORPLAYERTAB..".png", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/Assets/PlayersTabIcon.png"))
+writefile("PLIST_Assets\\Loaded.mp3", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/Assets/Loaded.mp3"))
+writefile("PLIST_Assets\\uuhhh.mp3", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/Assets/uuhhh.mp3"))
+writefile("PLIST_Assets\\"..nameFORLOGO..".png", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/Assets/PLIST.png"))
 local badmouse = true
 game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
 if not game:IsLoaded() then
