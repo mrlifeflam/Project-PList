@@ -142,7 +142,6 @@ local TopBarContainer = Instance.new("Frame")
 TopBarContainer.Name = "TopBarContainer"
 TopBarContainer.Parent = RobloxGuii
 TopBarContainer.Active = false
-TopBarContainer.AutoButtonColor = false
 TopBarContainer.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
 TopBarContainer.BackgroundTransparency = 0.500
 TopBarContainer.BorderSizePixel = 0
