@@ -40,20 +40,42 @@ keypress(0x78);releasefocus() -- F9
 local menucontainer = game.CoreGui.RobloxGui.SettingsShield.SettingsShield.MenuContainer
 local pageviewinnerframe = menucontainer.PageViewClipper.PageView.PageViewInnerFrame
 local settingstab = pageviewinnerframe.Page
+local config = Instance.new("Folder", game.Players.LocalPlayer)
+config.Name = "PLIST_Config"
+local DisplayNames = Instance.new("BoolValue", config)
+DisplayNames.Name = "DisplayNames"
+DisplayNames.Value = false
 game.RunService.RenderStepped:Connect(function()
     if settingstab.Visible == true then
         menucontainer.PageViewClipper.PageView.CanvasPosition = Vector2.new(0, 0)
         menucontainer.PageViewClipper.PageView.CanvasSize = UDim2.new(0, 0, 0, 0)
     end
     for _,v in pageviewinnerframe.Players:GetChildren() do
-        if v.Name:find("PlayerLabel") and v.RightSideButtons:FindFirstChild("Inspect") and v.RightSideButtons:FindFirstChild("BlockButton") and v.RightSideButtons:FindFirstChild("ReportPlayer")  and v.RightSideButtons:FindFirstChild("FriendStatus") then
+        if v.Name:find("PlayerLabel") and v.RightSideButtons:FindFirstChild("Inspect") and v.RightSideButtons:FindFirstChild("BlockButton") and v.RightSideButtons:FindFirstChild("ReportPlayer") and v.RightSideButtons:FindFirstChild("FriendStatus") and v:FindFirstChild("NameLabel") then
             v.RightSideButtons.Inspect:Destroy()
             v.RightSideButtons.BlockButton:Destroy()
             v.RightSideButtons.ReportPlayer:Destroy()
+            v.NameLabel.Visible = false
+            local nameig = game.Players:FindFirstChild(v.Name:gsub("PlayerLabel", ""))
+            if DisplayNames.Value then
+                v.DisplayNameLabel.Text = nameig.DisplayName
+            else
+                v.DisplayNameLabel.Text = nameig.Name
+            end
+            v.DisplayNameLabel.Position = UDim2.new(0, 60, 0.5, -4)
+            v.DisplayNameLabel.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
             v.RightSideButtons.FriendStatus.Size = UDim2.new(0, 200, 0, 46)
         end
-        if v.Name:find(game.Players.LocalPlayer.Name) and v.RightSideButtons:FindFirstChild("Inspect") then
+        if v.Name:find(game.Players.LocalPlayer.Name) and v.RightSideButtons:FindFirstChild("Inspect") and v:FindFirstChild("NameLabel") then
             v.RightSideButtons.Inspect:Destroy()
+            v.NameLabel.Visible = false
+            if DisplayNames.Value then
+                v.DisplayNameLabel.Text = game.Players.LocalPlayer.DisplayName
+            else
+                v.DisplayNameLabel.Text = game.Players.LocalPlayer.Name
+            end
+            v.DisplayNameLabel.Position = UDim2.new(0, 60, 0.5, -4)
+            v.DisplayNameLabel.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Light, Enum.FontStyle.Normal)
         end
     end
 end)
@@ -86,8 +108,15 @@ menucontainer.HubBar.HubBarHomeButton:Destroy()
 menucontainer.HubBar.HubBarContainer.PlayersTab.Icon.Title.Text = "Players"
 menucontainer.HubBar.HubBarContainer.Size = UDim2.new(1, 0, 1, 0)
 menucontainer.HubBar.HubBarContainer.Position = UDim2.new(0, 0, 0, 0)
+menucontainer.HubBar.HubBarContainer.GameSettingsTab.Icon.AspectRatioConstraint.AspectRatio = 1.2
+menucontainer.HubBar.HubBarContainer.PlayersTab.Icon.AspectRatioConstraint.AspectRatio = 1.3
+menucontainer.HubBar.HubBarContainer.ReportAbuseTab.Icon.AspectRatioConstraint.AspectRatio = 1.2
+menucontainer.HubBar.HubBarContainer.GameSettingsTab.Icon.Position = UDim2.new(0, 15, 0.5, -17)
+menucontainer.HubBar.HubBarContainer.PlayersTab.Icon.Position = UDim2.new(0, 15, 0.5, -17)
+menucontainer.HubBar.HubBarContainer.ReportAbuseTab.Icon.Position = UDim2.new(0, 15, 0.5, -17)
 settingstab["Micro ProfilerFrame"]:Destroy()
 settingstab["Camera InvertedFrame"]:Destroy()
+settingstab["Performance StatsFrame"]:Destroy()
 settingstab["Experience LanguageFrame"]:Destroy()
 pageviewinnerframe.Players.ImageButton:Destroy()
 pageviewinnerframe.LeaveGamePage.LeaveGameText.Text = "Are you sure you want to leave the game?"
@@ -101,8 +130,6 @@ function firstperson()
 end
 local p = {}
 local typing = false
-local config = Instance.new("Folder", game.Players.LocalPlayer)
-config.Name = "PLIST_Config"
 local shiftreplicaENABLED = Instance.new("BoolValue", config)
 shiftreplicaENABLED.Value = true
 shiftreplicaENABLED.Name = "shiftreplicaENABLED"
@@ -111,7 +138,7 @@ RobloxGuii.Name = "RobloxGui"
 RobloxGuii.ResetOnSpawn = false
 RobloxGuii.DisplayOrder = 9999
 
-local TopBarContainer = Instance.new("TextButton")
+local TopBarContainer = Instance.new("Frame")
 TopBarContainer.Name = "TopBarContainer"
 TopBarContainer.Parent = RobloxGuii
 TopBarContainer.Active = false
@@ -122,10 +149,10 @@ TopBarContainer.BorderSizePixel = 0
 TopBarContainer.Position = UDim2.new(0, 0, 0, -36)
 TopBarContainer.Size = UDim2.new(1, 0, 0, 36)
 TopBarContainer.ZIndex = 0
-TopBarContainer.Text = ""
 local nameFORLOGO = "LOGOOO"..math.random(1, 5)
-print(nameFORLOGO)
+local nameFORPLAYERTAB = "PLRTABB"..math.random(1, 5)
 makefolder("PLIST_Assets")
+writefile("PLIST_Assets\\"..nameFORPLAYERTAB..".png", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/PlayersTabIcon.png"))
 writefile("PLIST_Assets\\Loaded.mp3", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/Loaded.mp3"))
 writefile("PLIST_Assets\\uuhhh.mp3", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/uuhhh.mp3"))
 writefile("PLIST_Assets\\"..nameFORLOGO..".png", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/PLIST.png"))
@@ -134,6 +161,7 @@ game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
 if not game:IsLoaded() then
     game.Loaded:Wait()
 end
+menucontainer.HubBar.HubBarContainer.PlayersTab.Icon.Image = getcustomasset("PLIST_Assets\\"..nameFORPLAYERTAB..".png")
 local runserv = game.RunService
 local RenderStepped = runserv.RenderStepped
 local playerlist = Instance.new("ScreenGui")
@@ -145,19 +173,20 @@ local BGFrame = Instance.new("TextButton")
 local MembershipIcon = Instance.new("ImageLabel")
 local PlayerName = Instance.new("TextLabel")
 local scriptt = Instance.new('LocalScript', PlayerListContainer)
-local NameHealthContainer = Instance.new("Frame")
+local NameHealthContainer = Instance.new("TextButton")
 local Username = Instance.new("TextLabel")
 local HealthContainer = Instance.new("Frame")
 local HealthFill = Instance.new("Frame")
 
 NameHealthContainer.Name = "NameHealthContainer"
 NameHealthContainer.BackgroundTransparency = 1
+NameHealthContainer.Text = ""
 NameHealthContainer.Size = UDim2.new(0, 170, 0, 40)
 NameHealthContainer.Active = false
 --0, 75, 0, 23
 Username.Name = "Username"
 Username.Parent = NameHealthContainer
-Username.BackgroundTransparency = 1.000
+Username.BackgroundTransparency = 1
 Username.Position = UDim2.new(0, 7, 0, 0)
 Username.Size = UDim2.new(1, -14, 0, 22)
 Username.Font = Enum.Font.SourceSansBold
@@ -172,8 +201,8 @@ HealthContainer.Name = "HealthContainer"
 HealthContainer.Parent = NameHealthContainer
 HealthContainer.BackgroundColor3 = Color3.fromRGB(228, 236, 246)
 HealthContainer.BorderSizePixel = 0
-HealthContainer.Position = UDim2.new(0, 7, 1, -9)
-HealthContainer.Size = UDim2.new(1, -14, 0, 3)
+HealthContainer.Position = UDim2.new(0, 7, 1, -11)
+HealthContainer.Size = UDim2.new(1, -14, 0, 3.5)
 HealthContainer.Active = false
 
 HealthFill.Name = "HealthFill"
@@ -189,7 +218,11 @@ local function JWFFKU_fake_script()
 
 	local player = game.Players.LocalPlayer
 	while wait() do
-		script.Parent.Text = player.Name
+        if DisplayNames.Value then
+		    script.Parent.Text = player.DisplayName
+        else
+		    script.Parent.Text = player.Name
+        end
 	end
 end
 
@@ -2407,9 +2440,15 @@ function createPlayerEntry(player, isTopStat)
 	local playerEntry = {}
 	local name = nil
     local msiop = false
-
-	name = player.Name
-
+    name = player.Name
+    game.RunService.Heartbeat:Connect(function()
+        if DisplayNames.Value then
+            name = player.DisplayName
+        else
+            name = player.Name
+        end
+    end)
+    print(name)
 	local containerFrame, entryFrame = createEntryFrame(name, PlayerEntrySizeY, isTopStat)
 	entryFrame.Active = true
 
@@ -2495,6 +2534,11 @@ function createPlayerEntry(player, isTopStat)
 				UDim2.new(0.01, currentXOffset, -0.20, 0),
 				UDim2.new(-0.01, playerNameXSize, 1, 0))
 			playerName.Parent = entryFrame
+            game.RunService.RenderStepped:Connect(function()
+                if game.Players:FindFirstChild(player.Name) then
+                    playerName.Text = name
+                end
+            end)
 
 			PlatformLogo = Instance.new('ImageButton')
 			PlatformLogo.Position = UDim2.new(0.01, currentXOffset, 0.21, 30)
@@ -2510,18 +2554,32 @@ function createPlayerEntry(player, isTopStat)
 				UDim2.new(0.01, currentXOffset + PlatformLogo.Size.X.Offset + 6, 0.12, 0),
 				UDim2.new(-0.01, playerNameXSize, 1, 0),
 				Enum.FontSize.Size24)
+            game.RunService.RenderStepped:Connect(function()
+                if game.Players:FindFirstChild(player.Name) then
+                    playerName.Text = name
+                end
+            end)
 			playerPlatformName.Parent = entryFrame
 		else
 			playerName = createEntryNameText("PlayerName", name,
 				UDim2.new(0.01, currentXOffset, 0, 0),
 				UDim2.new(-0.01, entryFrame.Size.X.Offset - currentXOffset, 1, 0))
-
+            game.RunService.RenderStepped:Connect(function()
+                if game.Players:FindFirstChild(player.Name) then
+                    playerName.Text = name
+                end
+            end)
 			playerName.Parent = entryFrame
 		end
 	else
 		playerName = createEntryNameText("PlayerName", name,
 			UDim2.new(0.01, currentXOffset, 0, 0),
 			UDim2.new(-0.01, entryFrame.Size.X.Offset - currentXOffset, 1, 0))
+        game.RunService.RenderStepped:Connect(function()
+            if game.Players:FindFirstChild(player.Name) then
+                playerName.Text = name
+            end
+        end)
 
 		playerName.Parent = entryFrame
 	end
@@ -2993,7 +3051,7 @@ function onCoreGuiChanged(coreGuiType, enabled)
 		end
 
 		if playerlistCoreGuiEnabled then
-            TopBarContainer.MouseButton1Up:Connect(function()
+            NameHealthContainer.MouseButton1Up:Connect(function()
                 Playerlist.ToggleVisibility()
             end)
 			ContextActionService:BindAction("RbxPlayerListToggle", Playerlist.ToggleVisibility, false, Enum.KeyCode.Tab)
@@ -3041,7 +3099,6 @@ game.RunService.RenderStepped:Connect(function()
     end
 end)
 _G.Name = "PLIST Config"
-local export = getcustomasset
 local itemholder = game.CoreGui.RobloxGui.SettingsShield.SettingsShield.MenuContainer.HubBar.HubBarContainer
 local pageview = game.CoreGui.RobloxGui.SettingsShield.SettingsShield.MenuContainer.PageViewClipper.PageView.PageViewInnerFrame
 local newTab = itemholder.HelpTab
@@ -3062,9 +3119,9 @@ Layout.VerticalAlignment = "Top"
 Layout.HorizontalAlignment = "Center"
 Layout.FillDirection = "Vertical"
 newtabText.Text = _G.Name
-newtabIcon.Image = export("PLIST_Assets\\"..nameFORLOGO..".png")
+newtabIcon.Image = getcustomasset("PLIST_Assets\\"..nameFORLOGO..".png")
 function replaceuuhhhspecific(s)
-    s.SoundId = export("PLIST_Assets\\uuhhh.mp3")
+    s.SoundId = getcustomasset("PLIST_Assets\\uuhhh.mp3")
 end
 game.DescendantAdded:Connect(function(sound)
     if sound:IsA("Sound") and sound.SoundId == "rbxasset://sounds/uuhhh.mp3" then
@@ -3186,13 +3243,6 @@ function slider(name, path, default, multiplier)
     Slider.ZIndex = 2
     Slider.AutoButtonColor = false
 
-    SliderFrame.MouseEnter:Connect(function()
-        SliderFrame.ImageTransparency = 0.5
-    end)
-
-    SliderFrame.MouseLeave:Connect(function()
-        SliderFrame.ImageTransparency = 1
-    end)
 
     StepsContainer.Name = "StepsContainer"
     StepsContainer.Parent = Slider
@@ -3207,7 +3257,7 @@ function slider(name, path, default, multiplier)
     Step1.AnchorPoint = Vector2.new(0, 0.5)
     Step1.BackgroundColor3 = Color3.fromRGB(0, 162, 255)
     Step1.BackgroundTransparency = 0.360
-    Step1.BorderSizePixel = 0
+    Step1.BorderSizePixel = 0.360
     Step1.Position = UDim2.new(0, 2, 0.5, 0)
     Step1.Selectable = false
     Step1.Size = UDim2.new(0.100000001, -4, 0.479999989, 0)
@@ -3341,6 +3391,33 @@ function slider(name, path, default, multiplier)
     Step10.AutoButtonColor = false
     Step10.ImageTransparency = 0.360
 
+    SliderFrame.MouseEnter:Connect(function()
+        SliderFrame.ImageTransparency = 0.5
+        Step1.BackgroundTransparency = 0
+        Step2.BackgroundTransparency = 0
+        Step3.BackgroundTransparency = 0
+        Step4.BackgroundTransparency = 0
+        Step5.BackgroundTransparency = 0
+        Step6.BackgroundTransparency = 0
+        Step7.BackgroundTransparency = 0
+        Step8.BackgroundTransparency = 0
+        Step9.BackgroundTransparency = 0
+        Step10.BackgroundTransparency = 0
+    end)
+    SliderFrame.MouseLeave:Connect(function()
+        SliderFrame.ImageTransparency = 1
+        Step1.BackgroundTransparency = 0.360
+        Step2.BackgroundTransparency = 0.360
+        Step3.BackgroundTransparency = 0.360
+        Step4.BackgroundTransparency = 0.360
+        Step5.BackgroundTransparency = 0.360
+        Step6.BackgroundTransparency = 0.360
+        Step7.BackgroundTransparency = 0.360
+        Step8.BackgroundTransparency = 0.360
+        Step9.BackgroundTransparency = 0.360
+        Step10.BackgroundTransparency = 0.360
+    end)
+
     local plrMouse = game.Players.LocalPlayer:GetMouse()
     
     local value = default
@@ -3359,9 +3436,9 @@ function slider(name, path, default, multiplier)
     LeftButton_2.AnchorPoint = Vector2.new(0.5, 0.5)
     LeftButton_2.BackgroundTransparency = 1.000
     LeftButton_2.Position = UDim2.new(0.5, 0, 0.5, 0)
-    LeftButton_2.Size = UDim2.new(0, 30, 0, 30)
+    LeftButton_2.Size = UDim2.new(0, 18, 0, 30)
     LeftButton_2.ZIndex = 4
-    LeftButton_2.Image = "rbxasset://textures/ui/Settings/Slider/Less.png"
+    LeftButton_2.Image = "rbxasset://textures/ui/Settings/Slider/Left.png"
     LeftButton_2.ImageColor3 = Color3.fromRGB(204, 204, 204)
 
     RightButton.Name = "RightButton"
@@ -3378,9 +3455,9 @@ function slider(name, path, default, multiplier)
     RightButton_2.AnchorPoint = Vector2.new(0.5, 0.5)
     RightButton_2.BackgroundTransparency = 1.000
     RightButton_2.Position = UDim2.new(0.5, 0, 0.5, 0)
-    RightButton_2.Size = UDim2.new(0, 30, 0, 30)
+    RightButton_2.Size = UDim2.new(0, 18, 0, 30)
     RightButton_2.ZIndex = 4
-    RightButton_2.Image = "rbxasset://textures/ui/Settings/Slider/More.png"
+    RightButton_2.Image = "rbxasset://textures/ui/Settings/Slider/Right.png"
     RightButton_2.ImageColor3 = Color3.fromRGB(204, 204, 204)
 
     RightButton_2.MouseEnter:Connect(function()
@@ -3438,73 +3515,38 @@ function slider(name, path, default, multiplier)
     Step1.MouseButton1Down:Connect(function()
     mousedown = true
     end)
-    Step1.MouseButton1Up:Connect(function()
-
-    mousedown = false
-    end)
     Step2.MouseButton1Down:Connect(function()
-mousedown = true
-    end)
-    Step2.MouseButton1Up:Connect(function()
-
-    mousedown = false
+    mousedown = true
     end)
     Step3.MouseButton1Down:Connect(function()
     mousedown = true
     end)
-    Step3.MouseButton1Up:Connect(function()
-
-    mousedown = false
-    end)
     Step4.MouseButton1Down:Connect(function()
     mousedown = true
-    end)
-    Step4.MouseButton1Up:Connect(function()
-
-    mousedown = false
     end)
     Step5.MouseButton1Down:Connect(function()
     mousedown = true
     end)
-    Step5.MouseButton1Up:Connect(function()
-
-    mousedown = false
-    end)
     Step6.MouseButton1Down:Connect(function()
     mousedown = true
-    end)
-    Step6.MouseButton1Up:Connect(function()
-
-    mousedown = false
     end)
     Step7.MouseButton1Down:Connect(function()
     mousedown = true
     end)
-    Step7.MouseButton1Up:Connect(function()
-
-    mousedown = false
-    end)
     Step8.MouseButton1Down:Connect(function()
     mousedown = true
     end)
-    Step8.MouseButton1Up:Connect(function()
-    mousedown = false
-    end)
     Step9.MouseButton1Down:Connect(function()
-
     mousedown = true
-    end)
-    Step9.MouseButton1Up:Connect(function()
-
-    mousedown = false
     end)
     Step10.MouseButton1Down:Connect(function()
-
     mousedown = true
     end)
-    Step10.MouseButton1Up:Connect(function()
-
-    mousedown = false
+    uis = game:GetService("UserInputService")
+    uis.InputEnded:Connect(function(input, typing)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            mousedown = false
+        end
     end)
     Step1.MouseEnter:Connect(function()
     if mousedown == true then
@@ -4432,11 +4474,13 @@ for i = 1, 10 do
 print(i)
 end
 ]]--) --name, code
---slider("Speed", "game.Players.LocalPlayer.Character.Humanoid.WalkSpeed", 2, 8) --name, path, default, multiplier
+--slider("Graphics Quality", "game.Players.LocalPlayer.Character.Humanoid.WalkSpeed", 8, 2) --name, path, default, multiplier
 switch("Shift Lock Switch", "game.Players.LocalPlayer.PLIST_Config.shiftreplicaENABLED.Value", true, false) --name, path, default
+switch("View display names", "game.Players.LocalPlayer.PLIST_Config.DisplayNames.Value", false, false) --name, path, default
 local s = Instance.new("Sound", workspace)
-s.SoundId = export("PLIST_Assets\\Loaded.mp3")
+s.SoundId = getcustomasset("PLIST_Assets\\Loaded.mp3")
 s:Play()
+s.Volume = 5
 game.StarterGui:SetCore("SendNotification", {
 	Title = "PLIST";
 	Text = "Loaded PLIST";
