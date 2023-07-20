@@ -40,40 +40,48 @@ keypress(0x78);releasefocus() -- F9
 local menucontainer = game.CoreGui.RobloxGui.SettingsShield.SettingsShield.MenuContainer
 local pageviewinnerframe = menucontainer.PageViewClipper.PageView.PageViewInnerFrame
 local settingstab = pageviewinnerframe.Page
+local reporttab = pageviewinnerframe.ReportAbusePage
 local config = Instance.new("Folder", game.Players.LocalPlayer)
 config.Name = "PLIST_Config"
 local DisplayNames = Instance.new("BoolValue", config)
 DisplayNames.Name = "DisplayNames"
 DisplayNames.Value = false
 game.RunService.RenderStepped:Connect(function()
+    --reporttab["In your own words, help us understand what went wrong.Frame"].TextBox.Text:gsub("In your own words, help us understand what went wrong.", "Short Description (Optional)")
     if settingstab.Visible == true then
         menucontainer.PageViewClipper.PageView.CanvasPosition = Vector2.new(0, 0)
         menucontainer.PageViewClipper.PageView.CanvasSize = UDim2.new(0, 0, 0, 0)
     end
-    for _,v in pageviewinnerframe.Players:GetChildren() do
-        if v.Name:find("PlayerLabel") and v.RightSideButtons:FindFirstChild("Inspect") and v.RightSideButtons:FindFirstChild("BlockButton") and v.RightSideButtons:FindFirstChild("ReportPlayer") and v.RightSideButtons:FindFirstChild("FriendStatus") and v:FindFirstChild("NameLabel") then
+end)
+game.RunService.RenderStepped:Connect(function()
+    for _,v in pairs(pageviewinnerframe.Players:GetChildren()) do
+        local target = game.Players:FindFirstChild(v.Name:gsub("PlayerLabel", ""))
+        if DisplayNames.Value and v.Name:find("PlayerLabel") and v:FindFirstChild("DisplayNameLabel") then
+            v.DisplayNameLabel.Text = target.DisplayName
+        end
+        if not DisplayNames.Value and v.Name:find("PlayerLabel") and v:FindFirstChild("DisplayNameLabel") then
+            v.DisplayNameLabel.Text = target.Name
+        end
+    end
+end)
+game.RunService.RenderStepped:Connect(function()
+    for _,v in pairs(pageviewinnerframe.Players:GetChildren()) do
+        if v.Name:find("PlayerLabel") and v.RightSideButtons:FindFirstChild("Inspect") and v.RightSideButtons:FindFirstChild("BlockButton") and v.RightSideButtons:FindFirstChild("ReportPlayer") and v.RightSideButtons:FindFirstChild("FriendStatus") then
             v.RightSideButtons.Inspect:Destroy()
             v.RightSideButtons.BlockButton:Destroy()
             v.RightSideButtons.ReportPlayer:Destroy()
             v.NameLabel.Visible = false
-            local nameig = game.Players:FindFirstChild(v.Name:gsub("PlayerLabel", ""))
-            if DisplayNames.Value then
-                v.DisplayNameLabel.Text = nameig.DisplayName
-            else
-                v.DisplayNameLabel.Text = nameig.Name
-            end
             v.DisplayNameLabel.Position = UDim2.new(0, 60, 0.5, -4)
             v.DisplayNameLabel.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Light, Enum.FontStyle.Normal)
             v.RightSideButtons.FriendStatus.Size = UDim2.new(0, 200, 0, 46)
         end
-        if v.Name:find(game.Players.LocalPlayer.Name) and v.RightSideButtons:FindFirstChild("Inspect") and v:FindFirstChild("NameLabel") then
+    end
+end)
+game.RunService.RenderStepped:Connect(function()
+    for _,v in pairs(pageviewinnerframe.Players:GetChildren()) do
+        if v.Name:find(game.Players.LocalPlayer.Name) and v.RightSideButtons:FindFirstChild("Inspect") then
             v.RightSideButtons.Inspect:Destroy()
             v.NameLabel.Visible = false
-            if DisplayNames.Value then
-                v.DisplayNameLabel.Text = game.Players.LocalPlayer.DisplayName
-            else
-                v.DisplayNameLabel.Text = game.Players.LocalPlayer.Name
-            end
             v.DisplayNameLabel.Position = UDim2.new(0, 60, 0.5, -4)
             v.DisplayNameLabel.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Light, Enum.FontStyle.Normal)
         end
@@ -114,6 +122,8 @@ menucontainer.HubBar.HubBarContainer.ReportAbuseTab.Icon.AspectRatioConstraint.A
 menucontainer.HubBar.HubBarContainer.GameSettingsTab.Icon.Position = UDim2.new(0, 15, 0.5, -17)
 menucontainer.HubBar.HubBarContainer.PlayersTab.Icon.Position = UDim2.new(0, 15, 0.5, -17)
 menucontainer.HubBar.HubBarContainer.ReportAbuseTab.Icon.Position = UDim2.new(0, 15, 0.5, -17)
+reporttab["Reason for Abuse?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextXAlignment = Enum.TextXAlignment.Center
+reporttab["Which Person?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextXAlignment = Enum.TextXAlignment.Center
 settingstab["Micro ProfilerFrame"]:Destroy()
 settingstab["Camera InvertedFrame"]:Destroy()
 settingstab["Performance StatsFrame"]:Destroy()
@@ -216,13 +226,13 @@ local function JWFFKU_fake_script()
 	local script = Instance.new('LocalScript', Username)
 
 	local player = game.Players.LocalPlayer
-	while wait() do
+	game.RunService.RenderStepped:Connect(function()
         if DisplayNames.Value then
 		    script.Parent.Text = player.DisplayName
         else
 		    script.Parent.Text = player.Name
         end
-	end
+	end)
 end
 
 coroutine.wrap(JWFFKU_fake_script)()
@@ -2440,14 +2450,13 @@ function createPlayerEntry(player, isTopStat)
 	local name = nil
     local msiop = false
     name = player.Name
-    game.RunService.Heartbeat:Connect(function()
+    game.RunService.RenderStepped:Connect(function()
         if DisplayNames.Value then
             name = player.DisplayName
         else
             name = player.Name
         end
     end)
-    print(name)
 	local containerFrame, entryFrame = createEntryFrame(name, PlayerEntrySizeY, isTopStat)
 	entryFrame.Active = true
 
