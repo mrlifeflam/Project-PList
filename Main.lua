@@ -33,9 +33,9 @@ keypress(0x1B);releasefocus() -- ESC
 --END MENU
 task.wait(0.0001)
 --START CURSOR SUPPORT
-keypress(0x78);releasefocus() -- F9
-task.wait(0.0001)
-keypress(0x78);releasefocus() -- F9
+game:GetService("StarterGui"):SetCore("DevConsoleVisible", true)
+task.wait(0.01)
+game:GetService("StarterGui"):SetCore("DevConsoleVisible", false)
 --END CURSOR SUPPORT
 local menucontainer = game.CoreGui.RobloxGui.SettingsShield.SettingsShield.MenuContainer
 local pageviewinnerframe = menucontainer.PageViewClipper.PageView.PageViewInnerFrame
