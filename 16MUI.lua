@@ -1313,6 +1313,7 @@ function createSettings()
 	NewTab("Reset", RecordT, false)
 
 	switchTabSelection(PlayersB)
+	PlayersT.Visible = true
 	
 	for i = 1, 5 do
 		HubBar[TabNames[i]].MouseButton1Click:Connect(function()
