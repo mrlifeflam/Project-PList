@@ -1698,3 +1698,4 @@ local backpackType, healthType = Enum.CoreGuiType.Backpack, Enum.CoreGuiType.Hea
 OnCoreGuiChanged(backpackType, StarterGui:GetCoreGuiEnabled(backpackType))
 OnCoreGuiChanged(healthType, StarterGui:GetCoreGuiEnabled(healthType))
 end
+return BackpackScript
