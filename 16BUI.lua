@@ -1,6 +1,6 @@
 -- Backpack Version 5.01
 
-for i = 1, 2 do
+
 game.CoreGui.RobloxGui.Backpack:Destroy()
 local BackpackScript = {}
 BackpackScript.OpenClose = nil
@@ -1697,5 +1697,4 @@ StarterGui.CoreGuiChangedSignal:connect(OnCoreGuiChanged)
 local backpackType, healthType = Enum.CoreGuiType.Backpack, Enum.CoreGuiType.Health
 OnCoreGuiChanged(backpackType, StarterGui:GetCoreGuiEnabled(backpackType))
 OnCoreGuiChanged(healthType, StarterGui:GetCoreGuiEnabled(healthType))
-end
 return BackpackScript
