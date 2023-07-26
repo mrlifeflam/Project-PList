@@ -254,14 +254,13 @@ end
 
 local function UnequipAllTools() --NOTE: HopperBin
 	if Humanoid then
-		Humanoid:UnequipTools()
+		--Humanoid:UnequipTools()
 	end
 end
 
 local function EquipNewTool(tool) --NOTE: HopperBin
 	UnequipAllTools()
-	Humanoid:EquipTool(tool) --NOTE: This would also unequip current Tool
-	tool.Parent = Character --TODO: Switch back to above line after EquipTool is fixed!
+	--Humanoid:EquipTool(tool) --NOTE: This would also unequip current Tool
 end
 
 local function IsEquipped(tool)
@@ -846,7 +845,7 @@ local function OnChildAdded(child) -- To Character or Backpack
 				-- Have to manually unequip a possibly equipped tool
 				for _, child in pairs(Character:GetChildren()) do
 					if child:IsA('Tool') and child ~= tool then
-						child.Parent = Backpack
+						--child.Parent = Backpack
 					end
 				end
 				AdjustHotbarFrames()
