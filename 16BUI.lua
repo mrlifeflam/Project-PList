@@ -942,10 +942,10 @@ end
 local function OnInputBegan(input, isProcessed)
 	-- Pass through keyboard hotkeys when not typing into a TextBox and not disabled (except for the Drop key)
 	if input.UserInputType == Enum.UserInputType.Keyboard and not TextBoxFocused and (WholeThingEnabled or input.KeyCode.Value == DROP_HOTKEY_VALUE) then
-		local hotkeyBehavior = HotkeyFns[input.KeyCode.Value]
+		--[[local hotkeyBehavior = HotkeyFns[input.KeyCode.Value]
 		if hotkeyBehavior then
 			hotkeyBehavior(isProcessed)
-		end
+		end]]
 	end
 end
 
@@ -1559,13 +1559,13 @@ do -- Search stuff
 		end
 	end)
 
-	HotkeyFns[Enum.KeyCode.Escape.Value] = function(isProcessed)
+	--[[HotkeyFns[Enum.KeyCode.Escape.Value] = function(isProcessed)
 		if isProcessed then -- Pressed from within a TextBox
 			reset()
 		elseif InventoryFrame.Visible then
 			BackpackScript.OpenClose()
 		end
-	end
+	end]]
 
 	local function detectGamepad(lastInputType)
 		if lastInputType == Enum.UserInputType.Gamepad1 and not UserInputService.VREnabled then
@@ -1659,11 +1659,11 @@ do -- Hotkey stuff
 	UserInputService.TextBoxFocusReleased:connect(function() TextBoxFocused = false end)
 
 	-- Manual unequip for HopperBins on drop button pressed
-	HotkeyFns[DROP_HOTKEY_VALUE] = function() --NOTE: HopperBin
+	--[[HotkeyFns[DROP_HOTKEY_VALUE] = function() --NOTE: HopperBin
 		if ActiveHopper then
 			UnequipAllTools()
 		end
-	end
+	end]]
 
 	-- Listen to keyboard status, for showing/hiding hotkey labels
 	UserInputService.Changed:connect(OnUISChanged)
