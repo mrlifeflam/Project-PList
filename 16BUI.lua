@@ -49,7 +49,7 @@ local SEARCH_BACKGROUND_FADE = 0.15
 
 local DOUBLE_CLICK_TIME = 0.5
 
-local ZERO_KEY_VALUE = Enum.KeyCode.Zero.Value
+--local ZERO_KEY_VALUE = Enum.KeyCode.Zero.Value
 local DROP_HOTKEY_VALUE = Enum.KeyCode.Backspace.Value
 
 local GAMEPAD_INPUT_TYPES =
@@ -604,7 +604,7 @@ local function MakeSlot(parent, index)
 			SlotNumber.Size = UDim2.new(0.15, 0, 0.15, 0)
 			SlotNumber.Visible = false
 			SlotNumber.Parent = SlotFrame
-			HotkeyFns[ZERO_KEY_VALUE + slotNum] = slot.Select
+			--HotkeyFns[ZERO_KEY_VALUE + slotNum] = slot.Select
 		end
 	else -- Inventory-Specific Slot Stuff
 
