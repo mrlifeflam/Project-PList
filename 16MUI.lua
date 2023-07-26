@@ -650,8 +650,6 @@ end
 function RemoveTab(name, whichpage)
 	if whichpage:FindFirstChild(name) then
 		whichpage[name]:Destroy()
-		else
-		print("Couldnt fetch tab or was already destroyed!")
 	end
 end
 function Button(name, code, whichpage)
@@ -811,9 +809,9 @@ function Slider(Text, Default, Minimum, Maximum, Callback)
         LeftButton_2.AnchorPoint = Vector2.new(0.5, 0.5)
         LeftButton_2.BackgroundTransparency = 1.000
         LeftButton_2.Position = UDim2.new(0.5, 0, 0.5, 0)
-        LeftButton_2.Size = UDim2.new(0, 30, 0, 30)
+        LeftButton_2.Size = UDim2.new(0, 18, 0, 30)
         LeftButton_2.ZIndex = 4
-        LeftButton_2.Image = "rbxasset://textures/ui/Settings/Slider/Less.png"
+        LeftButton_2.Image = "rbxasset://textures/ui/Settings/Slider/Left.png"
         LeftButton_2.ImageColor3 = Color3.fromRGB(204, 204, 204)
 
         RightButton.Name = "RightButton"
@@ -830,9 +828,9 @@ function Slider(Text, Default, Minimum, Maximum, Callback)
         RightButton_2.AnchorPoint = Vector2.new(0.5, 0.5)
         RightButton_2.BackgroundTransparency = 1.000
         RightButton_2.Position = UDim2.new(0.5, 0, 0.5, 0)
-        RightButton_2.Size = UDim2.new(0, 30, 0, 30)
+        RightButton_2.Size = UDim2.new(0, 18, 0, 30)
         RightButton_2.ZIndex = 4
-        RightButton_2.Image = "rbxasset://textures/ui/Settings/Slider/More.png"
+        RightButton_2.Image = "rbxasset://textures/ui/Settings/Slider/Right.png"
         RightButton_2.ImageColor3 = Color3.fromRGB(204, 204, 204)
 
         RightButton_2.MouseEnter:Connect(function()
@@ -1300,61 +1298,10 @@ local firsttime = true
 local leavePage = false
 local resetPage = false
 local noOpFunc = function() end
-function createSettings()
+function stopMovement()
 	game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.All, false)
     game:GetService("ContextActionService"):BindCoreAction("RbxSettingsHubStopCharacter", noOpFunc, false, Enum.KeyCode.LeftShift, Enum.KeyCode.RightShift, Enum.KeyCode.Tab, Enum.UserInputType.Gamepad1, Enum.UserInputType.Gamepad2, Enum.UserInputType.Gamepad3, Enum.UserInputType.Gamepad4)
     require(game.Players.LocalPlayer.PlayerScripts.PlayerModule):GetControls():Disable()
-	NewTab("Players", PlayersT, true)
-	NewTab("Settings", SettingsT, false)
-	NewTab("Report", ReportT, false)
-	NewTab("Help", HelpT, false)
-	NewTab("Record", RecordT, false)
-	NewTab("Leave", RecordT, false)
-	NewTab("Reset", RecordT, false)
-
-	switchTabSelection(PlayersB)
-	PlayersT.Visible = true
-	
-	for i = 1, 5 do
-		HubBar[TabNames[i]].MouseButton1Click:Connect(function()
-			if Open then
-				local sign = sign(Current - i)
-				local NewPage = PageView[PageNames[i]]
-				local OldPage = PageView[PageNames[Current]]
-
-				switchTabSelection(HubBar[TabNames[i]])
-
-				NewPage:TweenPosition(UDim2.new(0, 0, 0.017, 0), "Out", "Linear", 0.07)
-				OldPage:TweenPosition(UDim2.new(sign, 0, 0.017, 0), "Out", "Linear", 0.07)	
-				OldPage.Visible = false
-				NewPage.Visible = true
-
-				Current = i 
-			end
-		end)
-	end
-	
-	Switch("Shift Lock Switch", {game.Players.LocalPlayer["PLIST_Config"]["Shift Lock Switch"], "Value"}, SwitchSettings["Shift Lock Switch"].Value, SettingsT.Settings)
-	Switch("Display Names", {game.Players.LocalPlayer["PLIST_Config"]["Display Names"], "Value"}, SwitchSettings["Display Names"].Value, SettingsT.Settings)
-
-
-	for _,v in pairs(game.Players:GetChildren()) do
-		if PlayersT:FindFirstChild("Players") and not PlayersT.Players:FindFirstChild("PlayerLabel"..v.name) then
-			PlayerEntry(v.Name, PlayersT.Players, v)
-        end
-	end
-	
-	game.Players.PlayerAdded:Connect(function(p)
-        if PlayersT:FindFirstChild("Players") and not PlayersT.Players:FindFirstChild("PlayerLabel"..p.name) then
-            PlayerEntry(p.Name, PlayersT.Players, p)
-        end
-    end)
-    game.Players.PlayerRemoving:Connect(function(p)
-    	if PlayersT:FindFirstChild("Players") then
-        	RemovePlayerEntry(p.Name, PlayersT.Players)
-        end
-    end)
-    
 end
 
 function Leave()
@@ -1415,6 +1362,60 @@ function resume()
 	SettingsShield:TweenPosition(UDim2.new(0, 0, -1.1, -36), Enum.EasingDirection.In, Enum.EasingStyle.Sine, 0.4, true)
 end
 
+function createSettings()
+	NewTab("Players", PlayersT, true)
+	NewTab("Settings", SettingsT, false)
+	NewTab("Report", ReportT, false)
+	NewTab("Help", HelpT, false)
+	NewTab("Record", RecordT, false)
+	NewTab("Leave", RecordT, false)
+	NewTab("Reset", RecordT, false)
+
+	switchTabSelection(PlayersB)
+	PlayersT.Visible = true
+	
+	for _,v in pairs(game.Players:GetChildren()) do
+		if PlayersT:FindFirstChild("Players") and not PlayersT.Players:FindFirstChild("PlayerLabel"..v.name) then
+			PlayerEntry(v.Name, PlayersT.Players, v)
+        end
+	end
+
+	game.Players.PlayerAdded:Connect(function(p)
+        if PlayersT:FindFirstChild("Players") and not PlayersT.Players:FindFirstChild("PlayerLabel"..p.name) then
+            PlayerEntry(p.Name, PlayersT.Players, p)
+        end
+    end)
+    game.Players.PlayerRemoving:Connect(function(p)
+    	if PlayersT:FindFirstChild("Players") then
+        	RemovePlayerEntry(p.Name, PlayersT.Players)
+        end
+    end)
+
+	for i = 1, 5 do
+		HubBar[TabNames[i]].MouseButton1Click:Connect(function()
+			if Open then
+				local sign = sign(Current - i)
+				local NewPage = PageView[PageNames[i]]
+				local OldPage = PageView[PageNames[Current]]
+
+				switchTabSelection(HubBar[TabNames[i]])
+
+				NewPage:TweenPosition(UDim2.new(0, 0, 0.017, 0), "Out", "Linear", 0.07)
+				OldPage:TweenPosition(UDim2.new(sign, 0, 0.017, 0), "Out", "Linear", 0.07)	
+				OldPage.Visible = false
+				NewPage.Visible = true
+
+				Current = i 
+			end
+		end)
+	end
+	
+	Switch("Shift Lock Switch", {game.Players.LocalPlayer["PLIST_Config"]["Shift Lock Switch"], "Value"}, SwitchSettings["Shift Lock Switch"].Value, SettingsT.Settings)
+	Switch("Display Names", {game.Players.LocalPlayer["PLIST_Config"]["Display Names"], "Value"}, SwitchSettings["Display Names"].Value, SettingsT.Settings)
+    --Slider("mleb", settings().Rendering.QualityLevel = 1, )
+    --Slider(Text, Default, Minimum, Maximum, Callback)
+end
+
 function removeSettings()
 	RemoveTab("Players", PlayersT)
 	RemoveTab("Settings", SettingsT)
@@ -1449,6 +1450,7 @@ function openorclose()
             firsttime = false
         else
             game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.All, false)
+            stopMovement()
             createSettings()
         end
     elseif Open then
