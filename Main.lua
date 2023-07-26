@@ -1,5 +1,6 @@
 -- Project PList By Colastee
 -- Made possible by using Roblox Corescripts
+repeat wait() until game:IsLoaded()
 if isfolder("PLIST_Assets") == true then
     delfolder("PLIST_Assets")
 end
