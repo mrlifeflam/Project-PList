@@ -47,7 +47,6 @@ local DisplayNames = Instance.new("BoolValue", config)
 DisplayNames.Name = "DisplayNames"
 DisplayNames.Value = false
 game.RunService.RenderStepped:Connect(function()
-    reporttab["In your own words, help us understand what went wrong.Frame"].TextBox.Text = reporttab["In your own words, help us understand what went wrong.Frame"].TextBox.Text:gsub("In your own words, help us understand what went wrong.", "Short Description (Optional)")
     if settingstab.Visible == true then
         menucontainer.PageViewClipper.PageView.CanvasPosition = Vector2.new(0, 0)
         menucontainer.PageViewClipper.PageView.CanvasSize = UDim2.new(0, 0, 0, 0)
