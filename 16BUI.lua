@@ -49,7 +49,6 @@ local SEARCH_BACKGROUND_FADE = 0.15
 
 local DOUBLE_CLICK_TIME = 0.5
 
---local ZERO_KEY_VALUE = Enum.KeyCode.Zero.Value
 local DROP_HOTKEY_VALUE = Enum.KeyCode.Backspace.Value
 
 local GAMEPAD_INPUT_TYPES =
@@ -63,8 +62,6 @@ local GAMEPAD_INPUT_TYPES =
 		[Enum.UserInputType.Gamepad7] = true;
 		[Enum.UserInputType.Gamepad8] = true;
 	}
-
-
 
 local PlayersService = game:GetService('Players')
 local UserInputService = game:GetService('UserInputService')
@@ -136,7 +133,6 @@ local NumberOfHotbarSlots = IS_PHONE and HOTBAR_SLOTS_MINI or HOTBAR_SLOTS_FULL 
 local NumberOfInventoryRows = IS_PHONE and INVENTORY_ROWS_MINI or INVENTORY_ROWS_FULL -- How many rows in the popped-up inventory
 
 local lastEquippedSlot = nil
-
 -----------------
 --| Functions |--
 -----------------
@@ -251,16 +247,13 @@ local function DisableActiveHopper() --NOTE: HopperBin
 	SlotsByTool[ActiveHopper]:UpdateEquipView()
 	ActiveHopper = nil
 end
+local Backpack = Player:WaitForChild('Backpack')
 
-local function UnequipAllTools() --NOTE: HopperBin
-	if Humanoid then
-		--Humanoid:UnequipTools()
-	end
+local function UnequipTool(tool) --NOTE: HopperBin
+	tool.Parent = Backpack --NOTE: This would also unequip current Tool
 end
-
 local function EquipNewTool(tool) --NOTE: HopperBin
-	UnequipAllTools()
-	--Humanoid:EquipTool(tool) --NOTE: This would also unequip current Tool
+	Humanoid:EquipTool(tool) --NOTE: This would also unequip current Tool
 end
 
 local function IsEquipped(tool)
@@ -515,7 +508,7 @@ local function MakeSlot(parent, index)
 		local tool = slot.Tool
 		if tool then
 			if IsEquipped(tool) then --NOTE: HopperBin
-				UnequipAllTools()
+				UnequipTool(tool)
 			elseif tool.Parent == Backpack then
 				EquipNewTool(tool)
 			end
@@ -603,7 +596,6 @@ local function MakeSlot(parent, index)
 			SlotNumber.Size = UDim2.new(0.15, 0, 0.15, 0)
 			SlotNumber.Visible = false
 			SlotNumber.Parent = SlotFrame
-			--HotkeyFns[ZERO_KEY_VALUE + slotNum] = slot.Select
 		end
 	else -- Inventory-Specific Slot Stuff
 
@@ -842,12 +834,6 @@ local function OnChildAdded(child) -- To Character or Backpack
 						curr:Fill(tool)
 					end
 				end
-				-- Have to manually unequip a possibly equipped tool
-				for _, child in pairs(Character:GetChildren()) do
-					if child:IsA('Tool') and child ~= tool then
-						--child.Parent = Backpack
-					end
-				end
 				AdjustHotbarFrames()
 				return -- We're done here
 			end
@@ -942,10 +928,10 @@ end
 local function OnInputBegan(input, isProcessed)
 	-- Pass through keyboard hotkeys when not typing into a TextBox and not disabled (except for the Drop key)
 	if input.UserInputType == Enum.UserInputType.Keyboard and not TextBoxFocused and (WholeThingEnabled or input.KeyCode.Value == DROP_HOTKEY_VALUE) then
-		--[[local hotkeyBehavior = HotkeyFns[input.KeyCode.Value]
+		local hotkeyBehavior = HotkeyFns[input.KeyCode.Value]
 		if hotkeyBehavior then
 			hotkeyBehavior(isProcessed)
-		end]]
+		end
 	end
 end
 
@@ -1559,13 +1545,13 @@ do -- Search stuff
 		end
 	end)
 
-	--[[HotkeyFns[Enum.KeyCode.Escape.Value] = function(isProcessed)
+    HotkeyFns[Enum.KeyCode.Escape.Value] = function(isProcessed)
 		if isProcessed then -- Pressed from within a TextBox
 			reset()
 		elseif InventoryFrame.Visible then
 			BackpackScript.OpenClose()
 		end
-	end]]
+	end
 
 	local function detectGamepad(lastInputType)
 		if lastInputType == Enum.UserInputType.Gamepad1 and not UserInputService.VREnabled then
@@ -1658,13 +1644,6 @@ do -- Hotkey stuff
 	UserInputService.TextBoxFocused:connect(function() TextBoxFocused = true end)
 	UserInputService.TextBoxFocusReleased:connect(function() TextBoxFocused = false end)
 
-	-- Manual unequip for HopperBins on drop button pressed
-	--[[HotkeyFns[DROP_HOTKEY_VALUE] = function() --NOTE: HopperBin
-		if ActiveHopper then
-			UnequipAllTools()
-		end
-	end]]
-
 	-- Listen to keyboard status, for showing/hiding hotkey labels
 	UserInputService.Changed:connect(OnUISChanged)
 	OnUISChanged('KeyboardEnabled')
@@ -1690,6 +1669,39 @@ function BackpackScript:TopbarEnabledChanged(enabled)
 	-- Update coregui to reflect new topbar status
 	OnCoreGuiChanged(Enum.CoreGuiType.Backpack, StarterGui:GetCoreGuiEnabled(Enum.CoreGuiType.Backpack))
 end
+
+local UIS = game:GetService("UserInputService")
+local Backpack = game.Players.LocalPlayer:WaitForChild("Backpack")
+local Character = game.Players.LocalPlayer.Character
+local UI = game.CoreGui.RobloxGui.Backpack
+local Humanoid = game.Players.LocalPlayer.Character.Humanoid
+local Debounce = false
+
+local numbers = {
+    [Enum.KeyCode.One] = 1,
+    [Enum.KeyCode.Two] = 2,
+    [Enum.KeyCode.Three] = 3,
+    [Enum.KeyCode.Four] = 4,
+    [Enum.KeyCode.Five] = 5,
+    [Enum.KeyCode.Six] = 6,
+    [Enum.KeyCode.Seven] = 7,
+    [Enum.KeyCode.Eight] = 8,
+    [Enum.KeyCode.Nine] = 9,
+    [Enum.KeyCode.Zero] = 10
+}
+UIS.InputBegan:Connect(function(input, typing)
+    if Debounce == false then
+        Debounce = true
+        local key = input.KeyCode
+        local number = numbers[key]
+        if number and Character:FindFirstChild(UI.Hotbar:FindFirstChild(number).ToolName.Text) and not Debounce then
+            Character:FindFirstChild(UI.Hotbar:FindFirstChild(number).ToolName.Text).Parent = Backpack
+        end
+        if number and UI.Hotbar:FindFirstChild(number).ToolName.Text ~= "" and Backpack:FindFirstChild(UI.Hotbar:FindFirstChild(number).ToolName.Text) and not Debounce then
+            Backpack:FindFirstChild(UI.Hotbar:FindFirstChild(number).ToolName.Text).Parent = Character
+        end
+    end
+end)
 
 -- Listen to enable/disable signals from the StarterGui
 StarterGui.CoreGuiChangedSignal:connect(OnCoreGuiChanged)
