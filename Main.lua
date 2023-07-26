@@ -124,10 +124,6 @@ menucontainer.HubBar.HubBarContainer.PlayersTab.Icon.Position = UDim2.new(0, 15,
 menucontainer.HubBar.HubBarContainer.ReportAbuseTab.Icon.Position = UDim2.new(0, 15, 0.5, -17)
 reporttab["Reason for Abuse?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextXAlignment = Enum.TextXAlignment.Center
 reporttab["Which Person?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextXAlignment = Enum.TextXAlignment.Center
-settingstab["Micro ProfilerFrame"]:Destroy()
-settingstab["Camera InvertedFrame"]:Destroy()
-settingstab["Performance StatsFrame"]:Destroy()
-settingstab["Experience LanguageFrame"]:Destroy()
 pageviewinnerframe.Players.ImageButton:Destroy()
 pageviewinnerframe.LeaveGamePage.LeaveGameText.Text = "Are you sure you want to leave the game?"
 function firstperson()
@@ -4475,7 +4471,10 @@ function switch(name, path, default)
     end
     end)
 end
-
+settingstab["Micro ProfilerFrame"]:Destroy()
+settingstab["Camera InvertedFrame"]:Destroy()
+settingstab["Performance StatsFrame"]:Destroy()
+settingstab["Experience LanguageFrame"]:Destroy()
 --[[button("Switch to Lock",
 [[
 for i = 1, 10 do
