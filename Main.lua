@@ -4521,10 +4521,18 @@ function switch(name, path, default)
     end
     end)
 end
-settingstab["Micro ProfilerFrame"]:Destroy()
-settingstab["Camera InvertedFrame"]:Destroy()
-settingstab["Performance StatsFrame"]:Destroy()
-settingstab["Experience LanguageFrame"]:Destroy()
+if settingstab["Micro ProfilerFrame"] then
+	settingstab["Micro ProfilerFrame"]:Destroy()
+end
+if settingstab["Camera InvertedFrame"] then
+	settingstab["Camera InvertedFrame"]:Destroy()
+end
+if settingstab["Performance StatsFrame"] then
+	settingstab["Performance StatsFrame"]:Destroy()
+end
+if settingstab["Experience LanguageFrame"] then
+	settingstab["Experience LanguageFrame"]:Destroy()
+end
 --[[button("Switch to Lock",
 [[
 for i = 1, 10 do
