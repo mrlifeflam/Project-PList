@@ -4,7 +4,13 @@ repeat wait() until game:IsLoaded()
 if isfolder("PLIST_Assets") == true then
     delfolder("PLIST_Assets")
 end
-task.wait(0.0001)
+local SettingsShield = nil
+for _,v in pairs(game:GetDescendants()) do
+	if v.Name == "SettingsShield" then
+		SettingsShield = v
+	end
+end
+task.wait(1)
 --Setup
 function releasefocus()
     for _,v in pairs(game:GetDescendants()) do
@@ -38,7 +44,7 @@ game:GetService("StarterGui"):SetCore("DevConsoleVisible", true)
 task.wait(0.01)
 game:GetService("StarterGui"):SetCore("DevConsoleVisible", false)
 --END CURSOR SUPPORT
-local menucontainer = game.CoreGui.RobloxGui.SettingsShield.SettingsShield.MenuContainer
+local menucontainer = SettingsShield.MenuContainer
 local pageviewinnerframe = menucontainer.PageViewClipper.PageView.PageViewInnerFrame
 local settingstab = pageviewinnerframe.Page
 local reporttab = pageviewinnerframe.ReportAbusePage
@@ -48,10 +54,50 @@ local DisplayNames = Instance.new("BoolValue", config)
 DisplayNames.Name = "DisplayNames"
 DisplayNames.Value = false
 game.RunService.RenderStepped:Connect(function()
+	for _,v in pairs(game.Players.LocalPlayer.PlayerGui:GetDescendants()) do
+		if v:IsA("GuiObject") and v.Size == UDim2.new(1, 0, 0, 36) and v.Name ~= "TopBarContainerPLIST" then
+			v.Visible = false
+		end
+	end
     if settingstab.Visible == true then
         menucontainer.PageViewClipper.PageView.CanvasPosition = Vector2.new(0, 0)
         menucontainer.PageViewClipper.PageView.CanvasSize = UDim2.new(0, 0, 0, 0)
     end
+end)
+game.RunService.RenderStepped:Connect(function()
+	settingstab["Shift Lock SwitchFrame"].ShiftLockOverrideLabel.Text = "Configure with PLIST"
+end)
+game.RunService.RenderStepped:Connect(function()
+	if reporttab["In your own words, help us understand what went wrong.Frame"].TextBox.Text == "Short Description (Optional)" then
+		reporttab["In your own words, help us understand what went wrong.Frame"].TextBox.ClearTextOnFocus = true
+		else
+		reporttab["In your own words, help us understand what went wrong.Frame"].TextBox.ClearTextOnFocus = false
+	end
+	reporttab["In your own words, help us understand what went wrong.Frame"].TextBox.Text = reporttab["In your own words, help us understand what went wrong.Frame"].TextBox.Text:gsub("In your own words, help us understand what went wrong.", "Short Description (Optional)")
+	reporttab["Experience or Person?Frame"]["Experience or Person?Label"].Text = "Game or Player?"
+	reporttab["Experience or Person?Frame"].Selector.Selection1.Text = "Game"
+	reporttab["Experience or Person?Frame"].Selector.Selection2.Text = "Player"
+	reporttab["Which Person?Frame"]["Which Person?Label"].Text = "Which Player?"
+	reporttab["In your own words, help us understand what went wrong.Frame"].TextBox.SubmitButtonButton.Position = UDim2.new(0.89, 0,1, 5)
+	if reporttab["Type Of Abuse?Frame"].Visible == false then
+		reporttab["Reason for Abuse?Frame"].DropDownFrameButton.ImageColor3 = Color3.fromRGB(120, 120, 120)
+		reporttab["Reason for Abuse?Frame"].DropDownFrameButton.DropDownImage.ImageColor3 = Color3.fromRGB(64, 64, 64)
+		reporttab["Reason for Abuse?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextColor3 = Color3.fromRGB(87, 87, 87)
+		reporttab["Reason for Abuse?Frame"]["Reason for Abuse?Label"].TextColor3 = Color3.fromRGB(87, 87, 87)
+		reporttab["Which Person?Frame"].DropDownFrameButton.ImageColor3 = Color3.fromRGB(120, 120, 120)
+		reporttab["Which Person?Frame"].DropDownFrameButton.DropDownImage.ImageColor3 = Color3.fromRGB(64, 64, 64)
+		reporttab["Which Person?Frame"]["Which Person?Label"].TextColor3 = Color3.fromRGB(87, 87, 87)
+		reporttab["Which Person?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextColor3 = Color3.fromRGB(87, 87, 87)
+	else
+		reporttab["Reason for Abuse?Frame"].DropDownFrameButton.ImageColor3 = Color3.fromRGB(255, 255, 255)
+		reporttab["Reason for Abuse?Frame"].DropDownFrameButton.DropDownImage.ImageColor3 = Color3.fromRGB(255, 255, 255)
+		reporttab["Reason for Abuse?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+		reporttab["Reason for Abuse?Frame"]["Reason for Abuse?Label"].TextColor3 = Color3.fromRGB(255, 255, 255)
+		reporttab["Which Person?Frame"].DropDownFrameButton.ImageColor3 = Color3.fromRGB(255, 255, 255)
+		reporttab["Which Person?Frame"].DropDownFrameButton.DropDownImage.ImageColor3 = Color3.fromRGB(255, 255, 255)
+		reporttab["Which Person?Frame"]["Which Person?Label"].TextColor3 = Color3.fromRGB(255, 255, 255)
+		reporttab["Which Person?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+	end
 end)
 game.RunService.RenderStepped:Connect(function()
     for _,v in pairs(pageviewinnerframe.Players:GetChildren()) do
@@ -65,25 +111,31 @@ game.RunService.RenderStepped:Connect(function()
     end
 end)
 game.RunService.RenderStepped:Connect(function()
-    for _,v in pairs(pageviewinnerframe.Players:GetChildren()) do
+    for _,v in pageviewinnerframe.Players:GetChildren() do
         if v.Name:find("PlayerLabel") and v.RightSideButtons:FindFirstChild("Inspect") and v.RightSideButtons:FindFirstChild("BlockButton") and v.RightSideButtons:FindFirstChild("ReportPlayer") and v.RightSideButtons:FindFirstChild("FriendStatus") then
             v.RightSideButtons.Inspect:Destroy()
             v.RightSideButtons.BlockButton:Destroy()
             v.RightSideButtons.ReportPlayer:Destroy()
             v.NameLabel.Visible = false
-            v.DisplayNameLabel.Position = UDim2.new(0, 60, 0.5, -4)
-            v.DisplayNameLabel.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Light, Enum.FontStyle.Normal)
+            v.DisplayNameLabel.Position = UDim2.new(0, 60, 0.5, 0)
+			v.DisplayNameLabel.Size = UDim2.new(0, 0, 0, 0)
+			v.DisplayNameLabel.TextWrapped = false
+			v.DisplayNameLabel.TextScaled = false
+            v.DisplayNameLabel.FontSize = Enum.FontSize.Size24
             v.RightSideButtons.FriendStatus.Size = UDim2.new(0, 200, 0, 46)
         end
     end
 end)
 game.RunService.RenderStepped:Connect(function()
-    for _,v in pairs(pageviewinnerframe.Players:GetChildren()) do
+    for _,v in pageviewinnerframe.Players:GetChildren() do
         if v.Name:find(game.Players.LocalPlayer.Name) and v.RightSideButtons:FindFirstChild("Inspect") then
             v.RightSideButtons.Inspect:Destroy()
             v.NameLabel.Visible = false
-            v.DisplayNameLabel.Position = UDim2.new(0, 60, 0.5, -4)
-            v.DisplayNameLabel.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Light, Enum.FontStyle.Normal)
+            v.DisplayNameLabel.Position = UDim2.new(0, 60, 0.5, 0)
+			v.DisplayNameLabel.Size = UDim2.new(0, 0, 0, 0)
+			v.DisplayNameLabel.TextWrapped = false
+			v.DisplayNameLabel.TextScaled = false
+			v.DisplayNameLabel.FontSize = Enum.FontSize.Size24
         end
     end
 end)
@@ -116,14 +168,26 @@ menucontainer.HubBar.HubBarHomeButton:Destroy()
 menucontainer.HubBar.HubBarContainer.PlayersTab.Icon.Title.Text = "Players"
 menucontainer.HubBar.HubBarContainer.Size = UDim2.new(1, 0, 1, 0)
 menucontainer.HubBar.HubBarContainer.Position = UDim2.new(0, 0, 0, 0)
-menucontainer.HubBar.HubBarContainer.GameSettingsTab.Icon.AspectRatioConstraint.AspectRatio = 1.2
-menucontainer.HubBar.HubBarContainer.PlayersTab.Icon.AspectRatioConstraint.AspectRatio = 1.3
-menucontainer.HubBar.HubBarContainer.ReportAbuseTab.Icon.AspectRatioConstraint.AspectRatio = 1.2
-menucontainer.HubBar.HubBarContainer.GameSettingsTab.Icon.Position = UDim2.new(0, 15, 0.5, -17)
-menucontainer.HubBar.HubBarContainer.PlayersTab.Icon.Position = UDim2.new(0, 15, 0.5, -17)
-menucontainer.HubBar.HubBarContainer.ReportAbuseTab.Icon.Position = UDim2.new(0, 15, 0.5, -17)
+
+menucontainer.HubBar.HubBarContainer.GameSettingsTab.Icon.AspectRatioConstraint.AspectRatio = 1.1
+menucontainer.HubBar.HubBarContainer.GameSettingsTab.Icon.Position = UDim2.new(0, 10, 0.5, -24)
+menucontainer.HubBar.HubBarContainer.GameSettingsTab.Icon.Size = UDim2.new(0, 54, 0, 48)
+
+menucontainer.HubBar.HubBarContainer.PlayersTab.Icon.AspectRatioConstraint.AspectRatio = 1.1
+menucontainer.HubBar.HubBarContainer.PlayersTab.Icon.Position = UDim2.new(0, 55, 0.5, 20)
+menucontainer.HubBar.HubBarContainer.PlayersTab.Icon.Size = UDim2.new(0, 54, 0, -38)
+
+menucontainer.HubBar.HubBarContainer.ReportAbuseTab.Icon.AspectRatioConstraint.AspectRatio = 0.95
+menucontainer.HubBar.HubBarContainer.ReportAbuseTab.Icon.Position = UDim2.new(0, 10, 0.5, -24)
+menucontainer.HubBar.HubBarContainer.ReportAbuseTab.Icon.Size = UDim2.new(0, 54, 0, 48)
+
+menucontainer.HubBar.HubBarContainer.HelpTab.Icon.AspectRatioConstraint.AspectRatio = 1
+menucontainer.HubBar.HubBarContainer.HelpTab.Icon.Position = UDim2.new(0, 10, 0.5, -24)
+menucontainer.HubBar.HubBarContainer.HelpTab.Icon.Size = UDim2.new(0, 54, 0, 48)
+
 reporttab["Reason for Abuse?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextXAlignment = Enum.TextXAlignment.Center
 reporttab["Which Person?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextXAlignment = Enum.TextXAlignment.Center
+reporttab["Type Of Abuse?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextXAlignment = Enum.TextXAlignment.Center
 pageviewinnerframe.Players.ImageButton:Destroy()
 pageviewinnerframe.LeaveGamePage.LeaveGameText.Text = "Are you sure you want to leave the game?"
 function firstperson()
@@ -145,7 +209,7 @@ RobloxGuii.ResetOnSpawn = false
 RobloxGuii.DisplayOrder = 9999
 
 local TopBarContainer = Instance.new("Frame")
-TopBarContainer.Name = "TopBarContainer"
+TopBarContainer.Name = "TopBarContainerPLIST"
 TopBarContainer.Parent = RobloxGuii
 TopBarContainer.Active = false
 TopBarContainer.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
@@ -154,8 +218,8 @@ TopBarContainer.BorderSizePixel = 0
 TopBarContainer.Position = UDim2.new(0, 0, 0, -36)
 TopBarContainer.Size = UDim2.new(1, 0, 0, 36)
 TopBarContainer.ZIndex = 0
-local nameFORLOGO = "LOGOOO"..math.random(1, 5)
-local nameFORPLAYERTAB = "PLRTABB"..math.random(1, 5)
+local nameFORLOGO = "LOGOOO"..math.random(3, 7)
+local nameFORPLAYERTAB = "PLRTABB"..math.random(8, 11)
 makefolder("PLIST_Assets")
 writefile("PLIST_Assets\\"..nameFORPLAYERTAB..".png", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/Assets/PlayersTabIcon.png"))
 writefile("PLIST_Assets\\Loaded.mp3", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/Assets/Loaded.mp3"))
@@ -166,7 +230,7 @@ game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
 if not game:IsLoaded() then
     game.Loaded:Wait()
 end
-menucontainer.HubBar.HubBarContainer.PlayersTab.Icon.Image = getcustomasset("PLIST_Assets\\"..nameFORPLAYERTAB..".png")
+--menucontainer.HubBar.HubBarContainer.PlayersTab.Icon.Image = getcustomasset("PLIST_Assets\\"..nameFORPLAYERTAB..".png")
 local runserv = game.RunService
 local RenderStepped = runserv.RenderStepped
 local playerlist = Instance.new("ScreenGui")
@@ -514,7 +578,7 @@ local tss = game:GetService("TweenService")
 backpackicon.Background.MouseButton1Down:Connect(function()
     if bptog == false  then
         bptog = true
-        print("Press ~ to open inventory")
+        print("Press ~ to open inventory!!11")
         local g = {ImageColor3 = Color3.fromRGB(255, 0, 0)}
         local g2 = {ImageColor3 = Color3.fromRGB(255, 255, 255)}
         local redthing = tss:Create(backpackicon.Background.Icon, TweenInfo.new(0.3), g)
@@ -618,11 +682,7 @@ local function getFriendCountAsync(userId)
 		end
 		return HttpRbxApiService:GetAsync(str)
 	end)
-	if not wasSuccess then
-		print("getFriendCountAsync() failed because", result)
-		return nil
-	end
-	result = HttpService:JSONDecode(result)
+		result = HttpService:JSONDecode(result)
 
 	if result["success"] and result["count"] then
 		friendCount = result["count"]
@@ -858,7 +918,6 @@ function createPlayerDropDown()
 			return HttpRbxApiService:PostAsync(apiPath, params, Enum.ThrottlingPriority.Default, Enum.HttpContentType.ApplicationUrlEncoded)
 		end)
 		if not success then
-			print("unfollowPlayer() failed because", result)
 			playerDropDown:Hide()
 			return
 		end
@@ -922,7 +981,6 @@ function createPlayerDropDown()
 			return HttpRbxApiService:PostAsync(apiPath, params, Enum.ThrottlingPriority.Default, Enum.HttpContentType.ApplicationUrlEncoded)
 		end)
 		if not success then
-			print("followPlayer() failed because", result)
 			playerDropDown:Hide()
 			return
 		end
@@ -1229,7 +1287,6 @@ function IsInGroupFunctionFactory(groupId)
 end
 function HasRankInGroupFunctionFactory(groupId, requiredRank)
 	local hasRankCache = {}
-	assert(type(requiredRank) == "number", "requiredRank must be a number")
 	return function(player)
 		if player and player.UserId > 0 then
 			if hasRankCache[player.UserId] == nil then
@@ -1497,10 +1554,6 @@ function sortPlayerEntries(a, b)
 	local statB = b.PrimaryStat
 	statA = tonumber(statA) or statA
 	statB = tonumber(statB) or statB
-	if type(statA) ~= type(statB) then
-		statA = tostring(statA)
-		statB = tostring(statB)
-	end
 	return statA > statB
 end
 
@@ -1524,7 +1577,7 @@ function sortTeams(a, b)
 end
 
 -- Start of Gui Creation
-local Container = Instance.new('Frame')
+local Container = Instance.new('Frame', RobloxGuii)
 Container.Name = "PlayerListContainer"
 Container.Size = MinContainerSize
 
@@ -1552,7 +1605,6 @@ end
 local targetContainerYOffset = Container.Position.Y.Offset
 
 Container.BackgroundTransparency = 1
-Container.Parent = RobloxGui
 
 function AdjustContainerPosition()
 	-- A function to position the Container in light of presence of performance stats.
@@ -2510,8 +2562,6 @@ function createPlayerEntry(player, isTopStat)
 					membershipIcon.Image = membershipIconImage
 				end
 			end
-		else
-			print("PlayerList: GetRankInGroup failed because", result)
 		end
 		local iconImage = getCustomPlayerIcon(player)
 		if iconImage then
@@ -3103,8 +3153,8 @@ game.RunService.RenderStepped:Connect(function()
     end
 end)
 _G.Name = "PLIST Config"
-local itemholder = game.CoreGui.RobloxGui.SettingsShield.SettingsShield.MenuContainer.HubBar.HubBarContainer
-local pageview = game.CoreGui.RobloxGui.SettingsShield.SettingsShield.MenuContainer.PageViewClipper.PageView.PageViewInnerFrame
+local itemholder = SettingsShield.MenuContainer.HubBar.HubBarContainer
+local pageview = SettingsShield.MenuContainer.PageViewClipper.PageView.PageViewInnerFrame
 local newTab = itemholder.HelpTab
 local newtabText = newTab.Icon.Title
 local newtabIcon = newTab.Icon
@@ -3123,7 +3173,7 @@ Layout.VerticalAlignment = "Top"
 Layout.HorizontalAlignment = "Center"
 Layout.FillDirection = "Vertical"
 newtabText.Text = _G.Name
-newtabIcon.Image = getcustomasset("PLIST_Assets\\"..nameFORLOGO..".png")
+--newtabIcon.Image = getcustomasset("PLIST_Assets\\"..nameFORLOGO..".png")
 function replaceuuhhhspecific(s)
     s.SoundId = getcustomasset("PLIST_Assets\\uuhhh.mp3")
 end
