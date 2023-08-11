@@ -99,23 +99,28 @@ game.RunService.RenderStepped:Connect(function()
 		reporttab["Which Person?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 	end
 end)
-game.RunService.RenderStepped:Connect(function()
-    for _,v in pairs(pageviewinnerframe.Players:GetChildren()) do
-        local target = game.Players:FindFirstChild(v.Name:gsub("PlayerLabel", ""))
-        if DisplayNames.Value and v.Name:find("PlayerLabel") and v:FindFirstChild("DisplayNameLabel") and target then
-            v.DisplayNameLabel.Text = target.DisplayName
-        end
-        if not DisplayNames.Value and v.Name:find("PlayerLabel") and v:FindFirstChild("DisplayNameLabel") and target then
-            v.DisplayNameLabel.Text = target.Name
-        end
-    end
-end)
-game.RunService.RenderStepped:Connect(function()
+function PlayersUIConfiguration()
     for _,v in pageviewinnerframe.Players:GetChildren() do
-        if v.Name:find("PlayerLabel") and v.RightSideButtons:FindFirstChild("Inspect") and v.RightSideButtons:FindFirstChild("BlockButton") and v.RightSideButtons:FindFirstChild("ReportPlayer") and v.RightSideButtons:FindFirstChild("FriendStatus") then
-            v.RightSideButtons.Inspect:Destroy()
-            v.RightSideButtons.BlockButton:Destroy()
-            v.RightSideButtons.ReportPlayer:Destroy()
+	    local target = game.Players:FindFirstChild(v.Name:gsub("PlayerLabel", ""))
+		if DisplayNames.Value and v.Name:find("PlayerLabel") and v:FindFirstChild("DisplayNameLabel") and target then
+			v.DisplayNameLabel.Text = target.DisplayName
+		end
+		if not DisplayNames.Value and v.Name:find("PlayerLabel") and v:FindFirstChild("DisplayNameLabel") and target then
+			v.DisplayNameLabel.Text = target.Name
+		end
+        if v.Name:find(game.Players.LocalPlayer.Name) and v.RightSideButtons:FindFirstChild("Inspect") then
+            v.RightSideButtons.Inspect.Visible = false
+            v.NameLabel.Visible = false
+            v.DisplayNameLabel.Position = UDim2.new(0, 60, 0.5, 0)
+			v.DisplayNameLabel.Size = UDim2.new(0, 0, 0, 0)
+			v.DisplayNameLabel.TextWrapped = false
+			v.DisplayNameLabel.TextScaled = false
+			v.DisplayNameLabel.FontSize = Enum.FontSize.Size24
+        end
+		if v.Name:find("PlayerLabel") and v.RightSideButtons:FindFirstChild("Inspect") and v.RightSideButtons:FindFirstChild("BlockButton") and v.RightSideButtons:FindFirstChild("ReportPlayer") and v.RightSideButtons:FindFirstChild("FriendStatus") then
+            v.RightSideButtons.Inspect.Visible = false
+            v.RightSideButtons.BlockButton.Visible = false
+            v.RightSideButtons.ReportPlayer.Visible = false
             v.NameLabel.Visible = false
             v.DisplayNameLabel.Position = UDim2.new(0, 60, 0.5, 0)
 			v.DisplayNameLabel.Size = UDim2.new(0, 0, 0, 0)
@@ -125,19 +130,15 @@ game.RunService.RenderStepped:Connect(function()
             v.RightSideButtons.FriendStatus.Size = UDim2.new(0, 200, 0, 46)
         end
     end
-end)
+end
 game.RunService.RenderStepped:Connect(function()
-    for _,v in pageviewinnerframe.Players:GetChildren() do
-        if v.Name:find(game.Players.LocalPlayer.Name) and v.RightSideButtons:FindFirstChild("Inspect") then
-            v.RightSideButtons.Inspect:Destroy()
-            v.NameLabel.Visible = false
-            v.DisplayNameLabel.Position = UDim2.new(0, 60, 0.5, 0)
-			v.DisplayNameLabel.Size = UDim2.new(0, 0, 0, 0)
-			v.DisplayNameLabel.TextWrapped = false
-			v.DisplayNameLabel.TextScaled = false
-			v.DisplayNameLabel.FontSize = Enum.FontSize.Size24
-        end
-    end
+	PlayersUIConfiguration()
+end)
+workspace.DescendantAdded:Connect(function()
+	PlayersUIConfiguration()
+end)
+game.RunService.Heartbeat:Connect(function()
+	PlayersUIConfiguration()
 end)
 settingstab["Graphics QualityFrame"].Slider.RightButton.Size = UDim2.new(0, 50, 0, 50)
 settingstab["Graphics QualityFrame"].Slider.LeftButton.Size = UDim2.new(0, 50, 0, 50)
@@ -426,8 +427,10 @@ game.RunService.RenderStepped:Connect(function()
         return nil
     end
 end)
+local mouseh = nil
+local shiftreplica = false
 if badmouse == true then
-local mouseh = Instance.new("ImageLabel")
+mouseh = Instance.new("ImageLabel")
 local uis = game:GetService("UserInputService")
 local mh = game.Players.LocalPlayer:GetMouse()
 game.CoreGui.DevConsoleMaster.IgnoreGuiInset = true
@@ -435,15 +438,11 @@ mouseh.Name = "MouseH"
 mouseh.Parent = game.CoreGui.DevConsoleMaster
 mouseh.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 mouseh.BackgroundTransparency = 1.000
-mouseh.Position = UDim2.new(0, 0, 1, 0)
-mouseh.Size = UDim2.new(0, 64, 0, 64)
+mouseh.Position = UDim2.new(0, 0, 0, 0)
 mouseh.Visible = true
 mouseh.ZIndex = 9999999
 mouseh.Active = false
 mouseh.Image = 'rbxasset://textures/ArrowFarCursor.png'
-uis.MouseIconEnabled = true
-uis.OverrideMouseIconBehavior = Enum.OverrideMouseIconBehavior.ForceShow
-mh.Icon = 'rbxasset://textures/ArrowFarCursor.png'
 game.RunService.RenderStepped:Connect(function()
     if uis:GetFocusedTextBox() == true then
         typing = true
@@ -452,7 +451,13 @@ game.RunService.RenderStepped:Connect(function()
     end
 end)
 game.RunService.RenderStepped:Connect(function()
-mouseh.Position = UDim2.new(0, mh.X - 32, 0, mh.Y + 1)
+if shiftreplica == false then
+	mouseh.Size = UDim2.new(0, 64, 0, 64)
+else
+	mouseh.Image = "rbxasset://textures/MouseLockedCursor.png"
+	mouseh.Size = UDim2.new(0, 37, 0, 37)
+end
+mouseh.Position = UDim2.new(0, mh.X - 32, 0, mh.Y + 2.9)
 uis.MouseIconEnabled = false
 uis.OverrideMouseIconBehavior = Enum.OverrideMouseIconBehavior.ForceHide
 mh.Icon = "rbxassetid://000001"
@@ -475,8 +480,8 @@ for _,v in pairs(game:GetDescendants()) do
         end)]]
         if v.Active == true and v.Name ~= "MouseH" then
         v.MouseEnter:Connect(function()
-            mouseh.Image = "rbxassetid://7028337377"
-            --mh.Icon = "rbxassetid://7028337377"
+            mouseh.Image = "rbxasset://textures/ArrowCursor.png"
+            --mh.Icon = "rbxasset://textures/ArrowCursor.png"
         end)
         v.MouseLeave:Connect(function()
             mouseh.Image = 'rbxasset://textures/ArrowFarCursor.png'
@@ -508,8 +513,8 @@ game.DescendantAdded:Connect(function(v)
         end)]]
         if v.Active == true and v.Name ~= "MouseH" then
         v.MouseEnter:Connect(function()
-            mouseh.Image = "rbxassetid://7028337377"
-            --mh.Icon = "rbxassetid://7028337377"
+            mouseh.Image = "rbxasset://textures/ArrowCursor.png"
+            --mh.Icon = "rbxasset://textures/ArrowCursor.png"
         end)
         v.MouseLeave:Connect(function()
             mouseh.Image = 'rbxasset://textures/ArrowFarCursor.png'
@@ -2901,18 +2906,19 @@ function disablerightmouse(bool)
     cas:UnbindAction("RightMouseDisable")
     end
 end
-local shiftreplica = false
+shiftval = Vector3.new(2.4, 0.1, 0)
 uis.InputBegan:Connect(function(key, chat)
     if key.KeyCode == Enum.KeyCode.LeftShift and not chat and not shiftreplica and shiftreplicaENABLED.Value then
         disablerightmouse(true)
         game.Players.LocalPlayer.Character.Humanoid.AutoRotate = false
         shiftreplica = true
-        game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(2.8, 0.6, 0)
+        game.Players.LocalPlayer.Character.Humanoid.CameraOffset = shiftval
         elseif key.KeyCode == Enum.KeyCode.LeftShift and not chat and shiftreplica and shiftreplicaENABLED.Value then
         disablerightmouse(false)
         game.Players.LocalPlayer.Character.Humanoid.AutoRotate = true
         shiftreplica = false
         uis.MouseBehavior = Enum.MouseBehavior.Default
+		mouseh.Image = "rbxasset://textures/ArrowFarCursor.png"
         game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(0, 0, 0)
     end
     if shiftreplicaENABLED.Value == false then
@@ -2920,6 +2926,7 @@ uis.InputBegan:Connect(function(key, chat)
         game.Players.LocalPlayer.Character.Humanoid.AutoRotate = true
         shiftreplica = false
         uis.MouseBehavior = Enum.MouseBehavior.Default
+		mouseh.Image = "rbxasset://textures/ArrowFarCursor.png"
         game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(0, 0, 0)
     end
 end)
@@ -2927,7 +2934,7 @@ game.RunService.RenderStepped:Connect(function()
     if firstperson() and shiftreplica == true then
         game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(0, 0, 0)
     elseif not firstperson() and shiftreplica == true then
-        game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(2.8, 0.6, 0)
+        game.Players.LocalPlayer.Character.Humanoid.CameraOffset = shiftval
     end
 end)
 local RemoveEvent_OnFollowRelationshipChanged = Instance.new("RemoteEvent", script)
@@ -4526,9 +4533,6 @@ if settingstab["Micro ProfilerFrame"] then
 end
 if settingstab["Camera InvertedFrame"] then
 	settingstab["Camera InvertedFrame"]:Destroy()
-end
-if settingstab["Performance StatsFrame"] then
-	settingstab["Performance StatsFrame"]:Destroy()
 end
 if settingstab["Experience LanguageFrame"] then
 	settingstab["Experience LanguageFrame"]:Destroy()
