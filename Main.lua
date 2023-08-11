@@ -79,7 +79,7 @@ game.RunService.RenderStepped:Connect(function()
 	reporttab["Experience or Person?Frame"].Selector.Selection2.Text = "Player"
 	reporttab["Which Person?Frame"]["Which Person?Label"].Text = "Which Player?"
 	reporttab["In your own words, help us understand what went wrong.Frame"].TextBox.SubmitButtonButton.Position = UDim2.new(0.89, 0,1, 5)
-	if reporttab["Type Of Abuse?Frame"] and reporttab["Type Of Abuse?Frame"].Visible == false then
+	if reporttab:FindFirstChild("Type Of Abuse?Frame") and reporttab:FindFirstChild("Type Of Abuse?Frame").Visible == false then
 		reporttab["Reason for Abuse?Frame"].DropDownFrameButton.ImageColor3 = Color3.fromRGB(120, 120, 120)
 		reporttab["Reason for Abuse?Frame"].DropDownFrameButton.DropDownImage.ImageColor3 = Color3.fromRGB(64, 64, 64)
 		reporttab["Reason for Abuse?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextColor3 = Color3.fromRGB(87, 87, 87)
@@ -88,7 +88,7 @@ game.RunService.RenderStepped:Connect(function()
 		reporttab["Which Person?Frame"].DropDownFrameButton.DropDownImage.ImageColor3 = Color3.fromRGB(64, 64, 64)
 		reporttab["Which Person?Frame"]["Which Person?Label"].TextColor3 = Color3.fromRGB(87, 87, 87)
 		reporttab["Which Person?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextColor3 = Color3.fromRGB(87, 87, 87)
-	elseif reporttab["Type Of Abuse?Frame"] and reporttab["Type Of Abuse?Frame"].Visible == true then
+	elseif reporttab:FindFirstChild("Type Of Abuse?Frame") and reporttab:FindFirstChild("Type Of Abuse?Frame").Visible == true then
 		reporttab["Reason for Abuse?Frame"].DropDownFrameButton.ImageColor3 = Color3.fromRGB(255, 255, 255)
 		reporttab["Reason for Abuse?Frame"].DropDownFrameButton.DropDownImage.ImageColor3 = Color3.fromRGB(255, 255, 255)
 		reporttab["Reason for Abuse?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -188,7 +188,7 @@ menucontainer.HubBar.HubBarContainer.HelpTab.Icon.Size = UDim2.new(0, 54, 0, 48)
 
 reporttab["Reason for Abuse?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextXAlignment = Enum.TextXAlignment.Center
 reporttab["Which Person?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextXAlignment = Enum.TextXAlignment.Center
-reporttab["Type Of Abuse?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextXAlignment = Enum.TextXAlignment.Center
+reporttab:FindFirstChild("Type Of Abuse?Frame").DropDownFrameButton.DropDownFrameTextLabel.TextXAlignment = Enum.TextXAlignment.Center
 pageviewinnerframe.Players.ImageButton:Destroy()
 pageviewinnerframe.LeaveGamePage.LeaveGameText.Text = "Are you sure you want to leave the game?"
 function firstperson()
