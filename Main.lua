@@ -108,8 +108,8 @@ function PlayersUIConfiguration()
 		if not DisplayNames.Value and v.Name:find("PlayerLabel") and v:FindFirstChild("DisplayNameLabel") and target then
 			v.DisplayNameLabel.Text = target.Name
 		end
-        if v.Name:find(game.Players.LocalPlayer.Name) and v.RightSideButtons:FindFirstChild("Inspect") then
-            v.RightSideButtons.Inspect.Visible = false
+        if v.Name:find(game.Players.LocalPlayer.Name) and v.Name:find("PlayerLabel") then
+            v.RightSideButtons:FindFirstChild("Inspect").Visible = false
             v.NameLabel.Visible = false
             v.DisplayNameLabel.Position = UDim2.new(0, 60, 0.5, 0)
 			v.DisplayNameLabel.Size = UDim2.new(0, 0, 0, 0)
@@ -117,10 +117,10 @@ function PlayersUIConfiguration()
 			v.DisplayNameLabel.TextScaled = false
 			v.DisplayNameLabel.FontSize = Enum.FontSize.Size24
         end
-		if v.Name:find("PlayerLabel") and v.RightSideButtons:FindFirstChild("Inspect") and v.RightSideButtons:FindFirstChild("BlockButton") and v.RightSideButtons:FindFirstChild("ReportPlayer") and v.RightSideButtons:FindFirstChild("FriendStatus") then
-            v.RightSideButtons.Inspect.Visible = false
-            v.RightSideButtons.BlockButton.Visible = false
-            v.RightSideButtons.ReportPlayer.Visible = false
+		if v.Name:find("PlayerLabel") and v.RightSideButtons:FindFirstChild("BlockButton") and v.RightSideButtons:FindFirstChild("ReportPlayer") and v.RightSideButtons:FindFirstChild("FriendStatus") then
+            v.RightSideButtons:FindFirstChild("Inspect").Visible = false
+            v.RightSideButtons:FindFirstChild("BlockButton").Visible = false
+            v.RightSideButtons:FindFirstChild("ReportPlayer").Visible = false
             v.NameLabel.Visible = false
             v.DisplayNameLabel.Position = UDim2.new(0, 60, 0.5, 0)
 			v.DisplayNameLabel.Size = UDim2.new(0, 0, 0, 0)
@@ -134,7 +134,7 @@ end
 game.RunService.RenderStepped:Connect(function()
 	PlayersUIConfiguration()
 end)
-workspace.DescendantAdded:Connect(function()
+game.CoreGui.RobloxGui.DescendantAdded:Connect(function()
 	PlayersUIConfiguration()
 end)
 game.RunService.Heartbeat:Connect(function()
@@ -542,6 +542,7 @@ game.RunService.RenderStepped:Connect(function()
         else
         backpackicon.Background.Icon.Image = "rbxasset://textures/ui/Backpack/Backpack@2x.png"
     end
+	backpackicon.Visible = game.StarterGui:GetCoreGuiEnabled("Backpack")
 end)
 --[[
 gave up on this crap bc just realized that even when you make the backpack properties visible it still thinks that it doesnt have inventory opened.
@@ -3160,6 +3161,7 @@ game.RunService.RenderStepped:Connect(function()
     end
 end)
 _G.Name = "PLIST Config"
+
 local itemholder = SettingsShield.MenuContainer.HubBar.HubBarContainer
 local pageview = SettingsShield.MenuContainer.PageViewClipper.PageView.PageViewInnerFrame
 local newTab = itemholder.HelpTab
@@ -3194,6 +3196,15 @@ for _,v in pairs(game:GetDescendants()) do
         replaceuuhhhspecific(v)
     end
 end
+game.RunService.RenderStepped:Connect(function()
+	if SettingsShield.Visible == true then
+		TopBarContainer.BackgroundTransparency = 0
+		Container.Visible = not SettingsShield.Visible
+	else
+		Container.Visible = not SettingsShield.Visible
+		TopBarContainer.BackgroundTransparency = 0.500
+	end
+end)
 game.RunService.RenderStepped:Connect(function()
         if pageview:FindFirstChild("Help") then
             for _, v in pairs(pageview.Help:GetChildren()) do
