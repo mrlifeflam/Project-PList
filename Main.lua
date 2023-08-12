@@ -55,7 +55,7 @@ DisplayNames.Name = "DisplayNames"
 DisplayNames.Value = false
 game.RunService.RenderStepped:Connect(function()
 	for _,v in pairs(game.Players.LocalPlayer.PlayerGui:GetDescendants()) do
-		if v:IsA("GuiObject") and v.Size == UDim2.new(1, 0, 0, 36) and v.Name ~= "TopBarContainerPLIST" then
+		if v:IsA("GuiObject") and v.Size == UDim2.new(1, 0, 0, 36) and v.Name ~= "TopBarContainerPLIST" or v:IsA("GuiObject") and v.Position.Y.Scale == 0 and v.Position.Y.Offset == 0 and v.Name ~= "TopBarContainerPLIST" then
 			v.Visible = false
 		end
 	end
