@@ -223,6 +223,7 @@ makefolder("PLIST_Assets")
 writefile("PLIST_Assets\\"..nameFORPLAYERTAB..".png", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/Assets/PlayersTabIcon.png"))
 writefile("PLIST_Assets\\Loaded.mp3", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/Assets/Loaded.mp3"))
 writefile("PLIST_Assets\\uuhhh.mp3", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/Assets/uuhhh.mp3"))
+writefile("PLIST_Assets\\metalstone2.mp3", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/Assets/metalstone2.mp3"))
 writefile("PLIST_Assets\\"..nameFORLOGO..".png", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/Assets/PLIST.png"))
 local badmouse = true
 if not game:IsLoaded() then
@@ -3211,14 +3212,21 @@ end)
 function replaceuuhhhspecific(s)
     s.SoundId = getcustomasset("PLIST_Assets\\uuhhh.mp3")
 end
+function replacevolumesound(s)
+    s.SoundId = getcustomasset("PLIST_Assets\\metalstone2.mp3")
+end
 game.DescendantAdded:Connect(function(sound)
-    if sound:IsA("Sound") and sound.SoundId == "rbxasset://sounds/uuhhh.mp3" then
+    if sound:IsA("Sound") and sound.SoundId == "rbxasset://sounds/uuhhh.mp3" and sound.Name ~= "VolumeChangeSound" then
         replaceuuhhhspecific(sound)
+	elseif sound:IsA("Sound") and sound.SoundId == "rbxasset://sounds/uuhhh.mp3" and sound.Name == "VolumeChangeSound" then
+		replacevolumesound(sound)
     end
 end)
-for _,v in pairs(game:GetDescendants()) do
-    if v:IsA("Sound") and v.SoundId == "rbxasset://sounds/uuhhh.mp3" then
-        replaceuuhhhspecific(v)
+for _,sound in pairs(game:GetDescendants()) do
+    if sound:IsA("Sound") and sound.SoundId == "rbxasset://sounds/uuhhh.mp3" and sound.Name ~= "VolumeChangeSound" then
+        replaceuuhhhspecific(sound)
+	elseif sound:IsA("Sound") and sound.SoundId == "rbxasset://sounds/uuhhh.mp3" and sound.Name == "VolumeChangeSound" then
+		replacevolumesound(sound)
     end
 end
 game.CoreGui:FindFirstChild("PlayerList"):Destroy()
