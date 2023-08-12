@@ -1,6 +1,7 @@
 -- Project PList By Colastee
 -- Made possible by using Roblox Corescripts
 repeat wait() until game:IsLoaded()
+game:GetService("ContextActionService"):UnbindAction("RbxPlayerListToggle")
 if isfolder("PLIST_Assets") == true then
     delfolder("PLIST_Assets")
 end
@@ -131,13 +132,10 @@ function PlayersUIConfiguration()
         end
     end
 end
-game.RunService.RenderStepped:Connect(function()
+SettingsShield.DescendantAdded:Connect(function()
 	PlayersUIConfiguration()
 end)
-game.CoreGui.RobloxGui.DescendantAdded:Connect(function()
-	PlayersUIConfiguration()
-end)
-game.RunService.Heartbeat:Connect(function()
+SettingsShield.Changed:Connect(function()
 	PlayersUIConfiguration()
 end)
 settingstab["Graphics QualityFrame"].Slider.RightButton.Size = UDim2.new(0, 50, 0, 50)
@@ -204,21 +202,13 @@ local typing = false
 local shiftreplicaENABLED = Instance.new("BoolValue", config)
 shiftreplicaENABLED.Value = true
 shiftreplicaENABLED.Name = "shiftreplicaENABLED"
-local RobloxGuii = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
+game.CoreGui.DevConsoleMaster.IgnoreGuiInset = true
+local RobloxGuii = Instance.new("ScreenGui", game.CoreGui)
 RobloxGuii.Name = "RobloxGui"
 RobloxGuii.ResetOnSpawn = false
 RobloxGuii.DisplayOrder = 9999
 
-local TopBarContainer = Instance.new("Frame")
-TopBarContainer.Name = "TopBarContainerPLIST"
-TopBarContainer.Parent = RobloxGuii
-TopBarContainer.Active = false
-TopBarContainer.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-TopBarContainer.BackgroundTransparency = 0.500
-TopBarContainer.BorderSizePixel = 0
-TopBarContainer.Position = UDim2.new(0, 0, 0, -36)
-TopBarContainer.Size = UDim2.new(1, 0, 0, 36)
-TopBarContainer.ZIndex = 0
+local TopBarContainer = game.CoreGui:WaitForChild("TopBarApp").TopBarFrame
 local nameFORLOGO = "LOGOOO"..math.random(3, 7)
 local nameFORPLAYERTAB = "PLRTABB"..math.random(8, 11)
 makefolder("PLIST_Assets")
@@ -227,7 +217,6 @@ writefile("PLIST_Assets\\Loaded.mp3", game:HttpGet("https://raw.githubuserconten
 writefile("PLIST_Assets\\uuhhh.mp3", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/Assets/uuhhh.mp3"))
 writefile("PLIST_Assets\\"..nameFORLOGO..".png", game:HttpGet("https://raw.githubusercontent.com/mrlifeflam/Project-PList/main/Assets/PLIST.png"))
 local badmouse = true
-game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
 if not game:IsLoaded() then
     game.Loaded:Wait()
 end
@@ -263,6 +252,7 @@ Username.Font = Enum.Font.SourceSansBold
 Username.Text = "Player1"
 Username.TextColor3 = Color3.fromRGB(255, 255, 255)
 Username.TextSize = 14.000
+Username.ZIndex = 9999
 Username.TextXAlignment = Enum.TextXAlignment.Left
 Username.TextYAlignment = Enum.TextYAlignment.Bottom
 Username.Active = false
@@ -327,6 +317,7 @@ coroutine.wrap(VWPK_fake_script)()
 
 local tbar = game:GetService("CoreGui"):WaitForChild("TopBarApp").TopBarFrame
 local chatico = tbar.LeftFrame.ChatIcon.Background.Icon
+local chaet = tbar.LeftFrame.ChatIcon.Background
 local UIS = game:GetService("UserInputService")
 if tbar.RightFrame:FindFirstChild("HealthBar") then
 tbar.RightFrame.HealthBar:Destroy()
@@ -358,6 +349,7 @@ tbar.LeftFrame.MenuIcon.Position = UDim2.new(0, 0, 0, 0)
 tbar.LeftFrame.MenuIcon.Size = UDim2.new(0, 50, 0, 36)
 tbar.LeftFrame.MenuIcon.Background.Icon.Position = UDim2.new(0, 25, 0, 12)
 tbar.LeftFrame.MenuIcon.Background.Icon.Size = UDim2.new(0, 32, 0, 25)
+
 game.CoreGui:WaitForChild("TopBarApp").LegacyCloseMenu.CloseMenuButton.Position = UDim2.new(0, -8, 0, 18)
 game.CoreGui:WaitForChild("TopBarApp").LegacyCloseMenu.CloseMenuButton.Size = UDim2.new(0, 32, 0, 25)
 
@@ -389,12 +381,8 @@ game.RunService.RenderStepped:Connect(function()
 changechatico()
 end)
 
-tbar.LeftFrame.MenuIcon.Background.MouseButton1Click:Connect(function()
-end)
-
 game:GetService("CoreGui"):WaitForChild("TopBarApp").TopBarFrame.RightFrame.MoreMenu.Visible = false
 game:GetService("CoreGui"):WaitForChild("TopBarApp").TopBarFrame.RightFrame.Position = UDim2.new(1, -4, 0, 0)
-
 
 
 for _,v in pairs(game:GetDescendants()) do
@@ -403,7 +391,6 @@ for _,v in pairs(game:GetDescendants()) do
     end
 end
 game.RunService.RenderStepped:Connect(function()
-    game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
     tbar.LeftFrame.MenuIcon.Background.StateOverlay.Image = ""
     game.CoreGui:WaitForChild("TopBarApp").LegacyCloseMenu.CloseMenuButton.Image = "rbxasset://textures/ui/Menu/HamburgerDown.png"
     game.CoreGui:WaitForChild("TopBarApp").LegacyCloseMenu.CloseMenuButton.ImageRectOffset = Vector2.new(0, 0)
@@ -411,20 +398,32 @@ game.RunService.RenderStepped:Connect(function()
     if tbar.RightFrame:FindFirstChild("MoreMenu") then
         tbar.RightFrame.MoreMenu:Destroy()
     end
-    if tbar.LeftFrame.ChatIcon:FindFirstChild("BadgeContainer") then
+    if tbar.LeftFrame.ChatIcon:FindFirstChild("BadgeContainer") and game.TextChatService.ChatVersion == Enum.ChatVersion.LegacyChatService then
+		if tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge") then
+			tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Inner.Image = "rbxasset://textures/ui/Chat/MessageCounter.png"
+			tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Inner.ImageRectOffset = Vector2.new(0, 0)
+			tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Inner.ImageRectSize = Vector2.new(0, 0)
+			tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Inner:ClearAllChildren()
+			tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Position = UDim2.new(0, 15, 0, 2)
+			tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Inner.ScaleType = Enum.ScaleType.Fit
+			if tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge"):FindFirstChild("Background") then
+				tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Background:Destroy()
+			end
+        end
+    elseif tbar.LeftFrame.ChatIcon:FindFirstChild("BadgeContainer") and game.TextChatService.ChatVersion == Enum.ChatVersion.TextChatService then
         if tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge") then
-        tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Inner.Image = "rbxasset://textures/ui/Chat/MessageCounter.png"
-        tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Inner.ImageRectOffset = Vector2.new(0, 0)
-        tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Inner.ImageRectSize = Vector2.new(0, 0)
-        tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Inner:ClearAllChildren()
-        tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Position = UDim2.new(0, 15, 0, 2)
-        tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Inner.ScaleType = Enum.ScaleType.Fit
-        if tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge"):FindFirstChild("Background") then
-        tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Background:Destroy()
+			tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Inner.Image = "rbxasset://textures/ui/Chat/MessageCounter.png"
+			tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Inner.ImageRectOffset = Vector2.new(0, 0)
+			tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Inner.ImageRectSize = Vector2.new(0, 0)
+			tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Inner.Size = UDim2.new(1, 5, 1, 5)
+			tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Inner.Position = UDim2.new(0.5, 0, 0.6, 0)
+			tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Inner:ClearAllChildren()
+			tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Position = UDim2.new(0, 15, 0, 2)
+			tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Inner.ScaleType = Enum.ScaleType.Fit
+			if tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge"):FindFirstChild("Background") then
+				tbar.LeftFrame.ChatIcon.BadgeContainer:FindFirstChild("Badge").Background:Destroy()
+			end
         end
-        end
-    else
-        return nil
     end
 end)
 local mouseh = nil
@@ -636,7 +635,7 @@ local FRIEND_IMAGE = 'https://www.roblox.com/thumbs/avatar.ashx?userId='
 local GET_BLOCKED_USERIDS_TIMEOUT = 5
 
 --[[ Modules ]]--
-local RobloxGui = CoreGui:WaitForChild('RobloxGui')
+local RobloxGui = RobloxGuii
 
 --[[ Remotes ]]--
 local RemoteEvent_NewFollower = Instance.new("RemoteEvent", script)
@@ -1255,7 +1254,7 @@ while not PlayersService.LocalPlayer do
 	wait()
 end
 
-RobloxGui = CoreGui:WaitForChild('RobloxGui')
+RobloxGui = RobloxGuii
 
 FORCE_TEN_FOOT_INTERFACE = false
 tenFootInterfaceEnabled = false
@@ -3122,7 +3121,11 @@ function onCoreGuiChanged(coreGuiType, enabled)
 		end
 	end
 end
-
+game:GetService("UserInputService").InputBegan:Connect(function(key, typing)
+	if not typing and key.KeyCode == Enum.KeyCode.Tab then
+		Container.Visible = not Container.Visible
+	end
+end)
 Playerlist.TopbarEnabledChanged = function(enabled)
 	topbarEnabled = true
 	-- Update coregui to reflect new topbar status
@@ -3150,7 +3153,6 @@ blockingUtility:GetBlockedStatusChangedEvent():connect(blockStatusChanged)
 -- RobloxGui/StarterScript
 
 --print(p[1]..p[2], p[3]..p[4], p[5]..p[6], p[7]..p[8]..p[9])
-game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
 NameHealthContainer.Parent = RobloxGuii.PlayerListContainer
 
 game.RunService.RenderStepped:Connect(function()
@@ -3196,14 +3198,25 @@ for _,v in pairs(game:GetDescendants()) do
         replaceuuhhhspecific(v)
     end
 end
-game.RunService.RenderStepped:Connect(function()
+game.CoreGui:FindFirstChild("PlayerList"):Destroy()
+function setTopBarStuff()
+	tbar.Visible = true
+	if game.StarterGui:GetCoreGuiEnabled("PlayerList") then
+		Container.Visible = not SettingsShield.Visible
+	elseif not game.StarterGui:GetCoreGuiEnabled("PlayerList") then
+		Container.Visible = false
+	end
 	if SettingsShield.Visible == true then
 		TopBarContainer.BackgroundTransparency = 0
-		Container.Visible = not SettingsShield.Visible
+		tbar.LeftFrame.ChatIcon.Visible = true
+		tbar.LeftFrame.MenuIcon.Background.Visible = false
 	else
-		Container.Visible = not SettingsShield.Visible
+		tbar.LeftFrame.MenuIcon.Background.Visible = true
 		TopBarContainer.BackgroundTransparency = 0.500
 	end
+end
+game.RunService.RenderStepped:Connect(function()
+	setTopBarStuff()
 end)
 game.RunService.RenderStepped:Connect(function()
         if pageview:FindFirstChild("Help") then
