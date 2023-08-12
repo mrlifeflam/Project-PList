@@ -55,7 +55,7 @@ DisplayNames.Name = "DisplayNames"
 DisplayNames.Value = false
 game.RunService.RenderStepped:Connect(function()
 	for _,v in pairs(game.Players.LocalPlayer.PlayerGui:GetDescendants()) do
-		if v:IsA("GuiObject") and v.Size == UDim2.new(1, 0, 0, 36) and v.Name ~= "TopBarContainerPLIST" or v:IsA("GuiObject") and v.Position.Y.Scale == 0 and v.Position.Y.Offset == 0 and v.Name ~= "TopBarContainerPLIST" then
+		if v:IsA("GuiObject") and v.Size == UDim2.new(1, 0, 0, 36) and v.Name ~= "TopBarContainerPLIST" or v:IsA("GuiObject") and v.Position.Y.Scale == 0 and v.Position.Y.Offset == 0 and v.Parent:IsA("ScreenGui") and v.Name ~= "TopBarContainerPLIST" then
 			v.Visible = false
 		end
 	end
@@ -109,7 +109,9 @@ function PlayersUIConfiguration()
 			v.DisplayNameLabel.Text = target.Name
 		end
         if v.Name:find(game.Players.LocalPlayer.Name) and v.Name:find("PlayerLabel") then
-            v.RightSideButtons:FindFirstChild("Inspect").Visible = false
+			if game:GetService("GuiService"):GetInspectMenuEnabled() then
+				v.RightSideButtons:FindFirstChild("Inspect").Visible = false
+			end
             v.NameLabel.Visible = false
             v.DisplayNameLabel.Position = UDim2.new(0, 60, 0.5, 0)
 			v.DisplayNameLabel.Size = UDim2.new(0, 0, 0, 0)
@@ -118,7 +120,9 @@ function PlayersUIConfiguration()
 			v.DisplayNameLabel.FontSize = Enum.FontSize.Size24
         end
 		if v.Name:find("PlayerLabel") and v.RightSideButtons:FindFirstChild("BlockButton") and v.RightSideButtons:FindFirstChild("ReportPlayer") and v.RightSideButtons:FindFirstChild("FriendStatus") then
-            v.RightSideButtons:FindFirstChild("Inspect").Visible = false
+			if game:GetService("GuiService"):GetInspectMenuEnabled() then
+				v.RightSideButtons:FindFirstChild("Inspect").Visible = false
+			end
             v.RightSideButtons:FindFirstChild("BlockButton").Visible = false
             v.RightSideButtons:FindFirstChild("ReportPlayer").Visible = false
             v.NameLabel.Visible = false
@@ -189,12 +193,16 @@ reporttab:FindFirstChild("Type Of Abuse?Frame").DropDownFrameButton.DropDownFram
 pageviewinnerframe.Players.ImageButton:Destroy()
 pageviewinnerframe.LeaveGamePage.LeaveGameText.Text = "Are you sure you want to leave the game?"
 function firstperson()
-    game.Players.LocalPlayer.Character.Head.LocalTransparencyModifier = math.floor(game.Players.LocalPlayer.Character.Head.LocalTransparencyModifier)
-    if game.Players.LocalPlayer.Character.Head.LocalTransparencyModifier > 0.0000001 then
-        return true
-    elseif game.Players.LocalPlayer.Character.Head.LocalTransparencyModifier < 0.0000001 then
-        return false
-    end
+	if game.Players.LocalPlayer.Character:FindFirstChild("Head") then
+		game.Players.LocalPlayer.Character.Head.LocalTransparencyModifier = math.floor(game.Players.LocalPlayer.Character.Head.LocalTransparencyModifier)
+		if game.Players.LocalPlayer.Character.Head.LocalTransparencyModifier > 0.0000001 then
+			return true
+		elseif game.Players.LocalPlayer.Character.Head.LocalTransparencyModifier < 0.0000001 then
+			return false
+		end
+	else
+		return false
+	end
 end
 local p = {}
 local typing = false
@@ -3196,7 +3204,9 @@ function setTopBarStuff()
 	end
 	if SettingsShield.Visible == true then
 		TopBarContainer.BackgroundTransparency = 0
-		tbar.LeftFrame.ChatIcon.Visible = true
+		if game.StarterGui:GetCoreGuiEnabled("Chat") then
+			tbar.LeftFrame.ChatIcon.Visible = true
+		end
 		tbar.LeftFrame.MenuIcon.Background.Visible = false
 	else
 		tbar.LeftFrame.MenuIcon.Background.Visible = true
