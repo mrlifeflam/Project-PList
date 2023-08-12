@@ -48,6 +48,7 @@ local menucontainer = SettingsShield.MenuContainer
 local pageviewinnerframe = menucontainer.PageViewClipper.PageView.PageViewInnerFrame
 local settingstab = pageviewinnerframe.Page
 local reporttab = pageviewinnerframe.ReportAbusePage
+local plrstab = pageviewinnerframe.Players
 local config = Instance.new("Folder", game.Players.LocalPlayer)
 config.Name = "PLIST_Config"
 local DisplayNames = Instance.new("BoolValue", config)
@@ -100,7 +101,8 @@ game.RunService.RenderStepped:Connect(function()
 	end
 end)
 function PlayersUIConfiguration()
-    for _,v in pageviewinnerframe.Players:GetChildren() do
+	plrstab.Size = UDim2.new(1, 0, 0, 1350)
+    for _,v in plrstab:GetChildren() do
 	    local target = game.Players:FindFirstChild(v.Name:gsub("PlayerLabel", ""))
 		if DisplayNames.Value and v.Name:find("PlayerLabel") and v:FindFirstChild("DisplayNameLabel") and target then
 			v.DisplayNameLabel.Text = target.DisplayName
@@ -135,10 +137,10 @@ function PlayersUIConfiguration()
         end
     end
 end
-SettingsShield.DescendantAdded:Connect(function()
+game.RunService.RenderStepped:Connect(function()
 	PlayersUIConfiguration()
 end)
-SettingsShield.Changed:Connect(function()
+SettingsShield.DescendantAdded:Connect(function()
 	PlayersUIConfiguration()
 end)
 settingstab["Graphics QualityFrame"].Slider.RightButton.Size = UDim2.new(0, 50, 0, 50)
