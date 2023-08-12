@@ -1,7 +1,6 @@
 -- Project PList By Colastee
 -- Made possible by using Roblox Corescripts
 repeat wait() until game:IsLoaded()
-game:GetService("ContextActionService"):UnbindAction("RbxPlayerListToggle")
 if isfolder("PLIST_Assets") == true then
     delfolder("PLIST_Assets")
 end
@@ -204,7 +203,7 @@ shiftreplicaENABLED.Value = true
 shiftreplicaENABLED.Name = "shiftreplicaENABLED"
 game.CoreGui.DevConsoleMaster.IgnoreGuiInset = true
 local RobloxGuii = Instance.new("ScreenGui", game.CoreGui)
-RobloxGuii.Name = "RobloxGui"
+RobloxGuii.Name = "16UI"
 RobloxGuii.ResetOnSpawn = false
 RobloxGuii.DisplayOrder = 9999
 
@@ -231,7 +230,6 @@ local You = Instance.new("Frame")
 local BGFrame = Instance.new("TextButton")
 local MembershipIcon = Instance.new("ImageLabel")
 local PlayerName = Instance.new("TextLabel")
-local scriptt = Instance.new('LocalScript', PlayerListContainer)
 local NameHealthContainer = Instance.new("TextButton")
 local Username = Instance.new("TextLabel")
 local HealthContainer = Instance.new("Frame")
@@ -595,14 +593,6 @@ backpackicon.Background.MouseButton1Down:Connect(function()
         bptog = false
     end
 end)
-
-local ControlFrame = Instance.new("Frame")
-ControlFrame.Name = "ControlFrame"
-ControlFrame.Parent = RobloxGuii
-ControlFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-ControlFrame.BackgroundTransparency = 1.000
-ControlFrame.BorderSizePixel = 0
-ControlFrame.Size = UDim2.new(1, 0, 1, 0)
 
 -- RobloxGui/Modules/PlayerDropDown
 
@@ -3115,17 +3105,9 @@ function onCoreGuiChanged(coreGuiType, enabled)
             NameHealthContainer.MouseButton1Up:Connect(function()
                 Playerlist.ToggleVisibility()
             end)
-			ContextActionService:BindAction("RbxPlayerListToggle", Playerlist.ToggleVisibility, false, Enum.KeyCode.Tab)
-		else
-			ContextActionService:UnbindAction("RbxPlayerListToggle")
 		end
 	end
 end
-game:GetService("UserInputService").InputBegan:Connect(function(key, typing)
-	if not typing and key.KeyCode == Enum.KeyCode.Tab then
-		Container.Visible = not Container.Visible
-	end
-end)
 Playerlist.TopbarEnabledChanged = function(enabled)
 	topbarEnabled = true
 	-- Update coregui to reflect new topbar status
@@ -3185,6 +3167,11 @@ Layout.HorizontalAlignment = "Center"
 Layout.FillDirection = "Vertical"
 newtabText.Text = _G.Name
 --newtabIcon.Image = getcustomasset("PLIST_Assets\\"..nameFORLOGO..".png")
+game:GetService("UserInputService").InputBegan:Connect(function(key)
+	if key.KeyCode == Enum.KeyCode.Tab then
+		Playerlist.ToggleVisibility()
+	end
+end)
 function replaceuuhhhspecific(s)
     s.SoundId = getcustomasset("PLIST_Assets\\uuhhh.mp3")
 end
@@ -3201,6 +3188,7 @@ end
 game.CoreGui:FindFirstChild("PlayerList"):Destroy()
 function setTopBarStuff()
 	tbar.Visible = true
+	PopupClipFrame.Visible = Playerlist.IsOpen()
 	if game.StarterGui:GetCoreGuiEnabled("PlayerList") then
 		Container.Visible = not SettingsShield.Visible
 	elseif not game.StarterGui:GetCoreGuiEnabled("PlayerList") then
