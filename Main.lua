@@ -137,10 +137,7 @@ function PlayersUIConfiguration()
         end
     end
 end
-game.RunService.RenderStepped:Connect(function()
-	PlayersUIConfiguration()
-end)
-SettingsShield.DescendantAdded:Connect(function()
+plrstab.DescendantAdded:Connect(function()
 	PlayersUIConfiguration()
 end)
 settingstab["Graphics QualityFrame"].Slider.RightButton.Size = UDim2.new(0, 50, 0, 50)
@@ -3066,6 +3063,12 @@ Playerlist.ToggleVisibility = function(name, inputState, inputObject)
 	end
 end
 
+Playerlist.OpenOrClose = function(openOrNot)
+	if next(TempHideKeys) == nil then
+		setVisible(openOrNot)
+	end
+end
+
 Playerlist.IsOpen = function()
 	return isOpen
 end
@@ -3198,19 +3201,19 @@ end
 game.CoreGui:FindFirstChild("PlayerList"):Destroy()
 function setTopBarStuff()
 	tbar.Visible = true
-	PopupClipFrame.Visible = Playerlist.IsOpen()
-	if game.StarterGui:GetCoreGuiEnabled("PlayerList") then
-		Container.Visible = not SettingsShield.Visible
-	elseif not game.StarterGui:GetCoreGuiEnabled("PlayerList") then
-		Container.Visible = false
+	Playerlist.OpenOrClose(Playerlist.IsOpen())
+	if not game.StarterGui:GetCoreGuiEnabled("PlayerList") then
+		Playerlist.OpenOrClose(false)
 	end
 	if SettingsShield.Visible == true then
+		setVisible(false)
 		TopBarContainer.BackgroundTransparency = 0
 		if game.StarterGui:GetCoreGuiEnabled("Chat") then
 			tbar.LeftFrame.ChatIcon.Visible = true
 		end
 		tbar.LeftFrame.MenuIcon.Background.Visible = false
 	else
+		setVisible(Playerlist.IsOpen())
 		tbar.LeftFrame.MenuIcon.Background.Visible = true
 		TopBarContainer.BackgroundTransparency = 0.500
 	end
