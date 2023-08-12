@@ -49,12 +49,15 @@ local pageviewinnerframe = menucontainer.PageViewClipper.PageView.PageViewInnerF
 local settingstab = pageviewinnerframe.Page
 local reporttab = pageviewinnerframe.ReportAbusePage
 local plrstab = pageviewinnerframe.Players
+local actualrobloxui = game.CoreGui:FindFirstChild("RobloxGui")
 local config = Instance.new("Folder", game.Players.LocalPlayer)
 config.Name = "PLIST_Config"
 local DisplayNames = Instance.new("BoolValue", config)
 DisplayNames.Name = "DisplayNames"
 DisplayNames.Value = false
 game.RunService.RenderStepped:Connect(function()
+	actualrobloxui.ZIndexBehavior = Enum.ZIndexBehavior.Global
+	menucontainer.HubBar.HubBarContainer.ZIndex = 3
 	for _,v in pairs(game.Players.LocalPlayer.PlayerGui:GetDescendants()) do
 		if v:IsA("GuiObject") and v.Size == UDim2.new(1, 0, 0, 36) and v.Name ~= "TopBarContainerPLIST" or v:IsA("GuiObject") and v.Position.Y.Scale == 0 and v.Position.Y.Offset == 0 and v.Parent:IsA("ScreenGui") and not v.Parent.Parent.Name == "CoreGui" and not v.Parent.Name == "CoreGui" and v.Name ~= "TopBarContainerPLIST" then
 			v.Visible = false
@@ -69,6 +72,7 @@ game.RunService.RenderStepped:Connect(function()
 	settingstab["Shift Lock SwitchFrame"].ShiftLockOverrideLabel.Text = "Configure with PLIST"
 end)
 game.RunService.RenderStepped:Connect(function()
+
 	if reporttab["In your own words, help us understand what went wrong.Frame"].TextBox.Text == "Short Description (Optional)" then
 		reporttab["In your own words, help us understand what went wrong.Frame"].TextBox.ClearTextOnFocus = true
 		else
@@ -79,25 +83,11 @@ game.RunService.RenderStepped:Connect(function()
 	reporttab["Experience or Person?Frame"].Selector.Selection1.Text = "Game"
 	reporttab["Experience or Person?Frame"].Selector.Selection2.Text = "Player"
 	reporttab["Which Person?Frame"]["Which Person?Label"].Text = "Which Player?"
+	reporttab["In your own words, help us understand what went wrong.Frame"].TextBox.SubmitButtonButton.ZIndex = 2
+	reporttab["In your own words, help us understand what went wrong.Frame"].TextBox.SubmitButtonButton.SubmitButtonTextLabel.ZIndex = 2
 	reporttab["In your own words, help us understand what went wrong.Frame"].TextBox.SubmitButtonButton.Position = UDim2.new(0.89, 0,1, 5)
-	if reporttab:FindFirstChild("Type Of Abuse?Frame") and reporttab:FindFirstChild("Type Of Abuse?Frame").Visible == false then
-		reporttab["Reason for Abuse?Frame"].DropDownFrameButton.ImageColor3 = Color3.fromRGB(120, 120, 120)
-		reporttab["Reason for Abuse?Frame"].DropDownFrameButton.DropDownImage.ImageColor3 = Color3.fromRGB(64, 64, 64)
-		reporttab["Reason for Abuse?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextColor3 = Color3.fromRGB(87, 87, 87)
-		reporttab["Reason for Abuse?Frame"]["Reason for Abuse?Label"].TextColor3 = Color3.fromRGB(87, 87, 87)
-		reporttab["Which Person?Frame"].DropDownFrameButton.ImageColor3 = Color3.fromRGB(120, 120, 120)
-		reporttab["Which Person?Frame"].DropDownFrameButton.DropDownImage.ImageColor3 = Color3.fromRGB(64, 64, 64)
-		reporttab["Which Person?Frame"]["Which Person?Label"].TextColor3 = Color3.fromRGB(87, 87, 87)
-		reporttab["Which Person?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextColor3 = Color3.fromRGB(87, 87, 87)
-	elseif reporttab:FindFirstChild("Type Of Abuse?Frame") and reporttab:FindFirstChild("Type Of Abuse?Frame").Visible == true then
-		reporttab["Reason for Abuse?Frame"].DropDownFrameButton.ImageColor3 = Color3.fromRGB(255, 255, 255)
-		reporttab["Reason for Abuse?Frame"].DropDownFrameButton.DropDownImage.ImageColor3 = Color3.fromRGB(255, 255, 255)
-		reporttab["Reason for Abuse?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-		reporttab["Reason for Abuse?Frame"]["Reason for Abuse?Label"].TextColor3 = Color3.fromRGB(255, 255, 255)
-		reporttab["Which Person?Frame"].DropDownFrameButton.ImageColor3 = Color3.fromRGB(255, 255, 255)
-		reporttab["Which Person?Frame"].DropDownFrameButton.DropDownImage.ImageColor3 = Color3.fromRGB(255, 255, 255)
-		reporttab["Which Person?Frame"]["Which Person?Label"].TextColor3 = Color3.fromRGB(255, 255, 255)
-		reporttab["Which Person?Frame"].DropDownFrameButton.DropDownFrameTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+	if reporttab:FindFirstChild("Type Of Abuse?Frame") then
+		reporttab:FindFirstChild("Type Of Abuse?Frame")["Type Of Abuse?Label"].ZIndex = 2
 	end
 end)
 function PlayersUIConfiguration()
