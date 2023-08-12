@@ -473,7 +473,7 @@ for _,v in pairs(game:GetDescendants()) do
         v.TextSize = 13
     end
     if v:IsA("GuiObject") then
-        if v.Active == true and v.Name ~= "MouseH" and othericon == false and clickdecicon == false then
+        if v.Name ~= "MouseH" and othericon == false and clickdecicon == false then
 			v.MouseEnter:Connect(function()
 				if not othericon and not clickdecicon then
 					mouseh.Image = "rbxasset://textures/ArrowCursor.png"
@@ -514,7 +514,7 @@ for _,v in pairs(game:GetDescendants()) do
 end
 game.DescendantAdded:Connect(function(v)
     if v:IsA("GuiObject") then
-        if v.Active == true and v.Name ~= "MouseH" and othericon == false and clickdecicon == false then
+        if v.Name ~= "MouseH" and othericon == false and clickdecicon == false then
 			v.MouseEnter:Connect(function()
 				if not othericon and not clickdecicon then
 					mouseh.Image = "rbxasset://textures/ArrowCursor.png"
