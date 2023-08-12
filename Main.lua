@@ -101,7 +101,6 @@ game.RunService.RenderStepped:Connect(function()
 	end
 end)
 function PlayersUIConfiguration()
-	plrstab.Size = UDim2.new(1, 0, 0, 1350)
     for _,v in plrstab:GetChildren() do
 	    local target = game.Players:FindFirstChild(v.Name:gsub("PlayerLabel", ""))
 		if DisplayNames.Value and v.Name:find("PlayerLabel") and v:FindFirstChild("DisplayNameLabel") and target then
@@ -137,8 +136,11 @@ function PlayersUIConfiguration()
         end
     end
 end
-plrstab.DescendantAdded:Connect(function()
+game.RunService.RenderStepped:Connect(function()
+	plrstab.Size = UDim2.new(1, 0, 0, 1350)
 	PlayersUIConfiguration()
+end)
+plrstab.DescendantAdded:Connect(function()
 end)
 settingstab["Graphics QualityFrame"].Slider.RightButton.Size = UDim2.new(0, 50, 0, 50)
 settingstab["Graphics QualityFrame"].Slider.LeftButton.Size = UDim2.new(0, 50, 0, 50)
@@ -454,19 +456,23 @@ game.RunService.RenderStepped:Connect(function()
         typing = false
     end
 end)
+local othericon = false
+local clickdecicon = false
 game.RunService.RenderStepped:Connect(function()
-if shiftreplica == false then
-	mouseh.Size = UDim2.new(0, 64, 0, 64)
-else
-	mouseh.Image = "rbxasset://textures/MouseLockedCursor.png"
-	mouseh.Size = UDim2.new(0, 37, 0, 37)
-end
-mouseh.Position = UDim2.new(0, mh.X - 32, 0, mh.Y + 2.9)
-uis.MouseIconEnabled = false
-uis.OverrideMouseIconBehavior = Enum.OverrideMouseIconBehavior.ForceHide
-mh.Icon = "rbxassetid://000001"
+	if shiftreplica == false then
+		mouseh.Size = UDim2.new(0, 64, 0, 64)
+	else
+		mouseh.Image = "rbxasset://textures/MouseLockedCursor.png"
+		mouseh.Size = UDim2.new(0, 37, 0, 37)
+	end
+	if clickdecicon then
+		mouseh.Size = UDim2.new(0, 85, 0, 85)
+	end
+	mouseh.Position = UDim2.new(0, mh.X - 32, 0, mh.Y + 2.9)
+	uis.MouseIconEnabled = false
+	uis.OverrideMouseIconBehavior = Enum.OverrideMouseIconBehavior.ForceHide
+	mh.Icon = "rbxassetid://000001"
 end)
-
 for _,v in pairs(game:GetDescendants()) do
     if v:IsA("TextLabel") and v.Text == "Chat '/?' or '/help' for a list of chat commands." then
         v.Text = "Please chat '/?' for a list of commands"
@@ -475,57 +481,74 @@ for _,v in pairs(game:GetDescendants()) do
         v.Font = Enum.Font.Legacy
         v.TextSize = 13
     end
-
     if v:IsA("GuiObject") then
-        --[[game.RunService.RenderStepped:Connect(function()
-        if v.ZIndex > 1 then
-        v.ZIndex = 0
-        end
-        end)]]
-        if v.Active == true and v.Name ~= "MouseH" then
-        v.MouseEnter:Connect(function()
-            mouseh.Image = "rbxasset://textures/ArrowCursor.png"
-            --mh.Icon = "rbxasset://textures/ArrowCursor.png"
-        end)
-        v.MouseLeave:Connect(function()
-            mouseh.Image = 'rbxasset://textures/ArrowFarCursor.png'
-            --mh.Icon = 'rbxasset://textures/ArrowFarCursor.png'
-        end)
+        if v.Active == true and v.Name ~= "MouseH" and othericon == false and clickdecicon == false then
+			v.MouseEnter:Connect(function()
+				if not othericon and not clickdecicon then
+					mouseh.Image = "rbxasset://textures/ArrowCursor.png"
+				end
+			end)
+			v.MouseLeave:Connect(function()
+				mouseh.Image = 'rbxasset://textures/ArrowFarCursor.png'
+			end)
         end
     end
+	--[[
+	if v:IsA("TextBox") then
+		v.MouseEnter:Connect(function()
+			othericon = true
+			mouseh.Image = "rbxasset://textures/IBeamCursor.png"
+		end)
+		v.MouseLeave:Connect(function()
+			othericon = false
+			mouseh.Image = 'rbxasset://textures/ArrowFarCursor.png'
+		end)
+	end
+	]]
+	if v and v:FindFirstChildOfClass("ClickDetector") then
+		v:FindFirstChildOfClass("ClickDetector").MouseHoverEnter:Connect(function()
+			if v:FindFirstChildOfClass("ClickDetector").CursorIcon == "" and othericon == false then
+				clickdecicon = true
+				mouseh.Image = "rbxasset://textures/DragCursor.png"
+			elseif v:FindFirstChildOfClass("ClickDetector").CursorIcon ~= "" and othericon == false then
+				clickdecicon = true
+				mouseh.Image = v:FindFirstChildOfClass("ClickDetector").CursorIcon
+			end
+		end)
+		v:FindFirstChildOfClass("ClickDetector").MouseHoverLeave:Connect(function()
+			clickdecicon = false
+			mouseh.Image = 'rbxasset://textures/ArrowFarCursor.png'
+		end)
+	end
 end
 game.DescendantAdded:Connect(function(v)
-    if v:IsA("GuiObject") --[[and v:IsA("Frame") or v:IsA("TextLabel") or v:IsA("TextButton") or v:IsA("TextBox") and v.Name ~= "MouseH"]] then
-        --[[mouseh:Destroy()
-        repeat
-            wait()
-        until v.Visible == true
-        mouseh = Instance.new("ImageLabel")
-        mouseh.Name = "MouseH"
-        mouseh.Parent = game.CoreGui.RobloxGui
-        mouseh.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        mouseh.BackgroundTransparency = 1
-        mouseh.Position = UDim2.new(0, 0, 1, 0)
-        mouseh.Size = UDim2.new(0, 64, 0, 64)
-        mouseh.Visible = true
-        mouseh.ZIndex = 99
-        mouseh.Image = "rbxassetid://7028337278"
-        --[[game.RunService.RenderStepped:Connect(function()
-        if v.ZIndex > 1 then
-        v.ZIndex = 0
-        end
-        end)]]
-        if v.Active == true and v.Name ~= "MouseH" then
-        v.MouseEnter:Connect(function()
-            mouseh.Image = "rbxasset://textures/ArrowCursor.png"
-            --mh.Icon = "rbxasset://textures/ArrowCursor.png"
-        end)
-        v.MouseLeave:Connect(function()
-            mouseh.Image = 'rbxasset://textures/ArrowFarCursor.png'
-            --mh.Icon = 'rbxasset://textures/ArrowFarCursor.png'
-        end)
+    if v:IsA("GuiObject") then
+        if v.Active == true and v.Name ~= "MouseH" and othericon == false and clickdecicon == false then
+			v.MouseEnter:Connect(function()
+				if not othericon and not clickdecicon then
+					mouseh.Image = "rbxasset://textures/ArrowCursor.png"
+				end
+			end)
+			v.MouseLeave:Connect(function()
+				mouseh.Image = 'rbxasset://textures/ArrowFarCursor.png'
+			end)
         end
     end
+	if v and v:FindFirstChildOfClass("ClickDetector") then
+		v:FindFirstChildOfClass("ClickDetector").MouseHoverEnter:Connect(function()
+			if v:FindFirstChildOfClass("ClickDetector").CursorIcon == "" and othericon == false then
+				clickdecicon = true
+				mouseh.Image = "rbxasset://textures/DragCursor.png"
+			elseif v:FindFirstChildOfClass("ClickDetector").CursorIcon ~= "" and othericon == false then
+				clickdecicon = true
+				mouseh.Image = v:FindFirstChildOfClass("ClickDetector").CursorIcon
+			end
+		end)
+		v:FindFirstChildOfClass("ClickDetector").MouseHoverLeave:Connect(function()
+			clickdecicon = false
+			mouseh.Image = 'rbxasset://textures/ArrowFarCursor.png'
+		end)
+	end
     if v.Name == "BubbleText" then
         v.Font = Enum.Font.Legacy
         v.TextSize = 13
@@ -4561,8 +4584,8 @@ end
 if settingstab["Camera InvertedFrame"] then
 	settingstab["Camera InvertedFrame"]:Destroy()
 end
-if settingstab["Experience LanguageFrame"] then
-	settingstab["Experience LanguageFrame"]:Destroy()
+if settingstab:FindFirstChild("Experience LanguageFrame") then
+	settingstab:FindFirstChild("Experience LanguageFrame"):Destroy()
 end
 --[[button("Switch to Lock",
 [[
