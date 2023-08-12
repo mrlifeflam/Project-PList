@@ -297,16 +297,16 @@ local function VWPK_fake_script()
 	RenderStepped:Connect(function()
 		bar.Size = UDim2.new(0,(game.Players.LocalPlayer.Character:WaitForChild("Humanoid").Health / game.Players.LocalPlayer.Character:WaitForChild("Humanoid").MaxHealth * 160),1,0)
 		spawn(function() 
-			if game.Players.LocalPlayer.Character.Humanoid.Health < game.Players.LocalPlayer.Character.Humanoid.MaxHealth and game.Players.LocalPlayer.Character.Humanoid.Health > game.Players.LocalPlayer.Character.Humanoid.MaxHealth/2 then
-				bar.BackgroundColor3 = Color3.new(1-(game.Players.LocalPlayer.Character.Humanoid.Health/game.Players.LocalPlayer.Character.Humanoid.MaxHealth)+0.5,1,0)
+			if game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health < game.Players.LocalPlayer.Character.Humanoid.MaxHealth and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health > game.Players.LocalPlayer.Character.Humanoid.MaxHealth/2 then
+				bar.BackgroundColor3 = Color3.new(1-(game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health/game.Players.LocalPlayer.Character.Humanoid.MaxHealth)+0.5,1,0)
 			else
 				bar.BackgroundColor3 = Color3.fromRGB(27, 252, 107)
 			end
-			if game.Players.LocalPlayer.Character.Humanoid.Health == game.Players.LocalPlayer.Character.Humanoid.MaxHealth/2 then
+			if game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health == game.Players.LocalPlayer.Character.Humanoid.MaxHealth/2 then
 				bar.BackgroundColor3 = Color3.new(1,1,0)
 			end
-			if game.Players.LocalPlayer.Character.Humanoid.Health < game.Players.LocalPlayer.Character.Humanoid.MaxHealth/2 then
-				bar.BackgroundColor3 = Color3.new(1,(game.Players.LocalPlayer.Character.Humanoid.Health/game.Players.LocalPlayer.Character.Humanoid.MaxHealth)*2,0)
+			if game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health < game.Players.LocalPlayer.Character.Humanoid.MaxHealth/2 then
+				bar.BackgroundColor3 = Color3.new(1,(game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health/game.Players.LocalPlayer.Character.Humanoid.MaxHealth)*2,0)
 			end 
 		end)
 	end)
@@ -2919,34 +2919,38 @@ function disablerightmouse(bool)
 end
 shiftval = Vector3.new(2.4, 0.1, 0)
 uis.InputBegan:Connect(function(key, chat)
-    if key.KeyCode == Enum.KeyCode.LeftShift and not chat and not shiftreplica and shiftreplicaENABLED.Value then
-        disablerightmouse(true)
-        game.Players.LocalPlayer.Character.Humanoid.AutoRotate = false
-        shiftreplica = true
-        game.Players.LocalPlayer.Character.Humanoid.CameraOffset = shiftval
-        elseif key.KeyCode == Enum.KeyCode.LeftShift and not chat and shiftreplica and shiftreplicaENABLED.Value then
-        disablerightmouse(false)
-        game.Players.LocalPlayer.Character.Humanoid.AutoRotate = true
-        shiftreplica = false
-        uis.MouseBehavior = Enum.MouseBehavior.Default
-		mouseh.Image = "rbxasset://textures/ArrowFarCursor.png"
-        game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(0, 0, 0)
-    end
-    if shiftreplicaENABLED.Value == false then
-        disablerightmouse(false)
-        game.Players.LocalPlayer.Character.Humanoid.AutoRotate = true
-        shiftreplica = false
-        uis.MouseBehavior = Enum.MouseBehavior.Default
-		mouseh.Image = "rbxasset://textures/ArrowFarCursor.png"
-        game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(0, 0, 0)
-    end
+	if game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+		if key.KeyCode == Enum.KeyCode.LeftShift and not chat and not shiftreplica and shiftreplicaENABLED.Value then
+			disablerightmouse(true)
+			game.Players.LocalPlayer.Character.Humanoid.AutoRotate = false
+			shiftreplica = true
+			game.Players.LocalPlayer.Character.Humanoid.CameraOffset = shiftval
+			elseif key.KeyCode == Enum.KeyCode.LeftShift and not chat and shiftreplica and shiftreplicaENABLED.Value then
+			disablerightmouse(false)
+			game.Players.LocalPlayer.Character.Humanoid.AutoRotate = true
+			shiftreplica = false
+			uis.MouseBehavior = Enum.MouseBehavior.Default
+			mouseh.Image = "rbxasset://textures/ArrowFarCursor.png"
+			game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(0, 0, 0)
+		end
+		if shiftreplicaENABLED.Value == false then
+			disablerightmouse(false)
+			game.Players.LocalPlayer.Character.Humanoid.AutoRotate = true
+			shiftreplica = false
+			uis.MouseBehavior = Enum.MouseBehavior.Default
+			mouseh.Image = "rbxasset://textures/ArrowFarCursor.png"
+			game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(0, 0, 0)
+		end
+	end
 end)
 game.RunService.RenderStepped:Connect(function()
-    if firstperson() and shiftreplica == true then
-        game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(0, 0, 0)
-    elseif not firstperson() and shiftreplica == true then
-        game.Players.LocalPlayer.Character.Humanoid.CameraOffset = shiftval
-    end
+	if game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+		if firstperson() and shiftreplica == true then
+			game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(0, 0, 0)
+		elseif not firstperson() and shiftreplica == true then
+			game.Players.LocalPlayer.Character.Humanoid.CameraOffset = shiftval
+		end
+	end
 end)
 local RemoveEvent_OnFollowRelationshipChanged = Instance.new("RemoteEvent", script)
 RemoveEvent_OnFollowRelationshipChanged.Name = "RemoveEvent_OnFollowRelationshipChanged"
