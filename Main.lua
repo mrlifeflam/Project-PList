@@ -49,6 +49,7 @@ local pageviewinnerframe = menucontainer.PageViewClipper.PageView.PageViewInnerF
 local settingstab = pageviewinnerframe.Page
 local reporttab = pageviewinnerframe.ReportAbusePage
 local plrstab = pageviewinnerframe.Players
+local shiftlockenabled = false
 local actualrobloxui = game.CoreGui:FindFirstChild("RobloxGui")
 local config = Instance.new("Folder", game.Players.LocalPlayer)
 config.Name = "PLIST_Config"
@@ -69,7 +70,9 @@ game.RunService.RenderStepped:Connect(function()
     end
 end)
 game.RunService.RenderStepped:Connect(function()
-	settingstab["Shift Lock SwitchFrame"].ShiftLockOverrideLabel.Text = "Configure with PLIST"
+	if shiftlockenabled then
+		settingstab["Shift Lock SwitchFrame"].ShiftLockOverrideLabel.Text = "Configure with PLIST"
+	end
 end)
 game.RunService.RenderStepped:Connect(function()
 
@@ -127,10 +130,7 @@ function PlayersUIConfiguration()
     end
 end
 game.RunService.RenderStepped:Connect(function()
-	plrstab.Size = UDim2.new(1, 0, 0, 1350)
 	PlayersUIConfiguration()
-end)
-plrstab.DescendantAdded:Connect(function()
 end)
 settingstab["Graphics QualityFrame"].Slider.RightButton.Size = UDim2.new(0, 50, 0, 50)
 settingstab["Graphics QualityFrame"].Slider.LeftButton.Size = UDim2.new(0, 50, 0, 50)
@@ -2910,7 +2910,6 @@ local camera = workspace.CurrentCamera
 local player = game.Players.LocalPlayer
 local char = player.Character
 local cas = game:GetService("ContextActionService")
-player.DevEnableMouseLock = false
 function disablerightmouse(bool)
     if bool == true then
     cas:BindActionAtPriority("RightMouseDisable", function()
@@ -2923,12 +2922,12 @@ end
 shiftval = Vector3.new(2.4, 0.1, 0)
 uis.InputBegan:Connect(function(key, chat)
 	if game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
-		if key.KeyCode == Enum.KeyCode.LeftShift and not chat and not shiftreplica and shiftreplicaENABLED.Value then
+		if key.KeyCode == Enum.KeyCode.LeftShift and not chat and not shiftreplica and shiftreplicaENABLED.Value and shiftlockenabled then
 			disablerightmouse(true)
 			game.Players.LocalPlayer.Character.Humanoid.AutoRotate = false
 			shiftreplica = true
 			game.Players.LocalPlayer.Character.Humanoid.CameraOffset = shiftval
-			elseif key.KeyCode == Enum.KeyCode.LeftShift and not chat and shiftreplica and shiftreplicaENABLED.Value then
+			elseif key.KeyCode == Enum.KeyCode.LeftShift and not chat and shiftreplica and shiftreplicaENABLED.Value and shiftlockenabled then
 			disablerightmouse(false)
 			game.Players.LocalPlayer.Character.Humanoid.AutoRotate = true
 			shiftreplica = false
@@ -4360,7 +4359,7 @@ function switch(name, path, default)
     local Selection1 = Instance.new("TextLabel")
     local Selection2 = Instance.new("TextLabel")
 
-    SwitchFrame.Name = "SwitchFrame"
+    SwitchFrame.Name = name
     SwitchFrame.Parent = Frame
     SwitchFrame.Active = false
     SwitchFrame.BackgroundTransparency = 1.000
@@ -4601,6 +4600,14 @@ end
 --slider("Graphics Quality", "game.Players.LocalPlayer.Character.Humanoid.WalkSpeed", 8, 2) --name, path, default, multiplier
 switch("Shift Lock Switch", "game.Players.LocalPlayer.PLIST_Config.shiftreplicaENABLED.Value", true, false) --name, path, default
 switch("View display names", "game.Players.LocalPlayer.PLIST_Config.DisplayNames.Value", false, false) --name, path, default
+if player.DevEnableMouseLock == false or game.StarterPlayer.EnableMouseLockOption == false then
+	Frame["Shift Lock Switch"].Visible = false
+	shiftreplica = false
+	elseif player.DevEnableMouseLock == true or game.StarterPlayer.EnableMouseLockOption == true then
+	Frame["Shift Lock Switch"].Visible = true
+	shiftlockenabled = true
+end
+player.DevEnableMouseLock = false
 local s = Instance.new("Sound", workspace)
 s.SoundId = getcustomasset("PLIST_Assets\\Loaded.mp3")
 s:Play()
